@@ -27,7 +27,8 @@ public class RegistrationView {
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
-
+        ImageIcon frameIcon = new ImageIcon("Resources/Images/logoicon.png");
+        frame.setIconImage(frameIcon.getImage());
 
         // Header
         JPanel Header = new JPanel();

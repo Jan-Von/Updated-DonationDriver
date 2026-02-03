@@ -20,7 +20,8 @@ public class LoginView {
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
-
+        ImageIcon frameIcon = new ImageIcon("Resources/Images/logoicon.png");
+        frame.setIconImage(frameIcon.getImage());
         // Left Panel for Authentication
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.setBackground(Color.WHITE);
