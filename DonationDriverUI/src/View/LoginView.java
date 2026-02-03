@@ -31,6 +31,7 @@ public class LoginView {
         gbc.insets = new Insets(10, 0, 10, 0);
         gbc.anchor = GridBagConstraints.CENTER;
 
+
         // Logo
         ImageIcon originalIcon = new ImageIcon("Resources/Images/logo.png");
         Image scaledImg = originalIcon.getImage().getScaledInstance(300, 225, Image.SCALE_SMOOTH);
@@ -114,10 +115,8 @@ public class LoginView {
         rightPanel.setBackground(new Color(245, 247, 250));
         rightPanel.setLayout(new BorderLayout(20, 20));
 
-        // Big Image
-        ImageIcon rightImgIcon = new ImageIcon("Resources/Images/LoginImage.png");
-        Image rightImg = rightImgIcon.getImage()
-                .getScaledInstance(700, 450, Image.SCALE_SMOOTH);
+        ImageIcon rightImageIcon = new ImageIcon("Resources/Images/LoginImage.png");
+        Image rightImg = rightImageIcon.getImage().getScaledInstance(700, 450, Image.SCALE_SMOOTH);
         JLabel rightImageLabel = new JLabel(new ImageIcon(rightImg));
 
         rightPanel.add(rightImageLabel, BorderLayout.NORTH);
