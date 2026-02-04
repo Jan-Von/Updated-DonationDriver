@@ -106,7 +106,22 @@ public class DashboardView {
         settingsBtn.setFocusPainted(false);
         settingsBtn.setContentAreaFilled(false);
         sidebar.add(settingsBtn);
+
+        JButton helpBtn = new JButton("Help");
+        helpBtn.setBounds(10,550,160,40);
+        helpBtn.setBorderPainted(false);
+        helpBtn.setFocusPainted(false);
+        helpBtn.setContentAreaFilled(false);
+        sidebar.add(helpBtn);
+
+        ImageIcon help = new ImageIcon("Resources/Images/information.png");
+        scaledImg = help.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        JLabel sidebarHelp = new JLabel(new ImageIcon(scaledImg));
+        sidebarHelp.setBounds(27, 555, 30, 30);
+        sidebar.add(sidebarHelp);
+
         frame.add(sidebar);
+
 
         ImageIcon setting = new ImageIcon("Resources/Images/settings.png");
         scaledImg = setting.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
@@ -215,6 +230,11 @@ public class DashboardView {
 
         frame.add(card3);
 
+        JPanel cardBorder = new JPanel(null);
+        cardBorder.setBackground(new Color(245, 245, 245));
+        cardBorder.setBounds(210,135,960,340);
+        frame.add(cardBorder);
+
         // Donations Side Bar
         JPanel donationPanel = new JPanel();
         donationPanel.setLayout(null);
@@ -268,12 +288,7 @@ public class DashboardView {
 
         JTextArea donationText = new JTextArea("Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
                 "generating a storm surge of more than 5 meters in places and winds in excess of 190 mph. Fifteen million people " +
-                "felt the effects of the storm directly. Across the nation, approximately 4.1 million people were displaced from their " +
-                "homes, and more than 6,000 lost their lives. This made Haiyan the deadliest storm recorded in the Philippines. " +
-                "The nature of the storm itself, the geology and geography of the Philippine Islands, as well the population distribution and " +
-                "economics of the people living in the affected communities all contributed to the severity of the impact of Haiyan on communities." +
-                " Tacloban was essentially destroyed by Haiyan, everyone in the city was impacted. But the high level of poverty that exists in the " +
-                "Philippines accentuated...");
+                "felt the effects of the storm directly. Across the nation, approximately 4.1 million people were displaced from their    SEE MORE... "); // Add see more button
         donationText.setBounds(5, 325, 195, 380);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
@@ -283,12 +298,41 @@ public class DashboardView {
         donationText.setEditable(false);
         donationPanel.add(donationText);
 
+
+        JPanel ActiveDeliveryCard = new JPanel();
+        ActiveDeliveryCard.setLayout(null);
+        ActiveDeliveryCard.setBounds(220, 490, 450, 200);
+        ActiveDeliveryCard.setBackground(new Color(245, 245, 245));
+        ActiveDeliveryCard.setBorder(new LineBorder(Color.WHITE));
+
+        JLabel activeDelivery = new JLabel("Active Delivery");
+        activeDelivery.setForeground(Color.BLACK);
+        activeDelivery.setFont(new Font("Arial", Font.BOLD, 18));
+        activeDelivery.setBounds(10, 20, 250, 20);
+        ActiveDeliveryCard.add(activeDelivery);
+
+        frame.add(ActiveDeliveryCard);
+
+        JPanel notifCard = new JPanel();
+        notifCard.setLayout(null);
+        notifCard.setBounds(700, 490, 450, 200);
+        notifCard.setBackground(new Color(245, 245, 245));
+        notifCard.setBorder(new LineBorder(Color.WHITE));
+        frame.add(notifCard);
+
+        JLabel notification = new JLabel("Notifications");
+        notification.setForeground(Color.BLACK);
+        notification.setFont(new Font("Arial", Font.BOLD, 18));
+        notification.setBounds(10, 20, 250, 20);
+        notifCard.add(notification);
+
         frame.add(donationPanel);
 
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
+
         new DashboardView();
     }
 }
