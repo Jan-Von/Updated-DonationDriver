@@ -3,6 +3,7 @@ package Controller;
 import Model.UserModel;
 import View.LoginView;
 import View.RegistrationView;
+import View.DashboardView;
 
 import javax.swing.*;
 
@@ -25,15 +26,24 @@ public class LoginController {
     }
 
     private void login() {
-        String email = view.emailField.getText();
+        String email = view.emailField.getText().trim();
         String password = new String(view.passField.getPassword());
+
+        if (email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(view.frame, "Please fill in all fields.");
+            return;
+        }
 
         UserModel user = new UserModel(email, password);
 
         if (user.authenticate()) {
-            JOptionPane.showMessageDialog(view.frame, "Login Success!");
+            JOptionPane.showMessageDialog(view.frame, "Login Successful!");
+            view.frame.dispose(); // Close login
+            DashboardView dashView = new DashboardView();
+            new DashboardController(dashView); //
         } else {
             JOptionPane.showMessageDialog(view.frame, "Invalid email or password!");
         }
     }
+
 }

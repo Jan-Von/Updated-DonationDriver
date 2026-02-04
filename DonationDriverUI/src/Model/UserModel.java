@@ -16,22 +16,36 @@ public class UserModel {
     }
 
     // Authenticate user from CSV
+    // Enhanced Authenticate
     public boolean authenticate() {
-        try {
-            Scanner sc = new Scanner(new File("users.csv"));
+        File file = new File("users.csv");
+
+        // Check if file exists first to avoid errors
+        if (!file.exists()) {
+            System.out.println("Error: users.csv not found at " + file.getAbsolutePath());
+            return false;
+        }
+
+        try (Scanner sc = new Scanner(file)) {
             while (sc.hasNextLine()) {
-                String[] u = sc.nextLine().split(",");
-                if (u[0].trim().equals(emailField) &&
-                        u[1].trim().equals(passField)) {
-                    sc.close();
-                    return true; // found match
+                String line = sc.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                String[] u = line.split(",");
+                if (u.length >= 2) { // Ensure there are at least 2 columns
+                    String storedEmail = u[0].trim();
+                    String storedPass = u[1].trim();
+
+                    if (storedEmail.equals(emailField.trim()) &&
+                            storedPass.equals(passField.trim())) {
+                        return true;
+                    }
                 }
             }
-            sc.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return false; // not found or error
+        return false;
     }
 
     // Register user (append to CSV) // Dagdagan pa lahat ng information ng registration
