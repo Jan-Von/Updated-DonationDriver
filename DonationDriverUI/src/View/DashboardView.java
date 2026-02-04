@@ -266,6 +266,9 @@ public class DashboardView {
 
         monetaryBtn = new JButton("Monetary Donation");
         monetaryBtn.setBounds(50, 230, 145, 40);
+        monetaryBtn.setBorderPainted(false);
+        monetaryBtn.setContentAreaFilled(false);
+        monetaryBtn.setFocusPainted(false);
         donationPanel.add(monetaryBtn);
 
         ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
