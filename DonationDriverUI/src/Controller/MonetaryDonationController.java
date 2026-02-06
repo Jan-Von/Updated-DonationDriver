@@ -3,6 +3,7 @@ import View.DashboardView;
 import View.MonetaryDonationView;
 import View.BoxDonationView;
 import View.SuccessDonationView;
+import View.NotificationView;
 
 
 public class MonetaryDonationController {
@@ -16,6 +17,7 @@ public class MonetaryDonationController {
         view.homeBtn.addActionListener(e -> openDashBoard());
         view.goodsBtn.addActionListener(e -> openBoxDonation());
         view.donateNow.addActionListener(e -> openSuccessDonation());
+        view.notifBtn.addActionListener(e -> openNotification());
 
     }
 
@@ -40,4 +42,10 @@ public class MonetaryDonationController {
         view.frame.dispose();
     }
 
+    private void openNotification(){
+        NotificationView notificationView = new NotificationView();
+        new NotificationController(notificationView);
+        notificationView.frame.setVisible(true);
+        view.frame.dispose();
+    }
 }

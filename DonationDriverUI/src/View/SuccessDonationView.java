@@ -5,9 +5,17 @@ import java.awt.*;
 
 public class SuccessDonationView extends JFrame {
     public JFrame frame;
-    public JButton homeBtn;
     public JButton monetaryBtn;
+    public JButton homeBtn;
     public JButton goodsBtn;
+    public JButton notifBtn;
+    public JButton donationBtn;
+    public JButton DonateBtn;
+    public JButton helpBtn;
+    public JButton settingsBtn;
+    public JButton donateNow;
+
+
     public SuccessDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
@@ -61,7 +69,7 @@ public class SuccessDonationView extends JFrame {
         sidebarHome.setBounds(30, 45, 25, 25);
         sidebar.add(sidebarHome);
 
-        JButton notifBtn = new JButton("Notifications");
+        notifBtn = new JButton("Notifications");
         notifBtn.setBounds(45, 90, 120, 40);
         notifBtn.setBorderPainted(false);
         notifBtn.setFocusPainted(false);

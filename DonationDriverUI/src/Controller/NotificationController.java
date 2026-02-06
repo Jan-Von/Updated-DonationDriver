@@ -5,16 +5,24 @@ import View.DashboardView;
 import View.BoxDonationView;
 import View.NotificationView;
 
-public class DashboardController {
+public class NotificationController {
 
-    private DashboardView view;
+    private NotificationView view;
     private BoxDonationView viewBox;
 
-    public DashboardController(DashboardView view) {
+    public NotificationController(NotificationView view) {
         this.view = view;
+        view.homeBtn.addActionListener(e -> {openDashboard();});
         view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
         view.goodsBtn.addActionListener(e -> openBoxDonation());
-        view.notifBtn.addActionListener(e -> openNotification());
+        view.notifBtn.addActionListener(e -> openNotificaton());
+    }
+
+    private void openDashboard(){
+        DashboardView dashboardview = new DashboardView();
+        new DashboardController(dashboardview);
+        dashboardview.setVisible(true);
+        view.frame.dispose();
     }
 
     private void openMonetaryDonation() {
@@ -31,7 +39,7 @@ public class DashboardController {
         view.frame.dispose();
     }
 
-    private void openNotification (){
+    private void openNotificaton (){
         NotificationView notifView = new NotificationView();
         new NotificationController(notifView);
         notifView.setVisible(true);

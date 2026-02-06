@@ -4,10 +4,16 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class DashboardView {
+public class DashboardView extends JFrame {
     public JFrame frame;
+    public JButton homeBtn;
     public JButton monetaryBtn;
     public JButton goodsBtn;
+    public JButton notifBtn;
+    public JButton donationBtn;
+    public JButton DonateBtn;
+    public JButton helpBtn;
+    public JButton settingsBtn;
 
     public DashboardView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -49,7 +55,7 @@ public class DashboardView {
         sidebar.setBackground(new Color(245, 245, 245));
         sidebar.setBounds(0, 80, 200, 720);
 
-        JButton homeBtn = new JButton("Home");
+        homeBtn = new JButton("Home");
         homeBtn.setBounds(65, 40, 80, 40);
         homeBtn.setBackground(Color.lightGray);
         homeBtn.setBorderPainted(false);
@@ -62,7 +68,7 @@ public class DashboardView {
         sidebarHome.setBounds(30, 45, 25, 25);
         sidebar.add(sidebarHome);
 
-        JButton notifBtn = new JButton("Notifications");
+        notifBtn = new JButton("Notifications");
         notifBtn.setBounds(45, 90, 120, 40);
         notifBtn.setBorderPainted(false);
         notifBtn.setFocusPainted(false);
@@ -75,7 +81,7 @@ public class DashboardView {
         sidebarNotif.setBounds(30, 95, 25, 25);
         sidebar.add(sidebarNotif);
 
-        JButton donationBtn = new JButton("Donations");
+        donationBtn = new JButton("Donations");
         donationBtn.setBounds(45, 140, 120, 40);
         donationBtn.setBorderPainted(false);
         donationBtn.setFocusPainted(false);
@@ -88,7 +94,7 @@ public class DashboardView {
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -101,14 +107,14 @@ public class DashboardView {
         sidebarDonate.setBounds(30, 195, 25, 25);
         sidebar.add(sidebarDonate);
 
-        JButton helpBtn = new JButton("Help");
+        helpBtn = new JButton("Help");
         helpBtn.setBounds(45,550,120,40);
         helpBtn.setBorderPainted(false);
         helpBtn.setFocusPainted(false);
         helpBtn.setContentAreaFilled(false);
         sidebar.add(helpBtn);
 
-        JButton settingsBtn = new JButton("Settings");
+        settingsBtn = new JButton("Settings");
         settingsBtn.setBounds(45, 600, 120, 40);
         settingsBtn.setBorderPainted(false);
         settingsBtn.setFocusPainted(false);
