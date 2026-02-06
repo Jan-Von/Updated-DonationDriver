@@ -7,6 +7,7 @@ import java.awt.*;
 public class MonetaryDonationView extends JFrame {
     public JFrame frame;
 
+    public JButton homeBtn;
     public MonetaryDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
@@ -47,7 +48,7 @@ public class MonetaryDonationView extends JFrame {
         sidebar.setBackground(new Color(245, 245, 245));
         sidebar.setBounds(0, 80, 200, 720);
 
-        JButton homeBtn = new JButton("Home");
+        homeBtn = new JButton("Home");
         homeBtn.setBounds(65, 40, 80, 40);
         homeBtn.setBackground(Color.lightGray);
         homeBtn.setBorderPainted(false);

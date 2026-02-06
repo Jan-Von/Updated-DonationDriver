@@ -15,9 +15,9 @@ public class DashboardController {
     }
 
     private void openMonetaryDonation() {
-        view.frame.dispose(); // close current dashboard
         MonetaryDonationView moneyView = new MonetaryDonationView();
-        new MonetaryDonationController();
+        new MonetaryDonationController(moneyView);
         moneyView.setVisible(true); // open new frame
+        view.frame.dispose(); // close current dashboard
     }
 }
