@@ -7,6 +7,7 @@ import java.awt.*;
 public class DashboardView {
     public JFrame frame;
     public JButton monetaryBtn;
+    public JButton goodsBtn;
 
     public DashboardView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -277,7 +278,7 @@ public class DashboardView {
         goodsDonation.setBounds(15, 275, 25, 25);
         donationPanel.add(goodsDonation);
 
-        JButton goodsBtn = new JButton("Goods Donation");
+        goodsBtn = new JButton("Goods Donation");
         goodsBtn.setBounds(40, 270, 160, 40);
         goodsBtn.setBorderPainted(false);
         goodsBtn.setContentAreaFilled(false);

@@ -31,10 +31,10 @@ public class LoginController {
         UserModel user = new UserModel(email, password);
 
         if (user.authenticate()) {
-            view.frame.dispose();
             JOptionPane.showMessageDialog(view.frame, "Login Success!");
             DashboardView dashboardView = new DashboardView();
             new DashboardController(dashboardView);
+            view.frame.dispose();
         } else {
             JOptionPane.showMessageDialog(view.frame, "Invalid email or password!");
         }

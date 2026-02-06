@@ -1,15 +1,15 @@
 package View;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class MonetaryDonationView extends JFrame {
+public class BoxDonationView extends JFrame {
     public JFrame frame;
 
     public JButton homeBtn;
+    public JButton monetaryBtn;
     public JButton goodsBtn;
-    public MonetaryDonationView() {
+    public BoxDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -165,11 +165,11 @@ public class MonetaryDonationView extends JFrame {
         moneyDonation.setBounds(15, 235, 25, 25);
         donationPanel.add(moneyDonation);
 
-        JButton monetaryBtn = new JButton("Monetary Donation");
+        monetaryBtn = new JButton("Monetary Donation");
         monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBackground(Color.LIGHT_GRAY);
         monetaryBtn.setBorderPainted(false);
         monetaryBtn.setFocusPainted(false);
+        monetaryBtn.setContentAreaFilled(false);
         donationPanel.add(monetaryBtn);
 
 
@@ -182,7 +182,7 @@ public class MonetaryDonationView extends JFrame {
         goodsBtn = new JButton("Goods Donation");
         goodsBtn.setBounds(40, 270, 160, 40);
         goodsBtn.setBorderPainted(false);
-        goodsBtn.setContentAreaFilled(false);
+        goodsBtn.setBackground(Color.LIGHT_GRAY);
         goodsBtn.setFocusPainted(false);
         donationPanel.add(goodsBtn);
 
@@ -216,54 +216,53 @@ public class MonetaryDonationView extends JFrame {
         donationServices.setBounds(10, 10, 300, 30);
         monetaryMainCard.add(donationServices);
 
-        JLabel Amount = new JLabel("Amount");
-        Amount.setFont(new Font("Arial", Font.BOLD, 14));
-        Amount.setForeground(Color.BLACK);
-        Amount.setBounds(150, 50, 300, 30);
-        monetaryMainCard.add(Amount);
+        JLabel typeofGoods = new JLabel("Type of Goods");
+        typeofGoods.setFont(new Font("Arial", Font.BOLD, 14));
+        typeofGoods.setForeground(Color.BLACK);
+        typeofGoods.setBounds(150, 50, 300, 30);
+        monetaryMainCard.add(typeofGoods);
 
-        JTextField amount = new JTextField();
-        amount.setFont(new Font("Arial", Font.PLAIN, 14));
-        amount.setForeground(Color.BLACK);
-        amount.setBounds(150, 80, 300, 30);
-        monetaryMainCard.add(amount);
+        JTextField TypeOfGoods = new JTextField();
+        TypeOfGoods.setFont(new Font("Arial", Font.PLAIN, 14));
+        TypeOfGoods.setForeground(Color.BLACK);
+        TypeOfGoods.setBounds(150, 80, 300, 30);
+        monetaryMainCard.add(TypeOfGoods);
 
-        JLabel paymentMethod = new JLabel("Payment Method");
-        paymentMethod.setFont(new Font("Arial", Font.BOLD, 14));
-        paymentMethod.setForeground(Color.BLACK);
-        paymentMethod.setBounds(150, 110, 300, 30);
-        monetaryMainCard.add(paymentMethod);
+        JLabel NumberBoxes = new JLabel("Number of Boxes");
+        NumberBoxes.setFont(new Font("Arial", Font.BOLD, 14));
+        NumberBoxes.setForeground(Color.BLACK);
+        NumberBoxes.setBounds(150, 110, 300, 30);
+        monetaryMainCard.add(NumberBoxes);
 
-        String[] paymentOptions = {"Select","BDO","BPI", "Paymaya","Gcash", "Gotyme"};
-        JComboBox PaymentOptions = new JComboBox(paymentOptions);
-        PaymentOptions.setFont(new Font("Arial", Font.BOLD, 14));
-        PaymentOptions.setBackground(new Color(245, 245, 245));
-        PaymentOptions.setBounds(150,140,300,30);
-        monetaryMainCard.add(PaymentOptions);
+        JTextField noBoxes = new JTextField();
+        noBoxes.setFont(new Font("Arial", Font.PLAIN, 14));
+        noBoxes.setForeground(Color.BLACK);
+        noBoxes.setBounds(150,140,300,30);
+        monetaryMainCard.add(noBoxes);
 
-        JLabel transID = new JLabel("Transaction ID");
-        transID.setFont(new Font("Arial", Font.BOLD, 14));
-        transID.setForeground(Color.BLACK);
-        transID.setBounds(150, 170, 300, 30);
-        monetaryMainCard.add(transID);
+        JLabel Location = new JLabel("Your Location");
+        Location.setFont(new Font("Arial", Font.BOLD, 14));
+        Location.setForeground(Color.BLACK);
+        Location.setBounds(150, 170, 300, 30);
+        monetaryMainCard.add(Location);
 
-        JTextField TransID = new JTextField();
-        TransID.setFont(new Font("Arial", Font.PLAIN, 14));
-        TransID.setForeground(Color.BLACK);
-        TransID.setBounds(150, 200, 300, 30);
-        monetaryMainCard.add(TransID);
+        ImageIcon Maps = new ImageIcon("Resources/Images/Maps.png");
+        Image MapsIcon = Maps.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+        JLabel MapsIconLabel = new JLabel(new ImageIcon(MapsIcon));
+        MapsIconLabel.setBounds(175,200,250,250);
+        monetaryMainCard.add(MapsIconLabel);
 
         JButton donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
-        donateNow.setBounds(150, 250, 300, 30);
+        donateNow.setBounds(150, 460, 300, 30);
         monetaryMainCard.add(donateNow);
 
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        new MonetaryDonationView();
+        new BoxDonationView();
     }
 }
