@@ -69,7 +69,7 @@ public class NotificationView extends JFrame {
         sidebarHome.setBounds(30, 45, 25, 25);
         sidebar.add(sidebarHome);
 
-        JButton notifBtn = new JButton("Notifications");
+        notifBtn = new JButton("Notifications");
         notifBtn.setBounds(55, 90, 110, 40);
         notifBtn.setBorderPainted(false);
         notifBtn.setFocusPainted(false);
@@ -82,7 +82,7 @@ public class NotificationView extends JFrame {
         sidebarNotif.setBounds(30, 95, 25, 25);
         sidebar.add(sidebarNotif);
 
-        JButton donationBtn = new JButton("Donations");
+        donationBtn = new JButton("Donations");
         donationBtn.setBounds(45, 140, 120, 40);
         donationBtn.setBorderPainted(false);
         donationBtn.setFocusPainted(false);

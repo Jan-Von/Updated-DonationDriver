@@ -83,7 +83,7 @@ public class MonetaryDonationView extends JFrame {
         sidebarNotif.setBounds(30, 95, 25, 25);
         sidebar.add(sidebarNotif);
 
-        JButton donationBtn = new JButton("Donations");
+        donationBtn = new JButton("Donations");
         donationBtn.setBounds(45, 140, 120, 40);
         donationBtn.setBorderPainted(false);
         donationBtn.setFocusPainted(false);
