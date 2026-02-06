@@ -2,6 +2,8 @@ package Controller;
 import View.DashboardView;
 import View.MonetaryDonationView;
 import View.BoxDonationView;
+import View.SuccessDonationView;
+
 
 public class MonetaryDonationController {
 
@@ -13,6 +15,8 @@ public class MonetaryDonationController {
 
         view.homeBtn.addActionListener(e -> openDashBoard());
         view.goodsBtn.addActionListener(e -> openBoxDonation());
+        view.donateNow.addActionListener(e -> openSuccessDonation());
+
     }
 
     private void openDashBoard(){
@@ -26,6 +30,13 @@ public class MonetaryDonationController {
         BoxDonationView boxDonationView = new BoxDonationView();
         new BoxDonationController(boxDonationView);
         boxDonationView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openSuccessDonation(){
+        SuccessDonationView successDonationView = new SuccessDonationView();
+        new SuccessDonationController(successDonationView);
+        successDonationView.frame.setVisible(true);
         view.frame.dispose();
     }
 

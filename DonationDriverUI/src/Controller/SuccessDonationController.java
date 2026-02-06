@@ -4,17 +4,16 @@ import View.MonetaryDonationView;
 import View.BoxDonationView;
 import View.SuccessDonationView;
 
-public class BoxDonationController {
+public class SuccessDonationController {
 
-    private BoxDonationView view;
+    private SuccessDonationView view;
     private MonetaryDonationView view1;
 
-    public BoxDonationController(BoxDonationView view) {
+    public SuccessDonationController(SuccessDonationView view) {
         this.view = view;
 
         view.homeBtn.addActionListener(e -> openDashBoard());
         view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
-        view.donateNow.addActionListener(e -> openSuccessDonation());
     }
 
     private void openDashBoard(){
@@ -27,13 +26,6 @@ public class BoxDonationController {
         MonetaryDonationView monetaryDonationView = new MonetaryDonationView();
         new MonetaryDonationController(monetaryDonationView);
         monetaryDonationView.frame.setVisible(true);
-        view.frame.dispose();
-    }
-
-    private void openSuccessDonation(){
-        SuccessDonationView successDonationView = new SuccessDonationView();
-        new SuccessDonationController(successDonationView);
-        successDonationView.frame.setVisible(true);
         view.frame.dispose();
     }
 

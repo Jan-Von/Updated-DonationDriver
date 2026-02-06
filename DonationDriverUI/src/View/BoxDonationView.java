@@ -8,7 +8,8 @@ public class BoxDonationView extends JFrame {
 
     public JButton homeBtn;
     public JButton monetaryBtn;
-    public JButton goodsBtn;
+    public JButton donateNow;
+
     public BoxDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
@@ -179,7 +180,7 @@ public class BoxDonationView extends JFrame {
         goodsDonation.setBounds(15, 275, 25, 25);
         donationPanel.add(goodsDonation);
 
-        goodsBtn = new JButton("Goods Donation");
+        JButton goodsBtn = new JButton("Goods Donation");
         goodsBtn.setBounds(40, 270, 160, 40);
         goodsBtn.setBorderPainted(false);
         goodsBtn.setBackground(Color.LIGHT_GRAY);
@@ -252,7 +253,7 @@ public class BoxDonationView extends JFrame {
         MapsIconLabel.setBounds(175,200,250,250);
         monetaryMainCard.add(MapsIconLabel);
 
-        JButton donateNow = new JButton("Donate Now");
+        donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
