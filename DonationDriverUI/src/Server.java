@@ -26,10 +26,12 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                executor.submit()
+                executor.submit(new ClientHandler(clientSocket));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            executor.shutdown();
         }
     }
 
@@ -42,10 +44,80 @@ public class Server {
 
         @Override
         public void run() {
+            String clientInfo = socket.getInetAddress() + ":" + socket.getPort();
+            System.out.println("Client connected: " + clientInfo);
+
+            try (
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                    BufferedWriter out = new BufferedWriter(
+                            new OutputStreamWriter(socket.getOutputStream(), "UTF-8"))
+            ) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    String requestXml = line.trim();
+                    if (requestXml.isEmpty()) {
+                        continue;
+                    }
+                    String responseXml = handleRequest(requestXml);
+                    out.write(responseXml);
+                    out.newLine();
+                    out.flush();
+                }
+            } catch (IOException e) {
+                System.out.println("Client disconnected: " + clientInfo);
+            } finally {
+                try {
+                    socket.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
 
         private String handleRequest(String requestXml) {
-            return "OK";
+            String action = extractTagValue(requestXml, "action");
+            String userId = extractTagValue(requestXml, "userId");
+            log("REQUEST", userId, requestXml);
+
+            String status = "ERROR";
+            String message;
+
+            if (action == null) {
+                message = "Missing <action> in request.";
+            } else {
+                //To do: return real data or errors. Initial code for switch-case
+                switch (action) {
+                    case "CREATE_TICKET":
+                        status = "OK";
+                        message = "CREATE_TICKET received...";
+                        break;
+                    case "READ_TICKETS":
+                        status = "OK";
+                        message = "READ_TICKETS received...";
+                        break;
+                    case "UPDATE_TICKET":
+                        status = "OK";
+                        message = "UPDATE_TICKET received...";
+                        break;
+                    case "DELETE_TICKET":
+                        status = "OK";
+                        message = "DELETE_TICKET received...";
+                        break;
+                    case "PING":
+                        status = "OK";
+                        message = "PONG from DonationServer.";
+                        break;
+                    default:
+                        message = "Unknown action: " + action;
+                }
+            }
+            String responseXml =
+                    "<response>" +
+                            "<status>" + escapeXml(status) + "</status>" +
+                            "<message>" + escapeXml(message) + "</message>" +
+                            "</response>";
+            log("RESPONSE", userId, responseXml);
+            return responseXml;
         }
 
         private String extractTagValue(String xml, String tag) {
