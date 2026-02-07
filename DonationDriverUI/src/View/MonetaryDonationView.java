@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class MonetaryDonationView extends JFrame {
+public class MonetaryDonationView {
     public JFrame frame;
     public JButton monetaryBtn;
     public JButton homeBtn;

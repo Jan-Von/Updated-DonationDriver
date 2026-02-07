@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class NotificationView extends JFrame {
+public class NotificationView {
     public JFrame frame;
     public JButton monetaryBtn;
     public JButton goodsBtn;
@@ -95,7 +95,7 @@ public class NotificationView extends JFrame {
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -250,9 +250,5 @@ public class NotificationView extends JFrame {
         Notif3Card.add(moneyStatus);
 
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new NotificationView();
     }
 }

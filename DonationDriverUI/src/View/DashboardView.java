@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class DashboardView extends JFrame {
+public class DashboardView {
     public JFrame frame;
     public JButton homeBtn;
     public JButton monetaryBtn;
@@ -366,11 +366,13 @@ public class DashboardView extends JFrame {
         viewAllDelivery.setBorderPainted(false);
         ActiveDeliveryCard.add(viewAllDelivery);
 
-        JLabel inTransit = new JLabel("In Transit");
-        inTransit.setForeground(new Color(245,158,11));
-        inTransit.setFont(new Font("Arial", Font.PLAIN, 14));
-        inTransit.setBounds(365, 40, 80, 35);
-        ActiveDeliveryCard.add(inTransit);
+        JLabel transitBox = new JLabel("In Transit", SwingConstants.CENTER);
+        transitBox.setBounds(350, 50, 80, 35);
+        transitBox.setBackground(new Color(254, 243, 199));
+        transitBox.setForeground(new Color(245, 158, 11));
+        transitBox.setFont(new Font("Arial", Font.BOLD, 14));
+        transitBox.setOpaque(true);
+        ActiveDeliveryCard.add(transitBox);
 
         frame.add(ActiveDeliveryCard);
 
@@ -431,4 +433,5 @@ public class DashboardView extends JFrame {
 
         frame.setVisible(true);
     }
+
 }

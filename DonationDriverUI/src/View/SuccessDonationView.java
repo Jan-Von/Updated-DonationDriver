@@ -3,7 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class SuccessDonationView extends JFrame {
+public class SuccessDonationView{
     public JFrame frame;
     public JButton monetaryBtn;
     public JButton homeBtn;

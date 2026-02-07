@@ -13,6 +13,7 @@ public class BoxDonationController {
         view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
         view.donateNow.addActionListener(e -> openSuccessDonation());
         view.notifBtn.addActionListener(e -> openNotification());
+        view.donationBtn.addActionListener(e ->openDonations());
 
     }
 
@@ -40,6 +41,13 @@ public class BoxDonationController {
         NotificationView notificationView = new NotificationView();
         new NotificationController(notificationView);
         notificationView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonations(){
+        DonationsActiveView donationsView = new DonationsActiveView();
+        new DonationsActiveController(donationsView);
+        donationsView.frame.setVisible(true);
         view.frame.dispose();
     }
 

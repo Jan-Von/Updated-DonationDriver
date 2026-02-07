@@ -12,8 +12,9 @@ public class SuccessDonationController {
         view.homeBtn.addActionListener(e -> openDashBoard());
         view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
         view.goodsBtn.addActionListener(e -> openBoxDonation());
-
         view.notifBtn.addActionListener(e -> openNotification());
+        view.donationBtn.addActionListener(e ->openDonations());
+
 
     }
 
@@ -41,6 +42,13 @@ public class SuccessDonationController {
         NotificationView notificationView = new NotificationView();
         new NotificationController(notificationView);
         notificationView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonations(){
+        DonationsActiveView donationsView = new DonationsActiveView();
+        new DonationsActiveController(donationsView);
+        donationsView.frame.setVisible(true);
         view.frame.dispose();
     }
 }
