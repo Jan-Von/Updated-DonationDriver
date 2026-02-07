@@ -1,10 +1,6 @@
 package Controller;
 
-import View.MonetaryDonationView;
-import View.DashboardView;
-import View.BoxDonationView;
-import View.NotificationView;
-import View.DonationsActiveView;
+import View.*;
 
 public class DashboardController {
 
@@ -17,6 +13,7 @@ public class DashboardController {
         view.goodsBtn.addActionListener(e -> openBoxDonation());
         view.notifBtn.addActionListener(e -> openNotification());
         view.donationBtn.addActionListener(e ->openDonations());
+        view.DonateBtn.addActionListener(e -> openDonate());
     }
 
     private void openMonetaryDonation() {
@@ -44,6 +41,13 @@ public class DashboardController {
         DonationsActiveView donationsView = new DonationsActiveView();
         new DonationsActiveController(donationsView);
         donationsView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonate (){
+        DonateView donateView = new DonateView();
+        new DonateController(donateView);
+        donateView.frame.setVisible(true);
         view.frame.dispose();
     }
 

@@ -13,6 +13,7 @@ public class DonationsDeliveredController {
         view.notifBtn.addActionListener(e -> openNotification());
         view.ActiveDeliveryButton.addActionListener(e -> openDonationsActive());
         view.RejectedButton.addActionListener(e -> openDonationsRejected());
+        view.DonateBtn.addActionListener(e -> openDonate());
 
     }
 
@@ -41,6 +42,13 @@ public class DonationsDeliveredController {
         DonationsRejectedView donationsRejectedView = new DonationsRejectedView();
         new DonationsRejectedController(donationsRejectedView);
         donationsRejectedView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonate (){
+        DonateView donateView = new DonateView();
+        new DonateController(donateView);
+        donateView.frame.setVisible(true);
         view.frame.dispose();
     }
 }

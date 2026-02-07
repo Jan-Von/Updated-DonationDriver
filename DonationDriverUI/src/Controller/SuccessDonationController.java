@@ -14,6 +14,7 @@ public class SuccessDonationController {
         view.goodsBtn.addActionListener(e -> openBoxDonation());
         view.notifBtn.addActionListener(e -> openNotification());
         view.donationBtn.addActionListener(e ->openDonations());
+        view.DonateBtn.addActionListener(e -> openDonate());
 
 
     }
@@ -49,6 +50,13 @@ public class SuccessDonationController {
         DonationsActiveView donationsView = new DonationsActiveView();
         new DonationsActiveController(donationsView);
         donationsView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonate (){
+        DonateView donateView = new DonateView();
+        new DonateController(donateView);
+        donateView.frame.setVisible(true);
         view.frame.dispose();
     }
 }

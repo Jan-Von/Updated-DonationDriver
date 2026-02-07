@@ -12,6 +12,8 @@ public class NotificationController {
         view.homeBtn.addActionListener(e -> {openDashboard();});
         view.notifBtn.addActionListener(e -> openNotificaton());
         view.donationBtn.addActionListener(e ->openDonations());
+        view.DonateBtn.addActionListener(e -> openDonate());
+
     }
 
     private void openDashboard(){
@@ -35,5 +37,11 @@ public class NotificationController {
         view.frame.dispose();
     }
 
+    private void openDonate (){
+        DonateView donateView = new DonateView();
+        new DonateController(donateView);
+        donateView.frame.setVisible(true);
+        view.frame.dispose();
+    }
 
 }
