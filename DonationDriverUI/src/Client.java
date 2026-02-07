@@ -39,6 +39,57 @@ public class Client {
         }
     }
 
+
+    public String login(String email, String password) throws IOException {
+        String request = "<request><action>LOGIN</action><userId></userId>"
+                + "<email>" + escapeXml(email) + "</email>"
+                + "<password>" + escapeXml(password) + "</password></request>";
+        return sendRequest(request);
+    }
+
+    public String register(String email, String password) throws IOException {
+        String request = "<request><action>REGISTER</action><userId></userId>"
+                + "<email>" + escapeXml(email) + "</email>"
+                + "<password>" + escapeXml(password) + "</password></request>";
+        return sendRequest(request);
+    }
+
+    public String createTicket(String userId, String type, String details) throws IOException {
+        String request = "<request><action>CREATE_TICKET</action>"
+                + "<userId>" + escapeXml(userId) + "</userId>"
+                + "<type>" + escapeXml(type) + "</type>"
+                + "<details>" + escapeXml(details) + "</details></request>";
+        return sendRequest(request);
+    }
+
+    public String readTickets(String userId) throws IOException {
+        return readTickets(userId, null);
+    }
+
+    public String readTickets(String userId, String status) throws IOException {
+        String request = "<request><action>READ_TICKETS</action>"
+                + "<userId>" + escapeXml(userId) + "</userId>";
+        if (status != null) {
+            request += "<status>" + escapeXml(status) + "</status>";
+        }
+        request += "</request>";
+        return sendRequest(request);
+    }
+
+    public String updateTicket(String userId, String ticketId, String status) throws IOException {
+        String request = "<request><action>UPDATE_TICKET</action>"
+            + "<userId>" + escapeXml(userId) + "</userId>"
+            + "<ticketId>" + escapeXml(ticketId) + "</ticketId>"
+            + "<status>" + escapeXml(status) + "</status></request>";
+        return sendRequest(request);
+    }
+
+    public String deleteTicket(String userId, String ticketId) throws IOException {
+        String request = "<request><action>DELETE_TICKET</action>"
+                + "<userId>" + escapeXml(userId) + "</userId>"
+                + "<ticketId>" + escapeXml(ticketId) + "</ticketId></request>";
+        return sendRequest(request);
+    }
     public static Response parseResponse(String responseXml) {
         if (responseXml == null || responseXml.isEmpty()) {
             return null;
@@ -68,6 +119,10 @@ public class Client {
                 .replace("'", "&apos;");
     }
 
+    public String ping() throws IOException {
+        return sendRequest("<request><action>PING</action><userId></userId></request>");
+    }
+
     public static class Response {
         public final String status;
         public final String message;
@@ -82,20 +137,30 @@ public class Client {
         }
     }
 
-    static void main() {
-        Client client = new Client("localhost", 5000);
+    public static void main(String[] args) {
+        Client client = getDefault();
 
-        String request =
-                "<request>" +
-                        "<action>PING</action>" +
-                        "<userId>test-user</userId>" +
-                        "</request>";
         try {
-            String response = client.sendRequest(request);
+            String response = client.ping();
             System.out.println("Server response: " + response);
+            Response r = parseResponse(response);
+            if (r != null) {
+                System.out.println("Status: " + r.status + ", Message: " + r.message);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        String request =
+//                "<request>" +
+//                        "<action>PING</action>" +
+//                        "<userId>test-user</userId>" +
+//                        "</request>";
+//        try {
+//            String response = client.sendRequest(request);
+//            System.out.println("Server response: " + response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

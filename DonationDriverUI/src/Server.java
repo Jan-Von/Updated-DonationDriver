@@ -17,8 +17,8 @@ public class Server {
     private static final String LOG_FILE = "server_log.txt";
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
-    static void main() {
-
+    public static void main(String[] args) {
+        new Server().start();
     }
 
     public void start() {
