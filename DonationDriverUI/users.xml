@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+    
+  
+  <user>
+        
+    <email>2245587@slu.edu.ph</email>
+        
+    <password>sipitbu2</password>
+        
+    <firstName>Lexbher</firstName>
+        
+    <lastName>Lumiwes</lastName>
+        
+    <middleName>Oyangwa</middleName>
+        
+    <dateOfBirth>May 14 2003</dateOfBirth>
+        
+    <address>Camp 7 Monticello Baguio City</address>
+        
+    <phoneNumber>09060241523</phoneNumber>
+      
+  </user>
+  
+  <user>
+    <email>123456@slu.edu.ph</email>
+    <password>qwe123</password>
+    <firstName>Nice</firstName>
+    <lastName>bat</lastName>
+    <middleName>ngay</middleName>
+    <dateOfBirth>May 20 2000</dateOfBirth>
+    <address>basta dun</address>
+    <phoneNumber>09060241523</phoneNumber>
+  </user>
+</users>
