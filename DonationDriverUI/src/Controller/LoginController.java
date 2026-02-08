@@ -21,6 +21,7 @@ public class LoginController {
         view.signupBtn.addActionListener(e -> {
             view.frame.dispose();
             RegistrationView regView = new RegistrationView();
+            new RegistrationController(regView);
         });
     }
 
