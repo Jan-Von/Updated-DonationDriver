@@ -14,7 +14,7 @@ public class DonationsActiveView {
     public JButton ActiveDeliveryButton;
     public JButton DeliveredButton;
     public JButton RejectedButton;
-
+    public JList<String> ticketsList;
     public DonationsActiveView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
@@ -155,6 +155,14 @@ public class DonationsActiveView {
         RejectedButton.setFocusPainted(false);
         RejectedButton.setBackground(new Color(245,245,245));
         frame.add(RejectedButton);
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        ticketsList = new JList<>(model);
+        ticketsList.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        JScrollPane ticketsScroll = new JScrollPane(ticketsList);
+        ticketsScroll.setBounds(225, 160, 900, 500);
+        frame.add(ticketsScroll);
 
         JPanel Notif1Card = new JPanel();
         Notif1Card.setLayout(null);
