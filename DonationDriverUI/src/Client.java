@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 public class Client {
 
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 5000;
+    private static final int DEFAULT_PORT = 5267;
 
     private final String host;
     private final int port;
@@ -78,9 +78,9 @@ public class Client {
 
     public String updateTicket(String userId, String ticketId, String status) throws IOException {
         String request = "<request><action>UPDATE_TICKET</action>"
-            + "<userId>" + escapeXml(userId) + "</userId>"
-            + "<ticketId>" + escapeXml(ticketId) + "</ticketId>"
-            + "<status>" + escapeXml(status) + "</status></request>";
+                + "<userId>" + escapeXml(userId) + "</userId>"
+                + "<ticketId>" + escapeXml(ticketId) + "</ticketId>"
+                + "<status>" + escapeXml(status) + "</status></request>";
         return sendRequest(request);
     }
 
@@ -90,6 +90,7 @@ public class Client {
                 + "<ticketId>" + escapeXml(ticketId) + "</ticketId></request>";
         return sendRequest(request);
     }
+
     public static Response parseResponse(String responseXml) {
         if (responseXml == null || responseXml.isEmpty()) {
             return null;
@@ -139,6 +140,16 @@ public class Client {
 
     public static void main(String[] args) {
         Client client = getDefault();
+        try {
+            String response = client.ping();
+            System.out.println("Server response: " + response);
+            Response r = parseResponse(response);
+            if (r != null) {
+                System.out.println("Parsed: status=" + r.status + ", message=" + r.message);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             String response = client.ping();

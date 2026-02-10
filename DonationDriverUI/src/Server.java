@@ -1,19 +1,15 @@
+import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int PORT = 5000;
+    private static final int PORT = 5267;
     private static final String LOG_FILE = "server_log.txt";
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -87,6 +83,30 @@ public class Server {
             } else {
                 //To do: return real data or errors. Initial code for switch-case
                 switch (action) {
+                    case "LOGIN":
+                        String loginEmail = extractTagValue(requestXml, "email");
+                        String loginPassword = extractTagValue(requestXml, "password");
+                        if (loginEmail == null || loginPassword == null) {
+                            message = "Missing email or password.";
+                        } else if (authenticateUser(loginEmail.trim(), loginPassword.trim())) {
+                            status = "OK";
+                            message = "Login successful.";
+                            userId = loginEmail.trim();
+                        } else {
+                            message = "Invalid email or password.";
+                        }
+                        break;
+                    case "REGISTER":
+                        String regEmail = extractTagValue(requestXml, "email");
+                        String regPassword = extractTagValue(requestXml, "password");
+                        if (regEmail == null || regPassword == null) {
+                            message = "Missing email or password.";
+                        } else if (registerUser(regEmail.trim(), regPassword.trim())) {
+                            status = "OK";
+                            message = "Registration successful.";
+                        } else {
+                            message = "Registration failed (e.g. email already exists or I/O error).";
+                        }
                     case "CREATE_TICKET":
                         status = "OK";
                         message = "CREATE_TICKET received...";
@@ -115,9 +135,62 @@ public class Server {
                     "<response>" +
                             "<status>" + escapeXml(status) + "</status>" +
                             "<message>" + escapeXml(message) + "</message>" +
+                            (userId != null && !userId.isEmpty() ? "<userId>" +
+                                    escapeXml(userId) + "</userId>" : "") +
                             "</response>";
             log("RESPONSE", userId, responseXml);
             return responseXml;
+        }
+
+        private static final String USERS_CSV = "users.csv";
+
+        private boolean authenticateUser(String email, String password) {
+            File file = new File(USERS_CSV);
+            if (!file.exists()) return false;
+            try (Scanner sc = new Scanner(file)) {
+                while (sc.hasNextLine()) {
+                    String line = sc.nextLine().trim();
+                    if (line.isEmpty()) continue;
+                    String[] u = line.split(",", -1);
+                    if (u.length >= 2) {
+                        if (u[0].trim().equals(email) && u[1].trim().equals(password)) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return false;
+        }
+
+
+        private boolean registerUser(String email, String password) {
+            File file = new File(USERS_CSV);
+            if (file.exists()) {
+                try (Scanner sc = new Scanner(file)) {
+                    while (sc.hasNextLine()) {
+                        String line = sc.nextLine().trim();
+                        if (line.isEmpty()) continue;
+                        String[] u = line.split(",", -1);
+                        if (u.length >= 1 && u[0].trim().equalsIgnoreCase(email)) {
+                            return false;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            try (FileWriter fw = new FileWriter(USERS_CSV, true)) {
+                fw.write(email + "," + password + "\n");
+                fw.flush();
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         private String extractTagValue(String xml, String tag) {
