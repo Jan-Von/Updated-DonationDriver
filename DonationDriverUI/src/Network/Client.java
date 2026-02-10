@@ -178,23 +178,19 @@ public class Client {
         Client client = getDefault();
 
         try {
-            String responseXml = client.createTicket(
-                    "donor@gmail.com",
-                    "clothes",
-                    3,
-                    "gently used, clean",
-                    "",
-                    "2026-02-15 10:00",
-                    "Mabalacat, PH",
-                    "",
-                    "Typhoon relief - deliver to public school"
-            );
+            String donorId = "donor@gmail.com";
+            String responseXml = client.readTickets(donorId);
+            System.out.println("READ_TICKETS (donor) response: " + responseXml);
 
-            System.out.println("CREATE_TICKET response: " + responseXml);
             Response r = parseResponse(responseXml);
             if (r != null) {
-                System.out.println("Parsed: status=" + r.status + ", message=" + r.message);
+                System.out.println("Parsed status: " + r.status);
+                System.out.println("Tickets XML from message:");
+                System.out.println(r.message);
             }
+
+            String responsePending = client.readTickets("", "PENDING");
+            System.out.println("READ_TICKETS (all PENDING) response: " + responsePending);
 
         } catch (IOException e) {
             e.printStackTrace();

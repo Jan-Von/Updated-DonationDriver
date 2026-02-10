@@ -121,17 +121,19 @@ public class Server {
                         break;
                     }
                     case "CREATE_TICKET": {
-                        OperationResult result = createTicket(userId, requestXml);  // NEW
+                        OperationResult result = createTicket(userId, requestXml);
                         if (result.success) {
                             status = "OK";
                         }
                         message = result.message;
                         break;
                     }
-                    case "READ_TICKETS":
+                    case "READ_TICKETS": {
+                        String ticketsXml = readTickets(userId, requestXml);
                         status = "OK";
-                        message = "READ_TICKETS received...";
+                        message = ticketsXml;
                         break;
+                    }
                     case "UPDATE_TICKET":
                         status = "OK";
                         message = "UPDATE_TICKET received...";
@@ -399,6 +401,65 @@ public class Server {
 
             String msg = "Donation ticket created successfully. Ticket ID: " + ticketId;
             return new OperationResult(true, msg);
+        }
+
+        private String readTickets(String requesterUserId, String requestXml) {
+            String filterStatus = extractTagValue(requestXml, "status");
+
+            File dir = new File(TICKETS_DIR);
+            File[] files = dir.listFiles((d, name) -> name.endsWith(".xml"));
+
+            StringBuilder ticketsBuilder = new StringBuilder();
+            ticketsBuilder.append("<tickets>");
+
+            if (files != null) {
+                for (File file : files) {
+                    String xml = readWholeFile(file);
+                    if (xml == null || xml.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    String ticketUserId = extractTagValue(xml, "userId");
+                    String ticketStatus = extractTagValue(xml, "status");
+
+                    boolean matchesUser =
+                            (requesterUserId == null || requesterUserId.isEmpty())
+                                    || (ticketUserId != null && requesterUserId.equals(ticketUserId));
+
+                    boolean matchesStatus =
+                            (filterStatus == null || filterStatus.isEmpty())
+                                    || (ticketStatus != null && filterStatus.equalsIgnoreCase(ticketStatus));
+
+                    if (!matchesUser || !matchesStatus) {
+                        continue;
+                    }
+
+                    String ticketXml = xml.trim();
+                    int start = ticketXml.indexOf("<ticket>");
+                    if (start >= 0) {
+                        ticketXml = ticketXml.substring(start);
+                    }
+
+                    ticketsBuilder.append(ticketXml);
+                }
+            }
+
+            ticketsBuilder.append("</tickets>");
+            return ticketsBuilder.toString();
+        }
+
+        private String readWholeFile(File file) {
+            StringBuilder sb = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return sb.toString();
         }
 
         private void log(String transaction, String userId, String data) {
