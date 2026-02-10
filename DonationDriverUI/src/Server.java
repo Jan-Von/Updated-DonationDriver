@@ -142,10 +142,14 @@ public class Server {
                         message = result.message;
                         break;
                     }
-                    case "DELETE_TICKET":
-                        status = "OK";
-                        message = "DELETE_TICKET received...";
+                    case "DELETE_TICKET": {
+                        OperationResult result = deleteTicket(userId, requestXml);
+                        if (result.success) {
+                            status = "OK";
+                        }
+                        message = result.message;
                         break;
+                    }
                     case "PING":
                         status = "OK";
                         message = "PONG from DonationServer.";
@@ -614,6 +618,110 @@ public class Server {
             }
 
             return new OperationResult(true, "Ticket " + ticketId + " updated successfully.");
+        }
+
+        private OperationResult deleteTicket(String requesterUserId, String requestXml) {
+            String ticketId = extractTagValue(requestXml, "ticketId");
+            String reason   = extractTagValue(requestXml, "deleteReason");
+
+            if (ticketId == null || ticketId.trim().isEmpty()) {
+                return new OperationResult(false, "ticketId is required to delete a ticket.");
+            }
+
+            File dir = new File(TICKETS_DIR);
+            File file = new File(dir, ticketId + ".xml");
+            if (!file.exists()) {
+                return new OperationResult(false, "Ticket " + ticketId + " not found.");
+            }
+
+            String xml = readWholeFile(file);
+            if (xml == null || xml.trim().isEmpty()) {
+                return new OperationResult(false, "Ticket " + ticketId + " is empty or unreadable.");
+            }
+
+            String ticketUserId   = extractTagValue(xml, "userId");
+            String status         = extractTagValue(xml, "status");
+            String createdAt      = extractTagValue(xml, "createdAt");
+            String lastUpdatedAt  = extractTagValue(xml, "lastUpdatedAt");
+            String itemCategory   = extractTagValue(xml, "itemCategory");
+            String quantityStr    = extractTagValue(xml, "quantity");
+            String condition      = extractTagValue(xml, "condition");
+            String expirationDate = extractTagValue(xml, "expirationDate");
+            String pickupDateTime = extractTagValue(xml, "pickupDateTime");
+            String pickupLocation = extractTagValue(xml, "pickupLocation");
+            String photoPath      = extractTagValue(xml, "photoPath");
+            String notes          = extractTagValue(xml, "notes");
+            String qualityStatus  = extractTagValue(xml, "qualityStatus");
+            String qualityReason  = extractTagValue(xml, "qualityReason");
+            String statusHistory  = extractTagValue(xml, "statusHistory");
+            String deleteReason   = extractTagValue(xml, "deleteReason");
+            String deletedAt      = extractTagValue(xml, "deletedAt");
+            String isDeleted      = extractTagValue(xml, "isDeleted");
+
+            String nowTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+            String finalStatus = status;
+            if (status == null || !"REJECTED".equalsIgnoreCase(status)) {
+                finalStatus = "CANCELLED";
+            }
+
+            String finalDeleteReason = reason != null && !reason.isEmpty()
+                    ? reason
+                    : (deleteReason != null ? deleteReason : "Cancelled by system");
+
+            String finalDeletedAt = nowTs;
+            String finalIsDeleted = "true";
+
+            StringBuilder historyBuilder = new StringBuilder();
+            if (statusHistory != null && !statusHistory.isEmpty()) {
+                historyBuilder.append(statusHistory).append(" | ");
+            }
+            historyBuilder.append(nowTs)
+                    .append(" ").append(requesterUserId != null ? requesterUserId : "SYSTEM")
+                    .append(" marked ticket as ").append(finalStatus)
+                    .append(" (reason: ").append(finalDeleteReason).append(")");
+
+            String finalHistory = historyBuilder.toString();
+
+            synchronized (TICKET_LOCK) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                sb.append("<ticket>");
+                sb.append("<ticketId>").append(escapeXml(ticketId)).append("</ticketId>");
+                sb.append("<userId>").append(escapeXml(ticketUserId != null ? ticketUserId : "")).append("</userId>");
+                sb.append("<status>").append(escapeXml(finalStatus)).append("</status>");
+                sb.append("<createdAt>").append(escapeXml(createdAt != null ? createdAt : "")).append("</createdAt>");
+                sb.append("<lastUpdatedAt>").append(escapeXml(nowTs)).append("</lastUpdatedAt>");
+                sb.append("<itemCategory>").append(escapeXml(itemCategory != null ? itemCategory : "")).append("</itemCategory>");
+                sb.append("<quantity>").append(escapeXml(quantityStr != null ? quantityStr : "")).append("</quantity>");
+                sb.append("<condition>").append(escapeXml(condition != null ? condition : "")).append("</condition>");
+                sb.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : ""))
+                        .append("</expirationDate>");
+                sb.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : ""))
+                        .append("</pickupDateTime>");
+                sb.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : ""))
+                        .append("</pickupLocation>");
+                sb.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
+                sb.append("<notes>").append(escapeXml(notes != null ? notes : "")).append("</notes>");
+                sb.append("<qualityStatus>").append(escapeXml(qualityStatus != null ? qualityStatus : ""))
+                        .append("</qualityStatus>");
+                sb.append("<qualityReason>").append(escapeXml(qualityReason != null ? qualityReason : ""))
+                        .append("</qualityReason>");
+                sb.append("<statusHistory>").append(escapeXml(finalHistory)).append("</statusHistory>");
+                sb.append("<isDeleted>").append(escapeXml(finalIsDeleted)).append("</isDeleted>");
+                sb.append("<deletedAt>").append(escapeXml(finalDeletedAt)).append("</deletedAt>");
+                sb.append("<deleteReason>").append(escapeXml(finalDeleteReason)).append("</deleteReason>");
+                sb.append("</ticket>");
+
+                try (FileWriter fw = new FileWriter(file, false)) {
+                    fw.write(sb.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return new OperationResult(false, "Server error: failed to delete ticket " + ticketId + ".");
+                }
+            }
+
+            return new OperationResult(true, "Ticket " + ticketId + " cancelled successfully.");
         }
 
         private void log(String transaction, String userId, String data) {
