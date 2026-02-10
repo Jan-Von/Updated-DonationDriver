@@ -120,10 +120,14 @@ public class Server {
                         }
                         break;
                     }
-                    case "CREATE_TICKET":
-                        status = "OK";
-                        message = "CREATE_TICKET received...";
+                    case "CREATE_TICKET": {
+                        OperationResult result = createTicket(userId, requestXml);  // NEW
+                        if (result.success) {
+                            status = "OK";
+                        }
+                        message = result.message;
                         break;
+                    }
                     case "READ_TICKETS":
                         status = "OK";
                         message = "READ_TICKETS received...";
@@ -291,18 +295,128 @@ public class Server {
             }
         }
 
+        private static final String TICKETS_DIR = "tickets";
+        private static final Object TICKET_LOCK = new Object();
+        private static long nextTicketId = System.currentTimeMillis();
+
+        private static class OperationResult {
+            final boolean success;
+            final String message;
+
+            OperationResult(boolean success, String message) {
+                this.success = success;
+                this.message = message;
+            }
+        }
+
+        private OperationResult createTicket(String userId, String requestXml) {
+            if (userId == null || userId.trim().isEmpty()) {
+                return new OperationResult(false, "UserId is required to create a donation ticket.");
+            }
+
+            String itemCategory = extractTagValue(requestXml, "itemCategory");
+            if (itemCategory == null || itemCategory.isEmpty()) {
+                itemCategory = extractTagValue(requestXml, "type");
+            }
+
+            String quantityStr     = extractTagValue(requestXml, "quantity");
+            String condition       = extractTagValue(requestXml, "condition");
+            String expirationDate  = extractTagValue(requestXml, "expirationDate");
+            String pickupDateTime  = extractTagValue(requestXml, "pickupDateTime");
+            String pickupLocation  = extractTagValue(requestXml, "pickupLocation");
+            String photoPath       = extractTagValue(requestXml, "photoPath");
+            String notes           = extractTagValue(requestXml, "details");
+
+
+            if (itemCategory == null || itemCategory.trim().isEmpty()) {
+                return new OperationResult(false, "Item category (food, clothes, books, etc.) is required.");
+            }
+
+            int quantity = 0;
+            if (quantityStr != null && !quantityStr.trim().isEmpty()) {
+                try {
+                    quantity = Integer.parseInt(quantityStr.trim());
+                } catch (NumberFormatException ex) {
+                    return new OperationResult(false, "Quantity must be a whole number.");
+                }
+                if (quantity <= 0) {
+                    return new OperationResult(false, "Quantity must be greater than zero.");
+                }
+            }
+
+            if (expirationDate != null && !expirationDate.trim().isEmpty()) {
+                try {
+                    Date exp = new SimpleDateFormat("yyyy-MM-dd").parse(expirationDate.trim());
+                    if (exp.before(new Date())) {
+                        return new OperationResult(false,
+                                "Donation items appear expired based on the provided expiration date.");
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+
+            String ticketId;
+
+            synchronized (TICKET_LOCK) {
+                ticketId = String.valueOf(nextTicketId++);
+
+                File dir = new File(TICKETS_DIR);
+                if (!dir.exists() && !dir.mkdirs()) {
+                    return new OperationResult(false, "Server error: unable to create tickets directory.");
+                }
+
+                File file = new File(dir, ticketId + ".xml");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                sb.append("<ticket>");
+                sb.append("<ticketId>").append(escapeXml(ticketId)).append("</ticketId>");
+                sb.append("<userId>").append(escapeXml(userId)).append("</userId>");
+                sb.append("<status>").append("PENDING").append("</status>");
+                sb.append("<createdAt>").append(escapeXml(
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+                )).append("</createdAt>");
+                sb.append("<itemCategory>").append(escapeXml(itemCategory)).append("</itemCategory>");
+                sb.append("<quantity>").append(escapeXml(quantityStr != null ? quantityStr : "")).append("</quantity>");
+                sb.append("<condition>").append(escapeXml(condition != null ? condition : "")).append("</condition>");
+                sb.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : ""))
+                        .append("</expirationDate>");
+                sb.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : ""))
+                        .append("</pickupDateTime>");
+                sb.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : ""))
+                        .append("</pickupLocation>");
+                sb.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
+                sb.append("<notes>").append(escapeXml(notes != null ? notes : "")).append("</notes>");
+                sb.append("</ticket>");
+
+                try (FileWriter fw = new FileWriter(file, false)) {
+                    fw.write(sb.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return new OperationResult(false, "Server error: failed to save donation ticket.");
+                }
+            }
+
+            String msg = "Donation ticket created successfully. Ticket ID: " + ticketId;
+            return new OperationResult(true, msg);
+        }
+
         private void log(String transaction, String userId, String data) {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             String user = (userId == null || userId.isEmpty()) ? "ANONYMOUS" : userId;
 
-            String line = String.format(
-                    "[%s] user=%s transaction=%s data=%s",
-                    timestamp, user, transaction, data
-            );
+            System.out.printf("[%s] %s %s%n", timestamp, user, transaction);
 
-            System.out.println(line);
+            StringBuilder sb = new StringBuilder();
+            sb.append("[").append(timestamp).append("]").append(System.lineSeparator());
+            sb.append("User: ").append(user).append(System.lineSeparator());
+            sb.append("Transaction: ").append(transaction).append(System.lineSeparator());
+            sb.append("Data:").append(System.lineSeparator());
+            sb.append(data).append(System.lineSeparator());
+            sb.append("----").append(System.lineSeparator());
+
             try (FileWriter fw = new FileWriter(LOG_FILE, true)) {
-                fw.write(line + System.lineSeparator());
+                fw.write(sb.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

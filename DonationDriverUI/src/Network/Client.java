@@ -60,6 +60,44 @@ public class Client {
         return sendRequest(request);
     }
 
+    public String createTicket(
+            String userId,
+            String itemCategory,
+            int quantity,
+            String condition,
+            String expirationDate,
+            String pickupDateTime,
+            String pickupLocation,
+            String photoPath,
+            String notes
+    ) throws IOException {
+
+        StringBuilder request = new StringBuilder();
+        request.append("<request><action>CREATE_TICKET</action>");
+        request.append("<userId>").append(escapeXml(userId)).append("</userId>");
+
+        request.append("<itemCategory>").append(escapeXml(itemCategory)).append("</itemCategory>");
+        request.append("<quantity>").append(quantity).append("</quantity>");
+        request.append("<condition>").append(escapeXml(condition != null ? condition : ""))
+                .append("</condition>");
+        request.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : ""))
+                .append("</expirationDate>");
+
+        request.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : ""))
+                .append("</pickupDateTime>");
+        request.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : ""))
+                .append("</pickupLocation>");
+
+        request.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : ""))
+                .append("</photoPath>");
+
+        request.append("<details>").append(escapeXml(notes != null ? notes : "")).append("</details>");
+
+        request.append("</request>");
+
+        return sendRequest(request.toString());
+    }
+
     public String readTickets(String userId) throws IOException {
         return readTickets(userId, null);
     }
@@ -138,39 +176,29 @@ public class Client {
 
     public static void main(String[] args) {
         Client client = getDefault();
+
         try {
-            String response = client.ping();
-            System.out.println("Server response: " + response);
-            Response r = parseResponse(response);
+            String responseXml = client.createTicket(
+                    "donor@gmail.com",
+                    "clothes",
+                    3,
+                    "gently used, clean",
+                    "",
+                    "2026-02-15 10:00",
+                    "Mabalacat, PH",
+                    "",
+                    "Typhoon relief - deliver to public school"
+            );
+
+            System.out.println("CREATE_TICKET response: " + responseXml);
+            Response r = parseResponse(responseXml);
             if (r != null) {
                 System.out.println("Parsed: status=" + r.status + ", message=" + r.message);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            String response = client.ping();
-            System.out.println("Server response: " + response);
-            Response r = parseResponse(response);
-            if (r != null) {
-                System.out.println("Status: " + r.status + ", Message: " + r.message);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        String request =
-//                "<request>" +
-//                        "<action>PING</action>" +
-//                        "<userId>test-user</userId>" +
-//                        "</request>";
-//        try {
-//            String response = client.sendRequest(request);
-//            System.out.println("Server response: " + response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
-
 }
 
