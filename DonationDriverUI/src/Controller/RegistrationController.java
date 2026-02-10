@@ -3,7 +3,9 @@ package Controller;
 import Model.UserModel;
 import View.LoginView;
 import View.RegistrationView;
-
+import javax.swing.*;
+import java.io.IOException;
+import Network.Client;
 import javax.swing.*;
 
 public class RegistrationController {
@@ -12,7 +14,7 @@ public class RegistrationController {
 
     public RegistrationController(RegistrationView view) {
         this.view = view;
-        view.finishButton.addActionListener(e -> register());
+        this.view.finishButton.addActionListener(e -> register());
     }
 
     private void register() {
@@ -21,42 +23,81 @@ public class RegistrationController {
         String middleName = view.middleNameField.getText().trim();
         String dateOfBirth = view.dateOfBirthField.getText().trim();
         String address = view.addressField.getText().trim();
-        String phoneNumber = view.phoneNumberField.getText().trim();
+        String phone = view.phoneNumberField.getText().trim();
         String email = view.emailField.getText().trim();
-        String password = view.passwordField.getText();
-        String confirmPassword = view.confirmPasswordField.getText();
+        String password = view.passwordField.getText().trim();
+        String confirm = view.confirmPasswordField.getText().trim();
+        boolean termsAccepted = view.termsCheck.isSelected();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(view.frame, "Email and password are required.");
-            return;
-        }
-        if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(view.frame, "Passwords do not match.");
-            return;
-        }
-        if (!view.termsCheck.isSelected()) {
-            JOptionPane.showMessageDialog(view.frame, "Please agree to the Terms and Agreements.");
-            return;
-        }
-
-        UserModel user = new UserModel(
-                firstName, lastName, middleName,
-                dateOfBirth, address, phoneNumber,
-                email, password
-        );
-
-        if (user.emailExists()) {
-            JOptionPane.showMessageDialog(view.frame, "This email is already registered.");
+        // Basic validation (fields you already have in the GUI)
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
+                || password.isEmpty() || confirm.isEmpty()) {
+            JOptionPane.showMessageDialog(view.frame,
+                    "Please fill in all required fields.",
+                    "Validation Error",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (user.register()) {
-            JOptionPane.showMessageDialog(view.frame, "Registration successful! You can now log in.");
-            view.frame.dispose();
-            LoginView loginView = new LoginView();
-            new LoginController(loginView);
-        } else {
-            JOptionPane.showMessageDialog(view.frame, "Registration failed. Please try again.");
+        if (!password.equals(confirm)) {
+            JOptionPane.showMessageDialog(view.frame,
+                    "Password and confirmation do not match.",
+                    "Validation Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!termsAccepted) {
+            JOptionPane.showMessageDialog(view.frame,
+                    "You must agree to the terms and agreements.",
+                    "Validation Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            Client client = Client.getDefault();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("<request>");
+            sb.append("<action>REGISTER</action>");
+            sb.append("<userId></userId>");
+            sb.append("<user>");
+            sb.append("<firstName>").append(Client.escapeXml(firstName)).append("</firstName>");
+            sb.append("<lastName>").append(Client.escapeXml(lastName)).append("</lastName>");
+            sb.append("<middleName>").append(Client.escapeXml(middleName)).append("</middleName>");
+            sb.append("<dateOfBirth>").append(Client.escapeXml(dateOfBirth)).append("</dateOfBirth>");
+            sb.append("<address>").append(Client.escapeXml(address)).append("</address>");
+            sb.append("<phone>").append(Client.escapeXml(phone)).append("</phone>");
+            sb.append("<email>").append(Client.escapeXml(email)).append("</email>");
+            sb.append("<password>").append(Client.escapeXml(password)).append("</password>");
+            sb.append("</user>");
+            sb.append("</request>");
+
+            String responseXml = client.sendRequest(sb.toString());
+            Client.Response response = Client.parseResponse(responseXml);
+
+            if (response != null && response.isOk()) {
+                JOptionPane.showMessageDialog(view.frame,
+                        "Registration successful. You can now log in.");
+                LoginView loginView = new LoginView();
+                new LoginController(loginView);
+                view.frame.dispose();
+            } else {
+                String msg = (response != null && response.message != null && !response.message.isEmpty())
+                        ? response.message
+                        : "Registration failed. Please try again.";
+                JOptionPane.showMessageDialog(view.frame,
+                        msg,
+                        "Registration Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(view.frame,
+                    "Unable to contact server. Please try again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

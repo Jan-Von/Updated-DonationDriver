@@ -100,13 +100,23 @@ public class Server {
                     case "REGISTER": {
                         String email = extractTagValue(requestXml, "email");
                         String password = extractTagValue(requestXml, "password");
+                        String firstName = extractTagValue(requestXml, "firstName");
+                        String lastName = extractTagValue(requestXml, "lastName");
+                        String middleName = extractTagValue(requestXml, "middleName");
+                        String dateOfBirth = extractTagValue(requestXml, "dateOfBirth");
+                        String address = extractTagValue(requestXml, "address");
+                        String phone = extractTagValue(requestXml, "phone");
+
                         if (email == null || password == null) {
                             message = "Missing email or password.";
-                        } else if (registerUser(email.trim(), password.trim())) {
+                        } else if (userXmlExists(email.trim())) {
+                            message = "Registration failed: email already exists.";
+                        } else if (saveUserToXml(email.trim(), password.trim(),
+                                firstName, lastName, middleName, dateOfBirth, address, phone)) {
                             status = "OK";
                             message = "Registration successful.";
                         } else {
-                            message = "Registration failed (email may already exist or I/O error).";
+                            message = "Registration failed due to server error.";
                         }
                         break;
                     }
@@ -217,6 +227,68 @@ public class Server {
                     .replace(">", "&gt;")
                     .replace("\"", "&quot;")
                     .replace("'", "&apos;");
+        }
+
+        // Store each user as a separate XML file under "users"
+        private static final String USERS_DIR = "users";
+
+        private boolean userXmlExists(String email) {
+            File dir = new File(USERS_DIR);
+            File file = new File(dir, email + ".xml");
+            return file.exists();
+        }
+
+        private boolean saveUserToXml(
+                String email,
+                String password,
+                String firstName,
+                String lastName,
+                String middleName,
+                String dateOfBirth,
+                String address,
+                String phone
+        ) {
+            try {
+                File dir = new File(USERS_DIR);
+                if (!dir.exists() && !dir.mkdirs()) {
+                    return false;
+                }
+
+                File file = new File(dir, email + ".xml");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+                sb.append("<user>");
+                sb.append("<email>").append(escapeXml(email)).append("</email>");
+                sb.append("<password>").append(escapeXml(password)).append("</password>");
+                if (firstName != null) {
+                    sb.append("<firstName>").append(escapeXml(firstName)).append("</firstName>");
+                }
+                if (lastName != null) {
+                    sb.append("<lastName>").append(escapeXml(lastName)).append("</lastName>");
+                }
+                if (middleName != null) {
+                    sb.append("<middleName>").append(escapeXml(middleName)).append("</middleName>");
+                }
+                if (dateOfBirth != null) {
+                    sb.append("<dateOfBirth>").append(escapeXml(dateOfBirth)).append("</dateOfBirth>");
+                }
+                if (address != null) {
+                    sb.append("<address>").append(escapeXml(address)).append("</address>");
+                }
+                if (phone != null) {
+                    sb.append("<phone>").append(escapeXml(phone)).append("</phone>");
+                }
+                sb.append("</user>");
+
+                try (FileWriter fw = new FileWriter(file, false)) {
+                    fw.write(sb.toString());
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         private void log(String transaction, String userId, String data) {

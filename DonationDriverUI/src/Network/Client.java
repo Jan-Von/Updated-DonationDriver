@@ -109,7 +109,7 @@ public class Client {
         return xml.substring(i + open.length(), j).trim();
     }
 
-    private static String escapeXml(String s) {
+    public static String escapeXml(String s) {
         if (s == null) return "";
         return s.replace("&", "&amp;")
                 .replace("<", "&lt;")
