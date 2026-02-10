@@ -83,30 +83,33 @@ public class Server {
             } else {
                 //To do: return real data or errors. Initial code for switch-case
                 switch (action) {
-                    case "LOGIN":
-                        String loginEmail = extractTagValue(requestXml, "email");
-                        String loginPassword = extractTagValue(requestXml, "password");
-                        if (loginEmail == null || loginPassword == null) {
+                    case "LOGIN": {
+                        String email = extractTagValue(requestXml, "email");
+                        String password = extractTagValue(requestXml, "password");
+                        if (email == null || password == null) {
                             message = "Missing email or password.";
-                        } else if (authenticateUser(loginEmail.trim(), loginPassword.trim())) {
+                        } else if (authenticateUser(email.trim(), password.trim())) {
                             status = "OK";
                             message = "Login successful.";
-                            userId = loginEmail.trim();
+                            userId = email.trim();
                         } else {
                             message = "Invalid email or password.";
                         }
                         break;
-                    case "REGISTER":
-                        String regEmail = extractTagValue(requestXml, "email");
-                        String regPassword = extractTagValue(requestXml, "password");
-                        if (regEmail == null || regPassword == null) {
+                    }
+                    case "REGISTER": {
+                        String email = extractTagValue(requestXml, "email");
+                        String password = extractTagValue(requestXml, "password");
+                        if (email == null || password == null) {
                             message = "Missing email or password.";
-                        } else if (registerUser(regEmail.trim(), regPassword.trim())) {
+                        } else if (registerUser(email.trim(), password.trim())) {
                             status = "OK";
                             message = "Registration successful.";
                         } else {
-                            message = "Registration failed (e.g. email already exists or I/O error).";
+                            message = "Registration failed (email may already exist or I/O error).";
                         }
+                        break;
+                    }
                     case "CREATE_TICKET":
                         status = "OK";
                         message = "CREATE_TICKET received...";
@@ -135,8 +138,9 @@ public class Server {
                     "<response>" +
                             "<status>" + escapeXml(status) + "</status>" +
                             "<message>" + escapeXml(message) + "</message>" +
-                            (userId != null && !userId.isEmpty() ? "<userId>" +
-                                    escapeXml(userId) + "</userId>" : "") +
+                            (userId != null && !userId.isEmpty()
+                                    ? "<userId>" + escapeXml(userId) + "</userId>"
+                                    : "") +
                             "</response>";
             log("RESPONSE", userId, responseXml);
             return responseXml;

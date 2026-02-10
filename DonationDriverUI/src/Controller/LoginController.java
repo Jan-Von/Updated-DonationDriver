@@ -4,8 +4,9 @@ import Model.UserModel;
 import View.LoginView;
 import View.RegistrationView;
 import View.DashboardView;
-
+import Network.Client;
 import javax.swing.*;
+import java.io.IOException;
 
 public class LoginController {
 
@@ -29,15 +30,28 @@ public class LoginController {
         String email = view.emailField.getText();
         String password = new String(view.passField.getPassword());
 
-        UserModel user = new UserModel(email, password);
+        try {
+            Client client = Client.getDefault();
+            String responseXml = client.login(email, password);
+            Client.Response response = Client.parseResponse(responseXml);
 
-        if (user.authenticate()) {
-            JOptionPane.showMessageDialog(view.frame, "Login Success!");
-            DashboardView dashboardView = new DashboardView();
-            new DashboardController(dashboardView);
-            view.frame.dispose();
-        } else {
-            JOptionPane.showMessageDialog(view.frame, "Invalid email or password!");
+            if (response != null && response.isOk()) {
+                JOptionPane.showMessageDialog(view.frame, "Login Success!");
+                DashboardView dashboardView = new DashboardView();
+                new DashboardController(dashboardView);
+                view.frame.dispose();
+            } else {
+                String msg = (response != null && response.message != null && !response.message.isEmpty())
+                        ? response.message
+                        : "Invalid email or password!";
+                JOptionPane.showMessageDialog(view.frame, msg);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(view.frame,
+                    "Unable to contact server. Please try again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }
