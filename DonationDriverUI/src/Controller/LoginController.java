@@ -9,6 +9,7 @@ import java.io.IOException;
 public class LoginController {
 
     private LoginView view;
+    public static String currentUserEmail;
 
     public LoginController(LoginView view) {
         this.view = view;
@@ -34,6 +35,8 @@ public class LoginController {
                 Client.Response response = Client.parseResponse(responseXml);
 
                 if (response != null && response.isOk()) {
+                    currentUserEmail = email;
+
                     JOptionPane.showMessageDialog(view.frame, "Login Success!");
                     DashboardView dashboardView = new DashboardView();
                     new DashboardController(dashboardView);
