@@ -6,6 +6,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import Network.Client;
+
+import java.io.IOException;
+
 public class AdminHomePanel extends JPanel {
 
     private JLabel shippedValueLabel;
@@ -310,8 +314,80 @@ public class AdminHomePanel extends JPanel {
     }
 
     public void refreshData() {
-        if (shippedValueLabel != null) shippedValueLabel.setText("204,118");
-        if (ridersOnlineValueLabel != null) ridersOnlineValueLabel.setText("512");
-        if (ongoingShipmentValueLabel != null) ongoingShipmentValueLabel.setText("1,084");
+        Metrics m = loadMetricsFromServer();
+
+        if (shippedValueLabel != null) {
+            shippedValueLabel.setText(String.valueOf(m.deliveredCount));
+        }
+        if (ridersOnlineValueLabel != null) {
+            ridersOnlineValueLabel.setText(String.valueOf(m.totalCount));
+        }
+        if (ongoingShipmentValueLabel != null) {
+            ongoingShipmentValueLabel.setText(String.valueOf(m.activeCount));
+        }
+    }
+
+    private static class Metrics {
+        int totalCount;
+        int deliveredCount;
+        int activeCount;
+        int rejectedCount;
+    }
+
+    private Metrics loadMetricsFromServer() {
+        Metrics m = new Metrics();
+        try {
+            Client client = Client.getDefault();
+            String responseXml = client.readTickets("", null);
+            Client.Response response = Client.parseResponse(responseXml);
+            if (response == null || !response.isOk()) {
+                return m;
+            }
+
+            String ticketsXml = response.message;
+            if (ticketsXml == null || ticketsXml.isEmpty()) {
+                return m;
+            }
+
+            int idx = 0;
+            while (true) {
+                int start = ticketsXml.indexOf("<ticket>", idx);
+                if (start < 0) break;
+                int end = ticketsXml.indexOf("</ticket>", start);
+                if (end < 0) break;
+
+                String ticketXml = ticketsXml.substring(start, end + "</ticket>".length());
+                m.totalCount++;
+
+                String status = extractTagValue(ticketXml, "status");
+                String isDeleted = extractTagValue(ticketXml, "isDeleted");
+                String st = status != null ? status.toUpperCase() : "";
+                boolean deleted = "true".equalsIgnoreCase(isDeleted);
+
+                if ("DELIVERED".equals(st)) {
+                    m.deliveredCount++;
+                } else if ("REJECTED".equals(st) || "CANCELLED".equals(st) || deleted) {
+                    m.rejectedCount++;
+                } else {
+                    m.activeCount++;
+                }
+
+                idx = end + "</ticket>".length();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return m;
+    }
+
+    private String extractTagValue(String xml, String tag) {
+        String open = "<" + tag + ">";
+        String close = "</" + tag + ">";
+        int i = xml.indexOf(open);
+        int j = xml.indexOf(close);
+        if (i == -1 || j == -1 || j <= i) {
+            return null;
+        }
+        return xml.substring(i + open.length(), j).trim();
     }
 }

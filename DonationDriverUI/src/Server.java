@@ -6,12 +6,26 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.io.FileOutputStream;
 
 public class Server {
 
     private static final int PORT = 5267;
     private static final String LOG_FILE = "server_log.txt";
     private final ExecutorService executor = Executors.newCachedThreadPool();
+    private static final String USERS_XML_RELATIVE = "DonationDriverUI/users.xml";
 
     public static void main(String[] args) {
         new Server().start();
@@ -109,9 +123,9 @@ public class Server {
 
                         if (email == null || password == null) {
                             message = "Missing email or password.";
-                        } else if (userXmlExists(email.trim())) {
+                        } else if (userEmailExists(email.trim())) {
                             message = "Registration failed: email already exists.";
-                        } else if (saveUserToXml(email.trim(), password.trim(),
+                        } else if (saveUserToXmlSingleFile(email.trim(), password.trim(),
                                 firstName, lastName, middleName, dateOfBirth, address, phone)) {
                             status = "OK";
                             message = "Registration successful.";
@@ -170,55 +184,29 @@ public class Server {
             return responseXml;
         }
 
-        private static final String USERS_CSV = "users.csv";
-
         private boolean authenticateUser(String email, String password) {
-            File file = new File(USERS_CSV);
-            if (!file.exists()) return false;
-            try (Scanner sc = new Scanner(file)) {
-                while (sc.hasNextLine()) {
-                    String line = sc.nextLine().trim();
-                    if (line.isEmpty()) continue;
-                    String[] u = line.split(",", -1);
-                    if (u.length >= 2) {
-                        if (u[0].trim().equals(email) && u[1].trim().equals(password)) {
-                            return true;
-                        }
+            File file = resolveUsersXmlFile();
+            if (!file.exists()) {
+                return false;
+            }
+
+            try {
+                Document doc = loadUsersDocument(file);
+                NodeList users = doc.getElementsByTagName("user");
+                for (int i = 0; i < users.getLength(); i++) {
+                    Element userEl = (Element) users.item(i);
+                    String xmlEmail = getUserField(userEl, "email");
+                    String xmlPassword = getUserField(userEl, "password");
+                    if (xmlEmail != null && xmlPassword != null
+                            && xmlEmail.equalsIgnoreCase(email)
+                            && xmlPassword.equals(password)) {
+                        return true;
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false;
             }
             return false;
-        }
-
-
-        private boolean registerUser(String email, String password) {
-            File file = new File(USERS_CSV);
-            if (file.exists()) {
-                try (Scanner sc = new Scanner(file)) {
-                    while (sc.hasNextLine()) {
-                        String line = sc.nextLine().trim();
-                        if (line.isEmpty()) continue;
-                        String[] u = line.split(",", -1);
-                        if (u.length >= 1 && u[0].trim().equalsIgnoreCase(email)) {
-                            return false;
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-            try (FileWriter fw = new FileWriter(USERS_CSV, true)) {
-                fw.write(email + "," + password + "\n");
-                fw.flush();
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
         }
 
         private String extractTagValue(String xml, String tag) {
@@ -243,16 +231,68 @@ public class Server {
                     .replace("'", "&apos;");
         }
 
-        // Store each user as a separate XML file under "users"
-        private static final String USERS_DIR = "users";
-
-        private boolean userXmlExists(String email) {
-            File dir = new File(USERS_DIR);
-            File file = new File(dir, email + ".xml");
-            return file.exists();
+        private File resolveUsersXmlFile() {
+            File cwd = new File(System.getProperty("user.dir"));
+            for (File dir = cwd; dir != null; dir = dir.getParentFile()) {
+                File candidate = new File(dir, USERS_XML_RELATIVE);
+                if (candidate.exists()) {
+                    return candidate;
+                }
+            }
+            return new File(cwd, USERS_XML_RELATIVE);
         }
 
-        private boolean saveUserToXml(
+        private Document loadUsersDocument(File file) throws Exception {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            return db.parse(file);
+        }
+
+        private void writeUsersDocument(Document doc, File file) throws Exception {
+            file.getParentFile().mkdirs();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer t = tf.newTransformer();
+            t.setOutputProperty(OutputKeys.INDENT, "yes");
+            t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                t.transform(new DOMSource(doc), new StreamResult(out));
+            }
+        }
+
+        private String getUserField(Element userEl, String tagName) {
+            NodeList list = userEl.getElementsByTagName(tagName);
+            if (list.getLength() == 0) return null;
+            Element el = (Element) list.item(0);
+            return el.getTextContent() != null ? el.getTextContent().trim() : null;
+        }
+
+        private void appendUserField(Document doc, Element userEl, String tagName, String value) {
+            Element el = doc.createElement(tagName);
+            el.setTextContent(value != null ? value : "");
+            userEl.appendChild(el);
+        }
+
+        private boolean userEmailExists(String email) {
+            File file = resolveUsersXmlFile();
+            if (!file.exists()) return false;
+            try {
+                Document doc = loadUsersDocument(file);
+                NodeList users = doc.getElementsByTagName("user");
+                for (int i = 0; i < users.getLength(); i++) {
+                    Element userEl = (Element) users.item(i);
+                    String xmlEmail = getUserField(userEl, "email");
+                    if (xmlEmail != null && xmlEmail.equalsIgnoreCase(email)) {
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        private boolean saveUserToXmlSingleFile(
                 String email,
                 String password,
                 String firstName,
@@ -263,43 +303,39 @@ public class Server {
                 String phone
         ) {
             try {
-                File dir = new File(USERS_DIR);
-                if (!dir.exists() && !dir.mkdirs()) {
-                    return false;
+                File file = resolveUsersXmlFile();
+                Document doc;
+                Element root;
+
+                if (file.exists()) {
+                    doc = loadUsersDocument(file);
+                    root = doc.getDocumentElement();
+                    if (root == null) {
+                        root = doc.createElement("users");
+                        doc.appendChild(root);
+                    }
+                } else {
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    doc = db.newDocument();
+                    root = doc.createElement("users");
+                    doc.appendChild(root);
                 }
 
-                File file = new File(dir, email + ".xml");
+                Element userEl = doc.createElement("user");
+                appendUserField(doc, userEl, "email", email);
+                appendUserField(doc, userEl, "password", password);
+                appendUserField(doc, userEl, "firstName", firstName != null ? firstName : "");
+                appendUserField(doc, userEl, "lastName", lastName != null ? lastName : "");
+                appendUserField(doc, userEl, "middleName", middleName != null ? middleName : "");
+                appendUserField(doc, userEl, "dateOfBirth", dateOfBirth != null ? dateOfBirth : "");
+                appendUserField(doc, userEl, "address", address != null ? address : "");
+                appendUserField(doc, userEl, "phoneNumber", phone != null ? phone : "");
 
-                StringBuilder sb = new StringBuilder();
-                sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-                sb.append("<user>");
-                sb.append("<email>").append(escapeXml(email)).append("</email>");
-                sb.append("<password>").append(escapeXml(password)).append("</password>");
-                if (firstName != null) {
-                    sb.append("<firstName>").append(escapeXml(firstName)).append("</firstName>");
-                }
-                if (lastName != null) {
-                    sb.append("<lastName>").append(escapeXml(lastName)).append("</lastName>");
-                }
-                if (middleName != null) {
-                    sb.append("<middleName>").append(escapeXml(middleName)).append("</middleName>");
-                }
-                if (dateOfBirth != null) {
-                    sb.append("<dateOfBirth>").append(escapeXml(dateOfBirth)).append("</dateOfBirth>");
-                }
-                if (address != null) {
-                    sb.append("<address>").append(escapeXml(address)).append("</address>");
-                }
-                if (phone != null) {
-                    sb.append("<phone>").append(escapeXml(phone)).append("</phone>");
-                }
-                sb.append("</user>");
-
-                try (FileWriter fw = new FileWriter(file, false)) {
-                    fw.write(sb.toString());
-                }
+                root.appendChild(userEl);
+                writeUsersDocument(doc, file);
                 return true;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
@@ -329,13 +365,13 @@ public class Server {
                 itemCategory = extractTagValue(requestXml, "type");
             }
 
-            String quantityStr     = extractTagValue(requestXml, "quantity");
-            String condition       = extractTagValue(requestXml, "condition");
-            String expirationDate  = extractTagValue(requestXml, "expirationDate");
-            String pickupDateTime  = extractTagValue(requestXml, "pickupDateTime");
-            String pickupLocation  = extractTagValue(requestXml, "pickupLocation");
-            String photoPath       = extractTagValue(requestXml, "photoPath");
-            String notes           = extractTagValue(requestXml, "details");
+            String quantityStr = extractTagValue(requestXml, "quantity");
+            String condition = extractTagValue(requestXml, "condition");
+            String expirationDate = extractTagValue(requestXml, "expirationDate");
+            String pickupDateTime = extractTagValue(requestXml, "pickupDateTime");
+            String pickupLocation = extractTagValue(requestXml, "pickupLocation");
+            String photoPath = extractTagValue(requestXml, "photoPath");
+            String notes = extractTagValue(requestXml, "details");
 
 
             if (itemCategory == null || itemCategory.trim().isEmpty()) {
@@ -476,10 +512,10 @@ public class Server {
                 return new OperationResult(false, "ticketId is required to update a ticket.");
             }
 
-            String newStatus       = extractTagValue(requestXml, "status");
-            String qualityStatus   = extractTagValue(requestXml, "qualityStatus");
-            String qualityReason   = extractTagValue(requestXml, "qualityReason");
-            String newPickupTime   = extractTagValue(requestXml, "pickupDateTime");
+            String newStatus = extractTagValue(requestXml, "status");
+            String qualityStatus = extractTagValue(requestXml, "qualityStatus");
+            String qualityReason = extractTagValue(requestXml, "qualityReason");
+            String newPickupTime = extractTagValue(requestXml, "pickupDateTime");
 
             File dir = new File(TICKETS_DIR);
             File file = new File(dir, ticketId + ".xml");
@@ -492,20 +528,20 @@ public class Server {
                 return new OperationResult(false, "Ticket " + ticketId + " is empty or unreadable.");
             }
 
-            String ticketUserId     = extractTagValue(xml, "userId");
-            String oldStatus        = extractTagValue(xml, "status");
-            String createdAt        = extractTagValue(xml, "createdAt");
-            String itemCategory     = extractTagValue(xml, "itemCategory");
-            String quantityStr      = extractTagValue(xml, "quantity");
-            String condition        = extractTagValue(xml, "condition");
-            String expirationDate   = extractTagValue(xml, "expirationDate");
-            String pickupDateTime   = extractTagValue(xml, "pickupDateTime");
-            String pickupLocation   = extractTagValue(xml, "pickupLocation");
-            String photoPath        = extractTagValue(xml, "photoPath");
-            String notes            = extractTagValue(xml, "notes");
-            String existingQuality  = extractTagValue(xml, "qualityStatus");
-            String existingReason   = extractTagValue(xml, "qualityReason");
-            String statusHistory    = extractTagValue(xml, "statusHistory");
+            String ticketUserId = extractTagValue(xml, "userId");
+            String oldStatus = extractTagValue(xml, "status");
+            String createdAt = extractTagValue(xml, "createdAt");
+            String itemCategory = extractTagValue(xml, "itemCategory");
+            String quantityStr = extractTagValue(xml, "quantity");
+            String condition = extractTagValue(xml, "condition");
+            String expirationDate = extractTagValue(xml, "expirationDate");
+            String pickupDateTime = extractTagValue(xml, "pickupDateTime");
+            String pickupLocation = extractTagValue(xml, "pickupLocation");
+            String photoPath = extractTagValue(xml, "photoPath");
+            String notes = extractTagValue(xml, "notes");
+            String existingQuality = extractTagValue(xml, "qualityStatus");
+            String existingReason = extractTagValue(xml, "qualityReason");
+            String statusHistory = extractTagValue(xml, "statusHistory");
 
 
             if (ticketUserId != null && requesterUserId != null
@@ -622,7 +658,7 @@ public class Server {
 
         private OperationResult deleteTicket(String requesterUserId, String requestXml) {
             String ticketId = extractTagValue(requestXml, "ticketId");
-            String reason   = extractTagValue(requestXml, "deleteReason");
+            String reason = extractTagValue(requestXml, "deleteReason");
 
             if (ticketId == null || ticketId.trim().isEmpty()) {
                 return new OperationResult(false, "ticketId is required to delete a ticket.");
@@ -639,24 +675,24 @@ public class Server {
                 return new OperationResult(false, "Ticket " + ticketId + " is empty or unreadable.");
             }
 
-            String ticketUserId   = extractTagValue(xml, "userId");
-            String status         = extractTagValue(xml, "status");
-            String createdAt      = extractTagValue(xml, "createdAt");
-            String lastUpdatedAt  = extractTagValue(xml, "lastUpdatedAt");
-            String itemCategory   = extractTagValue(xml, "itemCategory");
-            String quantityStr    = extractTagValue(xml, "quantity");
-            String condition      = extractTagValue(xml, "condition");
+            String ticketUserId = extractTagValue(xml, "userId");
+            String status = extractTagValue(xml, "status");
+            String createdAt = extractTagValue(xml, "createdAt");
+            String lastUpdatedAt = extractTagValue(xml, "lastUpdatedAt");
+            String itemCategory = extractTagValue(xml, "itemCategory");
+            String quantityStr = extractTagValue(xml, "quantity");
+            String condition = extractTagValue(xml, "condition");
             String expirationDate = extractTagValue(xml, "expirationDate");
             String pickupDateTime = extractTagValue(xml, "pickupDateTime");
             String pickupLocation = extractTagValue(xml, "pickupLocation");
-            String photoPath      = extractTagValue(xml, "photoPath");
-            String notes          = extractTagValue(xml, "notes");
-            String qualityStatus  = extractTagValue(xml, "qualityStatus");
-            String qualityReason  = extractTagValue(xml, "qualityReason");
-            String statusHistory  = extractTagValue(xml, "statusHistory");
-            String deleteReason   = extractTagValue(xml, "deleteReason");
-            String deletedAt      = extractTagValue(xml, "deletedAt");
-            String isDeleted      = extractTagValue(xml, "isDeleted");
+            String photoPath = extractTagValue(xml, "photoPath");
+            String notes = extractTagValue(xml, "notes");
+            String qualityStatus = extractTagValue(xml, "qualityStatus");
+            String qualityReason = extractTagValue(xml, "qualityReason");
+            String statusHistory = extractTagValue(xml, "statusHistory");
+            String deleteReason = extractTagValue(xml, "deleteReason");
+            String deletedAt = extractTagValue(xml, "deletedAt");
+            String isDeleted = extractTagValue(xml, "isDeleted");
 
             String nowTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
