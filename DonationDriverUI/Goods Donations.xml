@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<goodsDonations>
+  <donation>
+    <userEmail>2245587@slu.edu.ph</userEmail>
+    <goods>Children clothes</goods>
+    <quantity>2</quantity>
+    <location>Camp 7</location>
+    <timestamp>2026-02-12 00:06:49</timestamp>
+    <runningTotalBoxes>2.0</runningTotalBoxes>
+  </donation>
+</goodsDonations>
