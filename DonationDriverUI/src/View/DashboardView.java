@@ -139,7 +139,7 @@ public class DashboardView {
         frame.add(sidebar);
 
         /* ================= MAIN CONTENT ================= */
-        JLabel newsLabel = new JLabel("News Flash");
+        JLabel newsLabel = new JLabel("Donation Drives");
         newsLabel.setFont(new Font("Arial", Font.BOLD, 30));
         newsLabel.setForeground(new Color(20, 35, 100));
         newsLabel.setBounds(230, 100, 300, 30);
@@ -291,7 +291,7 @@ public class DashboardView {
                         "approximately 4.1 million people were displaced from their homes.";
 
         JTextArea donationText = new JTextArea(fullText);
-        donationText.setBounds(5, 325, 195, 140);
+        donationText.setBounds(5, 250, 195, 140);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
         donationText.setBackground(new Color(245, 245, 245));
@@ -300,76 +300,9 @@ public class DashboardView {
         donationText.setEditable(false);
         donationPanel.add(donationText);
 
-
-        JPanel ActiveDeliveryCard = new JPanel();
-        ActiveDeliveryCard.setLayout(null);
-        ActiveDeliveryCard.setBounds(220, 490, 450, 250);
-        ActiveDeliveryCard.setBackground(new Color(245, 245, 245));
-        ActiveDeliveryCard.setBorder(new LineBorder(Color.WHITE));
-
-        JLabel activeDelivery = new JLabel("Active Delivery");
-        activeDelivery.setForeground(Color.BLACK);
-        activeDelivery.setFont(new Font("Arial", Font.BOLD, 18));
-        activeDelivery.setBounds(10, 20, 250, 20);
-        ActiveDeliveryCard.add(activeDelivery);
-
-        ImageIcon activeDeliveryphoto = new ImageIcon("Resources/Images/ActiveDeliveryPhoto.png");
-        scaledImg = activeDeliveryphoto.getImage().getScaledInstance(65, 50, Image.SCALE_SMOOTH);
-        JLabel activeDeliveryPhoto = new JLabel(new ImageIcon(scaledImg));
-        activeDeliveryPhoto.setBounds(5, 45, 65, 50);
-        ActiveDeliveryCard.add(activeDeliveryPhoto);
-
-        JLabel jntexpress = new JLabel("J&T Express");
-        jntexpress.setForeground(Color.BLACK);
-        jntexpress.setFont(new Font("Arial", Font.BOLD, 14));
-        jntexpress.setBounds(75, 55, 100, 20);
-        ActiveDeliveryCard.add(jntexpress);
-
-        JLabel deliveryLocation = new JLabel("Baguio City - Tacloban");
-        deliveryLocation.setForeground(Color.BLACK);
-        deliveryLocation.setFont(new Font("Arial", Font.PLAIN, 14));
-        deliveryLocation.setBounds(75, 75, 165, 20);
-        ActiveDeliveryCard.add(deliveryLocation);
-
-        JLabel Today = new JLabel("<html>Today <br> 5:33 AM</html>");
-        Today.setForeground(Color.BLACK);
-        Today.setFont(new Font("Arial", Font.PLAIN, 14));
-        Today.setBounds(100, 125, 65, 30);
-        ActiveDeliveryCard.add(Today);
-
-        JLabel deliveryPlace = new JLabel("<html>Donation box left at <br> the sorting facility</html>");
-        deliveryPlace.setForeground(Color.BLACK);
-        deliveryPlace.setFont(new Font("Arial", Font.PLAIN, 14));
-        deliveryPlace.setBounds(225, 125, 165, 35);
-        ActiveDeliveryCard.add(deliveryPlace);
-
-        JButton seeMore = new JButton("See More");
-        seeMore.setForeground(Color.BLACK);
-        seeMore.setBackground(Color.LIGHT_GRAY);
-        seeMore.setFont(new Font("Arial", Font.PLAIN, 14));
-        seeMore.setBounds(125, 190, 165, 35);
-        ActiveDeliveryCard.add(seeMore);
-
-        JButton viewAllDelivery = new JButton("View All");
-        viewAllDelivery.setBounds(350, 25, 100, 20);
-        viewAllDelivery.setForeground(Color.BLACK);
-        viewAllDelivery.setContentAreaFilled(false);
-        viewAllDelivery.setBorderPainted(false);
-        ActiveDeliveryCard.add(viewAllDelivery);
-
-        JLabel transitBox = new JLabel("In Transit", SwingConstants.CENTER);
-        transitBox.setBounds(350, 50, 80, 35);
-        transitBox.setBackground(new Color(254, 243, 199));
-        transitBox.setForeground(new Color(245, 158, 11));
-        transitBox.setFont(new Font("Arial", Font.BOLD, 14));
-        transitBox.setOpaque(true);
-        ActiveDeliveryCard.add(transitBox);
-
-        frame.add(ActiveDeliveryCard);
-
         JPanel notifCard = new JPanel();
         notifCard.setLayout(null);
-        notifCard.setBounds(700, 490, 450, 250);
+        notifCard.setBounds(450, 490, 450, 250);
         notifCard.setBackground(new Color(245, 245, 245));
         notifCard.setBorder(new LineBorder(Color.WHITE));
         frame.add(notifCard);

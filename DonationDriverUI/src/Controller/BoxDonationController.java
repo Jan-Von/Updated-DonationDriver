@@ -14,7 +14,6 @@ public class BoxDonationController {
         this.view = view;
 
         view.homeBtn.addActionListener(e -> openDashBoard());
-        view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
         view.donateNow.addActionListener(e -> handleDonateNow());
         view.notifBtn.addActionListener(e -> openNotification());
         view.donationBtn.addActionListener(e ->openDonations());

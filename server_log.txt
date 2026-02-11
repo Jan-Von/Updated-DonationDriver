@@ -730,3 +730,63 @@ Transaction: RESPONSE
 Data:
 <response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
 ----
+[2026-02-11 21:46:48]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 21:46:48]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 21:51:44]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 21:51:44]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 21:52:39]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 21:52:39]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 21:52:57]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 21:52:57]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 21:54:18]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 21:54:18]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----

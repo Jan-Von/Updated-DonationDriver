@@ -10,8 +10,6 @@ public class SuccessDonationController {
         this.view = view;
 
         view.homeBtn.addActionListener(e -> openDashBoard());
-        view.monetaryBtn.addActionListener(e -> openMonetaryDonation());
-        view.goodsBtn.addActionListener(e -> openBoxDonation());
         view.notifBtn.addActionListener(e -> openNotification());
         view.donationBtn.addActionListener(e ->openDonations());
         view.DonateBtn.addActionListener(e -> openDonate());
@@ -23,19 +21,6 @@ public class SuccessDonationController {
         DashboardView dashboardView = new DashboardView();
         new DashboardController(dashboardView);
         dashboardView.frame.setVisible(true);
-        view.frame.dispose();
-    }
-    private void openMonetaryDonation(){
-        MonetaryDonationView monetaryDonationView = new MonetaryDonationView();
-        new MonetaryDonationController(monetaryDonationView);
-        monetaryDonationView.frame.setVisible(true);
-        view.frame.dispose();
-    }
-
-    private void openBoxDonation(){
-        BoxDonationView boxDonationView = new BoxDonationView();
-        new BoxDonationController(boxDonationView);
-        boxDonationView.frame.setVisible(true);
         view.frame.dispose();
     }
 
