@@ -95,7 +95,7 @@ public class SuccessDonationView{
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -108,14 +108,14 @@ public class SuccessDonationView{
         sidebarDonate.setBounds(30, 195, 25, 25);
         sidebar.add(sidebarDonate);
 
-        JButton helpBtn = new JButton("Help");
+        helpBtn = new JButton("Help");
         helpBtn.setBounds(45,550,120,40);
         helpBtn.setBorderPainted(false);
         helpBtn.setFocusPainted(false);
         helpBtn.setContentAreaFilled(false);
         sidebar.add(helpBtn);
 
-        JButton settingsBtn = new JButton("Settings");
+        settingsBtn = new JButton("Settings");
         settingsBtn.setBounds(45, 600, 120, 40);
         settingsBtn.setBorderPainted(false);
         settingsBtn.setFocusPainted(false);

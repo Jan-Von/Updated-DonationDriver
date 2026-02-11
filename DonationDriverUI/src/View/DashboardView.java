@@ -14,6 +14,9 @@ public class DashboardView {
     public JButton DonateBtn;
     public JButton helpBtn;
     public JButton settingsBtn;
+    public JPanel card1;
+    public JPanel card2;
+    public JPanel card3;
 
     public DashboardView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -142,8 +145,9 @@ public class DashboardView {
         newsLabel.setBounds(230, 100, 300, 30);
         frame.add(newsLabel);
 
+
         //Card 1
-        JPanel card1 = new JPanel();
+        card1 = new JPanel();
         card1.setLayout(null);
         card1.setBounds(220, 150, 300, 303);
         card1.setBackground(new Color(20, 35, 100));
@@ -154,6 +158,22 @@ public class DashboardView {
         card1Title.setFont(new Font("Arial", Font.BOLD, 14));
         card1Title.setBounds(65, 10, 250, 20);
         card1.add(card1Title);
+
+        // Monetary and Box Donations Buttons
+        monetaryBtn = new JButton("Monetary Donations");
+        monetaryBtn.setBounds(75, 90, 150, 40);
+        monetaryBtn.setOpaque(true);
+        monetaryBtn.setBackground(Color.WHITE); // fully opaque
+        monetaryBtn.setBorderPainted(false);
+        monetaryBtn.setVisible(false);
+
+        goodsBtn = new JButton("Goods Donations");
+        goodsBtn.setBounds(75, 140, 150, 40);
+        goodsBtn.setOpaque(true);
+        goodsBtn.setBackground(Color.WHITE); // fully opaque
+        goodsBtn.setBorderPainted(false);
+        goodsBtn.setVisible(false);
+
 
         ImageIcon card1photo = new ImageIcon("Resources/Images/image1.png");
         scaledImg = card1photo.getImage().getScaledInstance(299, 180, Image.SCALE_SMOOTH);
@@ -175,7 +195,7 @@ public class DashboardView {
         frame.add(card1);
 
         // Card 2
-        JPanel card2 = new JPanel();
+        card2 = new JPanel();
         card2.setLayout(null);
         card2.setBounds(540, 150, 300, 303);
         card2.setBackground(new Color(20, 35, 100));
@@ -206,7 +226,7 @@ public class DashboardView {
         frame.add(card2);
 
         // Card 3
-        JPanel card3 = new JPanel();
+        card3 = new JPanel();
         card3.setLayout(null);
         card3.setBounds(860, 150, 300, 303);
         card3.setBackground(new Color(20, 35, 100));
@@ -263,35 +283,6 @@ public class DashboardView {
         JLabel liveIcon = new JLabel(new ImageIcon(scaledImg));
         liveIcon.setBounds(5, 50, 25, 25);
         donationPanel.add(liveIcon);
-
-
-        ImageIcon moneyDonate = new ImageIcon("Resources/Images/DonateMoney.png");
-        scaledImg = moneyDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel moneyDonation = new JLabel(new ImageIcon(scaledImg));
-        moneyDonation.setBounds(15, 235, 25, 25);
-        donationPanel.add(moneyDonation);
-
-        monetaryBtn = new JButton("Monetary Donation");
-        monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBorderPainted(false);
-        monetaryBtn.setContentAreaFilled(false);
-        monetaryBtn.setFocusPainted(false);
-        donationPanel.add(monetaryBtn);
-
-        ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
-        scaledImg = goodsDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel goodsDonation = new JLabel(new ImageIcon(scaledImg));
-        goodsDonation.setBounds(15, 275, 25, 25);
-        donationPanel.add(goodsDonation);
-
-        goodsBtn = new JButton("Goods Donation");
-        goodsBtn.setBounds(40, 270, 160, 40);
-        goodsBtn.setBorderPainted(false);
-        goodsBtn.setContentAreaFilled(false);
-        goodsBtn.setFocusPainted(false);
-        donationPanel.add(goodsBtn);
-
-
 
         String fullText =
                 "Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
@@ -430,7 +421,12 @@ public class DashboardView {
         notifCard.add(transitStatus);
 
         frame.add(donationPanel);
+
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DashboardView();
     }
 
 }
