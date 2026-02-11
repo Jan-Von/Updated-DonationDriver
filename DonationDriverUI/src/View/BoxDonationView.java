@@ -136,7 +136,7 @@ public class BoxDonationView{
 
         frame.add(sidebar);
 
-        JLabel newsLabel = new JLabel("Monetary Donations");
+        JLabel newsLabel = new JLabel("Goods Donations");
         newsLabel.setFont(new Font("Arial", Font.BOLD, 30));
         newsLabel.setForeground(new Color(20, 35, 100));
         newsLabel.setBounds(230, 100, 300, 30);
