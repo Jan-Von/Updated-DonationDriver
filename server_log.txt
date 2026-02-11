@@ -826,3 +826,195 @@ Transaction: RESPONSE
 Data:
 <response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
 ----
+[2026-02-11 23:34:35]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 23:34:35]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 23:50:46]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 23:50:46]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 23:54:17]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 23:54:17]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 23:56:43]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 23:56:43]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 23:56:46]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 23:56:46]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 23:58:13]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 23:58:13]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:01:42]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-12 00:01:42]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:01:44]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-12 00:01:44]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:04:32]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-12 00:04:32]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:06:49]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>CREATE_TICKET</action><userId>2245587@slu.edu.ph</userId><itemCategory>Children clothes</itemCategory><quantity>2</quantity><condition>good condition</condition><expirationDate></expirationDate><pickupDateTime></pickupDateTime><pickupLocation>Camp 7</pickupLocation><photoPath></photoPath><details>Box goods donation</details></request>
+----
+[2026-02-12 00:06:49]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Donation ticket created successfully. Ticket ID: 1770823445576</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:11:27]
+User: donor@gmail.com
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>donor@gmail.com</userId></request>
+----
+[2026-02-12 00:11:27]
+User: donor@gmail.com
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>donor@gmail.com</userId></response>
+----
+[2026-02-12 00:11:27]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId></userId><status>PENDING</status></request>
+----
+[2026-02-12 00:11:27]
+User: ANONYMOUS
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;ticket&gt;&lt;ticketId&gt;1770823445576&lt;/ticketId&gt;&lt;userId&gt;2245587@slu.edu.ph&lt;/userId&gt;&lt;status&gt;PENDING&lt;/status&gt;&lt;createdAt&gt;2026-02-12 00:06:49&lt;/createdAt&gt;&lt;itemCategory&gt;Children clothes&lt;/itemCategory&gt;&lt;quantity&gt;2&lt;/quantity&gt;&lt;condition&gt;good condition&lt;/condition&gt;&lt;expirationDate&gt;&lt;/expirationDate&gt;&lt;pickupDateTime&gt;&lt;/pickupDateTime&gt;&lt;pickupLocation&gt;Camp 7&lt;/pickupLocation&gt;&lt;photoPath&gt;&lt;/photoPath&gt;&lt;notes&gt;Box goods donation&lt;/notes&gt;&lt;/ticket&gt;&lt;/tickets&gt;</message></response>
+----
+[2026-02-12 00:12:23]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-12 00:12:23]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:12:33]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>CREATE_TICKET</action><userId>2245587@slu.edu.ph</userId><itemCategory>Monetary donation</itemCategory><quantity>1</quantity><condition>N/A</condition><expirationDate></expirationDate><pickupDateTime></pickupDateTime><pickupLocation></pickupLocation><photoPath></photoPath><details>Monetary donation to Super Typhoon Haiyan; Amount=55000.0; TransactionId=521591239</details></request>
+----
+[2026-02-12 00:12:33]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Donation ticket created successfully. Ticket ID: 1770826343143</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:17:54]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-12 00:17:54]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-12 00:18:16]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>CREATE_TICKET</action><userId>2245587@slu.edu.ph</userId><itemCategory>Monetary donation</itemCategory><quantity>1</quantity><condition>N/A</condition><expirationDate></expirationDate><pickupDateTime></pickupDateTime><pickupLocation></pickupLocation><photoPath></photoPath><details>Monetary donation to Super Typhoon Haiyan; Amount=25000.0; TransactionId=318677477</details></request>
+----
+[2026-02-12 00:18:16]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Donation ticket created successfully. Ticket ID: 1770826674502</message><userId>2245587@slu.edu.ph</userId></response>
+----

@@ -14,6 +14,10 @@ public class MonetaryDonationView {
     public JButton settingsBtn;
     public JButton donateNow;
 
+    // Exposed to the controller for logging
+    public JTextField amountField;
+    public JTextField transactionIdField;
+
 
     public MonetaryDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -199,11 +203,11 @@ public class MonetaryDonationView {
         Amount.setBounds(150, 50, 300, 30);
         monetaryMainCard.add(Amount);
 
-        JTextField amount = new JTextField();
-        amount.setFont(new Font("Arial", Font.PLAIN, 14));
-        amount.setForeground(Color.BLACK);
-        amount.setBounds(150, 80, 300, 30);
-        monetaryMainCard.add(amount);
+        amountField = new JTextField();
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        amountField.setForeground(Color.BLACK);
+        amountField.setBounds(150, 80, 300, 30);
+        monetaryMainCard.add(amountField);
 
         JLabel paymentMethod = new JLabel("Payment Method");
         paymentMethod.setFont(new Font("Arial", Font.BOLD, 14));
@@ -224,11 +228,11 @@ public class MonetaryDonationView {
         transID.setBounds(150, 170, 300, 30);
         monetaryMainCard.add(transID);
 
-        JTextField TransID = new JTextField();
-        TransID.setFont(new Font("Arial", Font.PLAIN, 14));
-        TransID.setForeground(Color.BLACK);
-        TransID.setBounds(150, 200, 300, 30);
-        monetaryMainCard.add(TransID);
+        transactionIdField = new JTextField();
+        transactionIdField.setFont(new Font("Arial", Font.PLAIN, 14));
+        transactionIdField.setForeground(Color.BLACK);
+        transactionIdField.setBounds(150, 200, 300, 30);
+        monetaryMainCard.add(transactionIdField);
 
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));

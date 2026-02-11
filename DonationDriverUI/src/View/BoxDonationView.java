@@ -234,14 +234,14 @@ public class BoxDonationView{
         ImageIcon Maps = new ImageIcon("Resources/Images/Maps.png");
         Image MapsIcon = Maps.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         JLabel MapsIconLabel = new JLabel(new ImageIcon(MapsIcon));
-        MapsIconLabel.setBounds(175,200,250,250);
+        MapsIconLabel.setBounds(175,250,250,250);
         monetaryMainCard.add(MapsIconLabel);
 
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
-        donateNow.setBounds(150, 460, 300, 30);
+        donateNow.setBounds(150, 450, 300, 30);
         monetaryMainCard.add(donateNow);
 
         frame.setVisible(true);
