@@ -14,6 +14,9 @@ public class DashboardView {
     public JButton DonateBtn;
     public JButton helpBtn;
     public JButton settingsBtn;
+    public JPanel card1;
+    public JPanel card2;
+    public JPanel card3;
 
     public DashboardView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -136,14 +139,15 @@ public class DashboardView {
         frame.add(sidebar);
 
         /* ================= MAIN CONTENT ================= */
-        JLabel newsLabel = new JLabel("News Flash");
+        JLabel newsLabel = new JLabel("Donation Drives");
         newsLabel.setFont(new Font("Arial", Font.BOLD, 30));
         newsLabel.setForeground(new Color(20, 35, 100));
         newsLabel.setBounds(230, 100, 300, 30);
         frame.add(newsLabel);
 
+
         //Card 1
-        JPanel card1 = new JPanel();
+        card1 = new JPanel();
         card1.setLayout(null);
         card1.setBounds(220, 150, 300, 303);
         card1.setBackground(new Color(20, 35, 100));
@@ -154,6 +158,22 @@ public class DashboardView {
         card1Title.setFont(new Font("Arial", Font.BOLD, 14));
         card1Title.setBounds(65, 10, 250, 20);
         card1.add(card1Title);
+
+        // Monetary and Box Donations Buttons
+        monetaryBtn = new JButton("Monetary Donations");
+        monetaryBtn.setBounds(75, 90, 150, 40);
+        monetaryBtn.setOpaque(true);
+        monetaryBtn.setBackground(Color.WHITE); // fully opaque
+        monetaryBtn.setBorderPainted(false);
+        monetaryBtn.setVisible(false);
+
+        goodsBtn = new JButton("Goods Donations");
+        goodsBtn.setBounds(75, 140, 150, 40);
+        goodsBtn.setOpaque(true);
+        goodsBtn.setBackground(Color.WHITE); // fully opaque
+        goodsBtn.setBorderPainted(false);
+        goodsBtn.setVisible(false);
+
 
         ImageIcon card1photo = new ImageIcon("Resources/Images/image1.png");
         scaledImg = card1photo.getImage().getScaledInstance(299, 180, Image.SCALE_SMOOTH);
@@ -175,7 +195,7 @@ public class DashboardView {
         frame.add(card1);
 
         // Card 2
-        JPanel card2 = new JPanel();
+        card2 = new JPanel();
         card2.setLayout(null);
         card2.setBounds(540, 150, 300, 303);
         card2.setBackground(new Color(20, 35, 100));
@@ -206,7 +226,7 @@ public class DashboardView {
         frame.add(card2);
 
         // Card 3
-        JPanel card3 = new JPanel();
+        card3 = new JPanel();
         card3.setLayout(null);
         card3.setBounds(860, 150, 300, 303);
         card3.setBackground(new Color(20, 35, 100));
@@ -264,35 +284,6 @@ public class DashboardView {
         liveIcon.setBounds(5, 50, 25, 25);
         donationPanel.add(liveIcon);
 
-
-        ImageIcon moneyDonate = new ImageIcon("Resources/Images/DonateMoney.png");
-        scaledImg = moneyDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel moneyDonation = new JLabel(new ImageIcon(scaledImg));
-        moneyDonation.setBounds(15, 235, 25, 25);
-        donationPanel.add(moneyDonation);
-
-        monetaryBtn = new JButton("Monetary Donation");
-        monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBorderPainted(false);
-        monetaryBtn.setContentAreaFilled(false);
-        monetaryBtn.setFocusPainted(false);
-        donationPanel.add(monetaryBtn);
-
-        ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
-        scaledImg = goodsDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel goodsDonation = new JLabel(new ImageIcon(scaledImg));
-        goodsDonation.setBounds(15, 275, 25, 25);
-        donationPanel.add(goodsDonation);
-
-        goodsBtn = new JButton("Goods Donation");
-        goodsBtn.setBounds(40, 270, 160, 40);
-        goodsBtn.setBorderPainted(false);
-        goodsBtn.setContentAreaFilled(false);
-        goodsBtn.setFocusPainted(false);
-        donationPanel.add(goodsBtn);
-
-
-
         String fullText =
                 "Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
                         "generating a storm surge of more than 5 meters in places and winds in excess of 190 mph. " +
@@ -300,7 +291,7 @@ public class DashboardView {
                         "approximately 4.1 million people were displaced from their homes.";
 
         JTextArea donationText = new JTextArea(fullText);
-        donationText.setBounds(5, 325, 195, 140);
+        donationText.setBounds(5, 250, 195, 140);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
         donationText.setBackground(new Color(245, 245, 245));
@@ -309,76 +300,9 @@ public class DashboardView {
         donationText.setEditable(false);
         donationPanel.add(donationText);
 
-
-        JPanel ActiveDeliveryCard = new JPanel();
-        ActiveDeliveryCard.setLayout(null);
-        ActiveDeliveryCard.setBounds(220, 490, 450, 250);
-        ActiveDeliveryCard.setBackground(new Color(245, 245, 245));
-        ActiveDeliveryCard.setBorder(new LineBorder(Color.WHITE));
-
-        JLabel activeDelivery = new JLabel("Active Delivery");
-        activeDelivery.setForeground(Color.BLACK);
-        activeDelivery.setFont(new Font("Arial", Font.BOLD, 18));
-        activeDelivery.setBounds(10, 20, 250, 20);
-        ActiveDeliveryCard.add(activeDelivery);
-
-        ImageIcon activeDeliveryphoto = new ImageIcon("Resources/Images/ActiveDeliveryPhoto.png");
-        scaledImg = activeDeliveryphoto.getImage().getScaledInstance(65, 50, Image.SCALE_SMOOTH);
-        JLabel activeDeliveryPhoto = new JLabel(new ImageIcon(scaledImg));
-        activeDeliveryPhoto.setBounds(5, 45, 65, 50);
-        ActiveDeliveryCard.add(activeDeliveryPhoto);
-
-        JLabel jntexpress = new JLabel("J&T Express");
-        jntexpress.setForeground(Color.BLACK);
-        jntexpress.setFont(new Font("Arial", Font.BOLD, 14));
-        jntexpress.setBounds(75, 55, 100, 20);
-        ActiveDeliveryCard.add(jntexpress);
-
-        JLabel deliveryLocation = new JLabel("Baguio City - Tacloban");
-        deliveryLocation.setForeground(Color.BLACK);
-        deliveryLocation.setFont(new Font("Arial", Font.PLAIN, 14));
-        deliveryLocation.setBounds(75, 75, 165, 20);
-        ActiveDeliveryCard.add(deliveryLocation);
-
-        JLabel Today = new JLabel("<html>Today <br> 5:33 AM</html>");
-        Today.setForeground(Color.BLACK);
-        Today.setFont(new Font("Arial", Font.PLAIN, 14));
-        Today.setBounds(100, 125, 65, 30);
-        ActiveDeliveryCard.add(Today);
-
-        JLabel deliveryPlace = new JLabel("<html>Donation box left at <br> the sorting facility</html>");
-        deliveryPlace.setForeground(Color.BLACK);
-        deliveryPlace.setFont(new Font("Arial", Font.PLAIN, 14));
-        deliveryPlace.setBounds(225, 125, 165, 35);
-        ActiveDeliveryCard.add(deliveryPlace);
-
-        JButton seeMore = new JButton("See More");
-        seeMore.setForeground(Color.BLACK);
-        seeMore.setBackground(Color.LIGHT_GRAY);
-        seeMore.setFont(new Font("Arial", Font.PLAIN, 14));
-        seeMore.setBounds(125, 190, 165, 35);
-        ActiveDeliveryCard.add(seeMore);
-
-        JButton viewAllDelivery = new JButton("View All");
-        viewAllDelivery.setBounds(350, 25, 100, 20);
-        viewAllDelivery.setForeground(Color.BLACK);
-        viewAllDelivery.setContentAreaFilled(false);
-        viewAllDelivery.setBorderPainted(false);
-        ActiveDeliveryCard.add(viewAllDelivery);
-
-        JLabel transitBox = new JLabel("In Transit", SwingConstants.CENTER);
-        transitBox.setBounds(350, 50, 80, 35);
-        transitBox.setBackground(new Color(254, 243, 199));
-        transitBox.setForeground(new Color(245, 158, 11));
-        transitBox.setFont(new Font("Arial", Font.BOLD, 14));
-        transitBox.setOpaque(true);
-        ActiveDeliveryCard.add(transitBox);
-
-        frame.add(ActiveDeliveryCard);
-
         JPanel notifCard = new JPanel();
         notifCard.setLayout(null);
-        notifCard.setBounds(700, 490, 450, 250);
+        notifCard.setBounds(450, 490, 450, 250);
         notifCard.setBackground(new Color(245, 245, 245));
         notifCard.setBorder(new LineBorder(Color.WHITE));
         frame.add(notifCard);
@@ -430,7 +354,12 @@ public class DashboardView {
         notifCard.add(transitStatus);
 
         frame.add(donationPanel);
+
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DashboardView();
     }
 
 }

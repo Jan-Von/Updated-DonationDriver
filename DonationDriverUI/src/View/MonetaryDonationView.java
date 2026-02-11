@@ -6,9 +6,7 @@ import java.awt.*;
 
 public class MonetaryDonationView {
     public JFrame frame;
-    public JButton monetaryBtn;
     public JButton homeBtn;
-    public JButton goodsBtn;
     public JButton notifBtn;
     public JButton donationBtn;
     public JButton DonateBtn;
@@ -166,34 +164,6 @@ public class MonetaryDonationView {
         liveIcon.setBounds(5, 50, 25, 25);
         donationPanel.add(liveIcon);
 
-
-        ImageIcon moneyDonate = new ImageIcon("Resources/Images/DonateMoney.png");
-        scaledImg = moneyDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel moneyDonation = new JLabel(new ImageIcon(scaledImg));
-        moneyDonation.setBounds(15, 235, 25, 25);
-        donationPanel.add(moneyDonation);
-
-        JButton monetaryBtn = new JButton("Monetary Donation");
-        monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBackground(Color.LIGHT_GRAY);
-        monetaryBtn.setBorderPainted(false);
-        monetaryBtn.setFocusPainted(false);
-        donationPanel.add(monetaryBtn);
-
-
-        ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
-        scaledImg = goodsDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel goodsDonation = new JLabel(new ImageIcon(scaledImg));
-        goodsDonation.setBounds(15, 275, 25, 25);
-        donationPanel.add(goodsDonation);
-
-        goodsBtn = new JButton("Goods Donation");
-        goodsBtn.setBounds(40, 270, 160, 40);
-        goodsBtn.setBorderPainted(false);
-        goodsBtn.setContentAreaFilled(false);
-        goodsBtn.setFocusPainted(false);
-        donationPanel.add(goodsBtn);
-
         String fullText =
                 "Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
                         "generating a storm surge of more than 5 meters in places and winds in excess of 190 mph. " +
@@ -201,7 +171,7 @@ public class MonetaryDonationView {
                         "approximately 4.1 million people were displaced from their homes.";
 
         JTextArea donationText = new JTextArea(fullText);
-        donationText.setBounds(5, 325, 195, 140);
+        donationText.setBounds(5, 250, 195, 140);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
         donationText.setBackground(new Color(245, 245, 245));
@@ -209,7 +179,6 @@ public class MonetaryDonationView {
         donationText.setWrapStyleWord(true);
         donationText.setEditable(false);
         donationPanel.add(donationText);
-
         frame.add(donationPanel);
 
         JPanel monetaryMainCard = new JPanel();
@@ -270,4 +239,5 @@ public class MonetaryDonationView {
 
         frame.setVisible(true);
     }
+
 }
