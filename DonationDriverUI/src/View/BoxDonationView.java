@@ -14,7 +14,9 @@ public class BoxDonationView{
     public JButton helpBtn;
     public JButton settingsBtn;
     public JButton donateNow;
-
+    public JTextField typeOfGoodsField;
+    public JTextField numberOfBoxesField;
+    public JTextField locationField;
 
     public BoxDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -229,11 +231,11 @@ public class BoxDonationView{
         typeofGoods.setBounds(150, 50, 300, 30);
         monetaryMainCard.add(typeofGoods);
 
-        JTextField TypeOfGoods = new JTextField();
-        TypeOfGoods.setFont(new Font("Arial", Font.PLAIN, 14));
-        TypeOfGoods.setForeground(Color.BLACK);
-        TypeOfGoods.setBounds(150, 80, 300, 30);
-        monetaryMainCard.add(TypeOfGoods);
+        typeOfGoodsField = new JTextField();
+        typeOfGoodsField.setFont(new Font("Arial", Font.PLAIN, 14));
+        typeOfGoodsField.setForeground(Color.BLACK);
+        typeOfGoodsField.setBounds(150, 80, 300, 30);
+        monetaryMainCard.add(typeOfGoodsField);
 
         JLabel NumberBoxes = new JLabel("Number of Boxes");
         NumberBoxes.setFont(new Font("Arial", Font.BOLD, 14));
@@ -241,17 +243,23 @@ public class BoxDonationView{
         NumberBoxes.setBounds(150, 110, 300, 30);
         monetaryMainCard.add(NumberBoxes);
 
-        JTextField noBoxes = new JTextField();
-        noBoxes.setFont(new Font("Arial", Font.PLAIN, 14));
-        noBoxes.setForeground(Color.BLACK);
-        noBoxes.setBounds(150,140,300,30);
-        monetaryMainCard.add(noBoxes);
+        numberOfBoxesField = new JTextField();
+        numberOfBoxesField.setFont(new Font("Arial", Font.PLAIN, 14));
+        numberOfBoxesField.setForeground(Color.BLACK);
+        numberOfBoxesField.setBounds(150,140,300,30);
+        monetaryMainCard.add(numberOfBoxesField);
 
         JLabel Location = new JLabel("Your Location");
         Location.setFont(new Font("Arial", Font.BOLD, 14));
         Location.setForeground(Color.BLACK);
         Location.setBounds(150, 170, 300, 30);
         monetaryMainCard.add(Location);
+
+        locationField = new JTextField();
+        locationField.setFont(new Font("Arial", Font.PLAIN, 14));
+        locationField.setForeground(Color.BLACK);
+        locationField.setBounds(150, 200, 300, 30);
+        monetaryMainCard.add(locationField);
 
         ImageIcon Maps = new ImageIcon("Resources/Images/Maps.png");
         Image MapsIcon = Maps.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
