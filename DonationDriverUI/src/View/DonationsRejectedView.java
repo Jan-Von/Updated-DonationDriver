@@ -14,6 +14,8 @@ public class DonationsRejectedView{
     public JButton ActiveDeliveryButton;
     public JButton DeliveredButton;
     public JButton RejectedButton;
+    public JButton PendingButton;
+
 
     public DonationsRejectedView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -142,15 +144,22 @@ public class DonationsRejectedView{
         ActiveDeliveryButton.setBackground(new Color(245,245,245));
         frame.add(ActiveDeliveryButton);
 
+        PendingButton = new JButton("Pending");
+        PendingButton.setBounds(375, 100, 120, 40);
+        PendingButton.setBorderPainted(false);
+        PendingButton.setFocusPainted(false);
+        PendingButton.setBackground(new Color(245,245,245));
+        frame.add(PendingButton);
+
         DeliveredButton = new JButton("Delivered");
-        DeliveredButton.setBounds(375, 100, 120, 40);
+        DeliveredButton.setBounds(525, 100, 120, 40);
         DeliveredButton.setBorderPainted(false);
         DeliveredButton.setFocusPainted(false);
         DeliveredButton.setBackground(new Color(245,245,245));
         frame.add(DeliveredButton);
 
         RejectedButton = new JButton("Rejected");
-        RejectedButton.setBounds(525, 100, 120, 40);
+        RejectedButton.setBounds(657, 100, 120, 40);
         RejectedButton.setBorderPainted(false);
         RejectedButton.setFocusPainted(false);
         RejectedButton.setBackground(Color.lightGray);

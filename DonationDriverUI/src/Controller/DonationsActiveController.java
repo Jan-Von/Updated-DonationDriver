@@ -20,6 +20,7 @@ public class DonationsActiveController {
         view.DeliveredButton.addActionListener(e -> openDonationsDelivered());
         view.RejectedButton.addActionListener(e -> openDonationsRejected());
         view.DonateBtn.addActionListener(e -> openDonate());
+        view.PendingButton.addActionListener(e -> openDonationPending());
 
         loadActiveTickets();
     }
@@ -125,6 +126,13 @@ public class DonationsActiveController {
         NotificationView notificationView = new NotificationView();
         new NotificationController(notificationView);
         notificationView.frame.setVisible(true);
+        view.frame.dispose();
+    }
+
+    private void openDonationPending(){
+        DonationsPendingView donationsPendingView = new DonationsPendingView();
+        new DonationsPendingController(donationsPendingView);
+        donationsPendingView.frame.setVisible(true);
         view.frame.dispose();
     }
 

@@ -1,22 +1,20 @@
 package Controller;
 import View.*;
 
-import java.awt.event.ActionListener;
+public class DonationsPendingController {
 
-public class DonationsRejectedController {
-
-    private DonationsRejectedView view;
+    private DonationsPendingView view;
     private MonetaryDonationView view1;
 
-    public DonationsRejectedController(DonationsRejectedView view) {
+    public DonationsPendingController(DonationsPendingView view) {
         this.view = view;
 
         view.homeBtn.addActionListener(e -> openDashBoard());
         view.notifBtn.addActionListener(e -> openNotification());
         view.ActiveDeliveryButton.addActionListener(e -> openDonationsActive());
         view.DeliveredButton.addActionListener(e -> openDonationsDelivered());
+        view.RejectedButton.addActionListener(e -> openDonationsRejected());
         view.DonateBtn.addActionListener(e -> openDonate());
-        view.PendingButton.addActionListener(e -> openDonationPending());
 
     }
 
@@ -41,10 +39,10 @@ public class DonationsRejectedController {
         view.frame.dispose();
     }
 
-    private void openDonationPending(){
-        DonationsPendingView donationsPendingView = new DonationsPendingView();
-        new DonationsPendingController(donationsPendingView);
-        donationsPendingView.frame.setVisible(true);
+    private void openDonationsRejected(){
+        DonationsRejectedView donationsRejectedView = new DonationsRejectedView();
+        new DonationsRejectedController(donationsRejectedView);
+        donationsRejectedView.frame.setVisible(true);
         view.frame.dispose();
     }
 

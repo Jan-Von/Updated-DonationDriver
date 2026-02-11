@@ -97,7 +97,7 @@ public class BoxDonationView{
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -275,9 +275,5 @@ public class BoxDonationView{
         monetaryMainCard.add(donateNow);
 
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new BoxDonationView();
     }
 }

@@ -430,7 +430,6 @@ public class DashboardView {
         notifCard.add(transitStatus);
 
         frame.add(donationPanel);
-
         frame.setVisible(true);
     }
 

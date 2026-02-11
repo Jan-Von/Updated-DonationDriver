@@ -1,0 +1,324 @@
+[2026-02-11 18:52:07]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 18:52:07]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 18:52:12]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 18:52:12]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 18:59:05]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 18:59:05]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:29:52]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>2245587@slu.edu.ph</email><password>sipitbu2</password></request>
+----
+[2026-02-11 19:29:52]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:29:54]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:29:54]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:30:00]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:30:00]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:30:07]
+User: 2245587@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>2245587@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:30:07]
+User: 2245587@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>2245587@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:31:12]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:31:12]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:31:14]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:31:14]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:32:29]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:32:29]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:32:31]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:32:31]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:32:36]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:32:36]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:34:28]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:34:28]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:34:30]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:34:30]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:34:33]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:34:33]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:39:50]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:39:50]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:40:16]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:40:16]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:42:13]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:42:13]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:46:31]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 19:46:31]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:46:33]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:46:33]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:46:37]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:46:37]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 19:46:43]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 19:46:43]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 20:04:21]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 20:04:21]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 20:04:46]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 20:04:46]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 20:06:57]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 20:06:57]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 20:11:52]
+User: ANONYMOUS
+Transaction: REQUEST
+Data:
+<request><action>LOGIN</action><userId></userId><email>123456@slu.edu.ph</email><password>qwe123</password></request>
+----
+[2026-02-11 20:11:52]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>Login successful.</message><userId>123456@slu.edu.ph</userId></response>
+----
+[2026-02-11 20:12:01]
+User: 123456@slu.edu.ph
+Transaction: REQUEST
+Data:
+<request><action>READ_TICKETS</action><userId>123456@slu.edu.ph</userId></request>
+----
+[2026-02-11 20:12:01]
+User: 123456@slu.edu.ph
+Transaction: RESPONSE
+Data:
+<response><status>OK</status><message>&lt;tickets&gt;&lt;/tickets&gt;</message><userId>123456@slu.edu.ph</userId></response>
+----

@@ -96,7 +96,7 @@ public class MonetaryDonationView {
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
