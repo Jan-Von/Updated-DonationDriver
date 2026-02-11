@@ -20,7 +20,7 @@ public class RiderLoginView extends JFrame {
         leftPanel.setBorder(new EmptyBorder(60, 80, 60, 80));
 
         // Logo
-        ImageIcon logoIcon = new ImageIcon("DonationDriverRiderLogo.png");
+        ImageIcon logoIcon = new ImageIcon("Resources/Images/DonationDriverRiderLogo.png");
         JLabel logoLabel = new JLabel(new ImageIcon(
                 logoIcon.getImage().getScaledInstance(250, 150, Image.SCALE_SMOOTH)));
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,7 +64,7 @@ public class RiderLoginView extends JFrame {
         rightPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
         // Rider Image
-        ImageIcon riderPicIcon = new ImageIcon("RiderLoginPic.png");
+        ImageIcon riderPicIcon = new ImageIcon("Resources/Images/RiderLoginPic.png");
         JLabel riderPicLabel = new JLabel(new ImageIcon(
                 riderPicIcon.getImage().getScaledInstance(420, 230, Image.SCALE_SMOOTH)));
         riderPicLabel.setHorizontalAlignment(JLabel.CENTER);
