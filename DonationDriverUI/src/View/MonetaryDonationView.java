@@ -222,7 +222,7 @@ public class MonetaryDonationView {
         PaymentOptions.setBounds(150,140,300,30);
         monetaryMainCard.add(PaymentOptions);
 
-        JLabel transID = new JLabel("Transaction ID");
+        JLabel transID = new JLabel("Reference Number");
         transID.setFont(new Font("Arial", Font.BOLD, 14));
         transID.setForeground(Color.BLACK);
         transID.setBounds(150, 170, 300, 30);
@@ -241,7 +241,17 @@ public class MonetaryDonationView {
         donateNow.setBounds(150, 250, 300, 30);
         monetaryMainCard.add(donateNow);
 
+        JLabel instructionText = new JLabel("<html>Note: Please send the monetary donation first and Enter" +
+                "the reference number from the bank transfer</html> ");
+        instructionText.setFont(new Font("Arial", Font.BOLD, 16));
+        instructionText.setForeground(Color.BLACK);
+        instructionText.setBounds(150,280,300,150);
+        monetaryMainCard.add(instructionText);
+
         frame.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        new MonetaryDonationView();
+    }
 }

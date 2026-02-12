@@ -12,6 +12,12 @@ public class DonateView {
     public JButton helpBtn;
     public JButton settingsBtn;
     public JButton homeBtn;
+    public JButton monetaryBtn;
+    public JButton goodsBtn;
+    public JPanel card1;
+    public JPanel card2;
+    public JPanel card3;
+
 
     public DonateView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -132,7 +138,22 @@ public class DonateView {
         sidebar.add(sidebarSetting);
         frame.add(sidebar);
 
-        JPanel card1 = new JPanel();
+        // Monetary and Box Donations Buttons
+        monetaryBtn = new JButton("Monetary Donations");
+        monetaryBtn.setBounds(75, 90, 150, 40);
+        monetaryBtn.setOpaque(true);
+        monetaryBtn.setBackground(Color.WHITE); // fully opaque
+        monetaryBtn.setBorderPainted(false);
+        monetaryBtn.setVisible(false);
+
+        goodsBtn = new JButton("Goods Donations");
+        goodsBtn.setBounds(75, 140, 150, 40);
+        goodsBtn.setOpaque(true);
+        goodsBtn.setBackground(Color.WHITE); // fully opaque
+        goodsBtn.setBorderPainted(false);
+        goodsBtn.setVisible(false);
+
+        card1 = new JPanel();
         card1.setLayout(null);
         card1.setBounds(300, 100, 400, 250);
         card1.setBackground(new Color(204, 255, 255));
@@ -164,7 +185,7 @@ public class DonateView {
         card1Photo.setBounds(5, 75, 255, 150);
         card1.add(card1Photo);
 
-        JPanel card2 = new JPanel();
+        card2 = new JPanel();
         card2.setLayout(null);
         card2.setBounds(900, 100, 400, 250);
         card2.setBackground(new Color(204, 255, 255));
@@ -196,7 +217,7 @@ public class DonateView {
         card2Photo.setBounds(5, 75, 255, 150);
         card2.add(card2Photo);
 
-        JPanel card3 = new JPanel();
+        card3 = new JPanel();
         card3.setLayout(null);
         card3.setBounds(300, 400, 400, 250);
         card3.setBackground(new Color(204, 255, 255));
