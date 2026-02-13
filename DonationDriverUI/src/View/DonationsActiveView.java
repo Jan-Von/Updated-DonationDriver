@@ -15,6 +15,8 @@ public class DonationsActiveView {
     public JButton DeliveredButton;
     public JButton RejectedButton;
     public JList<String> ticketsList;
+    public JButton PendingButton;
+
     public DonationsActiveView() {
         frame = new JFrame("DonationDriver - Dashboard");
         frame.setSize(1400, 800);
@@ -139,18 +141,25 @@ public class DonationsActiveView {
         ActiveDeliveryButton.setBounds(225, 100, 120, 40);
         ActiveDeliveryButton.setBorderPainted(false);
         ActiveDeliveryButton.setFocusPainted(false);
-       ActiveDeliveryButton.setBackground(Color.lightGray);
+        ActiveDeliveryButton.setBackground(Color.lightGray);
         frame.add(ActiveDeliveryButton);
 
+        PendingButton = new JButton("Pending");
+        PendingButton.setBounds(375, 100, 120, 40);
+        PendingButton.setBorderPainted(false);
+        PendingButton.setFocusPainted(false);
+        PendingButton.setBackground(new Color(245,245,245));
+        frame.add(PendingButton);
+
         DeliveredButton = new JButton("Delivered");
-        DeliveredButton.setBounds(375, 100, 120, 40);
+        DeliveredButton.setBounds(525, 100, 120, 40);
         DeliveredButton.setBorderPainted(false);
         DeliveredButton.setFocusPainted(false);
         DeliveredButton.setBackground(new Color(245,245,245));
         frame.add(DeliveredButton);
 
         RejectedButton = new JButton("Rejected");
-        RejectedButton.setBounds(525, 100, 120, 40);
+        RejectedButton.setBounds(657, 100, 120, 40);
         RejectedButton.setBorderPainted(false);
         RejectedButton.setFocusPainted(false);
         RejectedButton.setBackground(new Color(245,245,245));
@@ -271,7 +280,7 @@ public class DonationsActiveView {
         Notif3Card.setLayout(null);
         Notif3Card.setBounds(500, 575, 600, 150);
         Notif3Card.setBackground(new Color(245, 245, 245));
-        frame.add(Notif3Card);
+
 
         ImageIcon activeDeliveryphoto3 = new ImageIcon("Resources/Images/ActiveDeliveryPhoto.png");
         scaledImg = activeDeliveryphoto3.getImage().getScaledInstance(50, 35, Image.SCALE_SMOOTH);
@@ -318,6 +327,11 @@ public class DonationsActiveView {
         transitBox3.setOpaque(true);
         Notif3Card.add(transitBox3);
 
+        frame.add(Notif3Card);
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DonationsActiveView();
     }
 }

@@ -5,9 +5,7 @@ import java.awt.*;
 
 public class BoxDonationView{
     public JFrame frame;
-    public JButton monetaryBtn;
     public JButton homeBtn;
-    public JButton goodsBtn;
     public JButton notifBtn;
     public JButton donationBtn;
     public JButton DonateBtn;
@@ -97,7 +95,7 @@ public class BoxDonationView{
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -138,7 +136,7 @@ public class BoxDonationView{
 
         frame.add(sidebar);
 
-        JLabel newsLabel = new JLabel("Monetary Donations");
+        JLabel newsLabel = new JLabel("Goods Donations");
         newsLabel.setFont(new Font("Arial", Font.BOLD, 30));
         newsLabel.setForeground(new Color(20, 35, 100));
         newsLabel.setBounds(230, 100, 300, 30);
@@ -167,34 +165,6 @@ public class BoxDonationView{
         liveIcon.setBounds(5, 50, 25, 25);
         donationPanel.add(liveIcon);
 
-
-        ImageIcon moneyDonate = new ImageIcon("Resources/Images/DonateMoney.png");
-        scaledImg = moneyDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel moneyDonation = new JLabel(new ImageIcon(scaledImg));
-        moneyDonation.setBounds(15, 235, 25, 25);
-        donationPanel.add(moneyDonation);
-
-        monetaryBtn = new JButton("Monetary Donation");
-        monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBorderPainted(false);
-        monetaryBtn.setFocusPainted(false);
-        monetaryBtn.setContentAreaFilled(false);
-        donationPanel.add(monetaryBtn);
-
-
-        ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
-        scaledImg = goodsDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel goodsDonation = new JLabel(new ImageIcon(scaledImg));
-        goodsDonation.setBounds(15, 275, 25, 25);
-        donationPanel.add(goodsDonation);
-
-        JButton goodsBtn = new JButton("Goods Donation");
-        goodsBtn.setBounds(40, 270, 160, 40);
-        goodsBtn.setBorderPainted(false);
-        goodsBtn.setBackground(Color.LIGHT_GRAY);
-        goodsBtn.setFocusPainted(false);
-        donationPanel.add(goodsBtn);
-
         String fullText =
                 "Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
                         "generating a storm surge of more than 5 meters in places and winds in excess of 190 mph. " +
@@ -202,7 +172,7 @@ public class BoxDonationView{
                         "approximately 4.1 million people were displaced from their homes.";
 
         JTextArea donationText = new JTextArea(fullText);
-        donationText.setBounds(5, 325, 195, 140);
+        donationText.setBounds(5, 250, 195, 140);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
         donationText.setBackground(new Color(245, 245, 245));
@@ -264,14 +234,14 @@ public class BoxDonationView{
         ImageIcon Maps = new ImageIcon("Resources/Images/Maps.png");
         Image MapsIcon = Maps.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         JLabel MapsIconLabel = new JLabel(new ImageIcon(MapsIcon));
-        MapsIconLabel.setBounds(175,200,250,250);
+        MapsIconLabel.setBounds(175,250,250,250);
         monetaryMainCard.add(MapsIconLabel);
 
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
-        donateNow.setBounds(150, 460, 300, 30);
+        donateNow.setBounds(150, 450, 300, 30);
         monetaryMainCard.add(donateNow);
 
         frame.setVisible(true);

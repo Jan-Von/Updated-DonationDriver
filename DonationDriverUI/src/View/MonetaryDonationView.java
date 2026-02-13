@@ -6,15 +6,17 @@ import java.awt.*;
 
 public class MonetaryDonationView {
     public JFrame frame;
-    public JButton monetaryBtn;
     public JButton homeBtn;
-    public JButton goodsBtn;
     public JButton notifBtn;
     public JButton donationBtn;
     public JButton DonateBtn;
     public JButton helpBtn;
     public JButton settingsBtn;
     public JButton donateNow;
+
+    // Exposed to the controller for logging
+    public JTextField amountField;
+    public JTextField transactionIdField;
 
 
     public MonetaryDonationView() {
@@ -96,7 +98,7 @@ public class MonetaryDonationView {
         sidebarDonation.setBounds(30, 145, 25, 25);
         sidebar.add(sidebarDonation);
 
-        JButton DonateBtn = new JButton("Donate");
+        DonateBtn = new JButton("Donate");
         DonateBtn.setBounds(45, 190, 120, 40);
         DonateBtn.setBorderPainted(false);
         DonateBtn.setFocusPainted(false);
@@ -166,34 +168,6 @@ public class MonetaryDonationView {
         liveIcon.setBounds(5, 50, 25, 25);
         donationPanel.add(liveIcon);
 
-
-        ImageIcon moneyDonate = new ImageIcon("Resources/Images/DonateMoney.png");
-        scaledImg = moneyDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel moneyDonation = new JLabel(new ImageIcon(scaledImg));
-        moneyDonation.setBounds(15, 235, 25, 25);
-        donationPanel.add(moneyDonation);
-
-        JButton monetaryBtn = new JButton("Monetary Donation");
-        monetaryBtn.setBounds(50, 230, 145, 40);
-        monetaryBtn.setBackground(Color.LIGHT_GRAY);
-        monetaryBtn.setBorderPainted(false);
-        monetaryBtn.setFocusPainted(false);
-        donationPanel.add(monetaryBtn);
-
-
-        ImageIcon goodsDonate = new ImageIcon("Resources/Images/food-donation.png");
-        scaledImg = goodsDonate.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        JLabel goodsDonation = new JLabel(new ImageIcon(scaledImg));
-        goodsDonation.setBounds(15, 275, 25, 25);
-        donationPanel.add(goodsDonation);
-
-        goodsBtn = new JButton("Goods Donation");
-        goodsBtn.setBounds(40, 270, 160, 40);
-        goodsBtn.setBorderPainted(false);
-        goodsBtn.setContentAreaFilled(false);
-        goodsBtn.setFocusPainted(false);
-        donationPanel.add(goodsBtn);
-
         String fullText =
                 "Super Typhoon Haiyan (locally known as Yolanda) swept across the Philippines, " +
                         "generating a storm surge of more than 5 meters in places and winds in excess of 190 mph. " +
@@ -201,7 +175,7 @@ public class MonetaryDonationView {
                         "approximately 4.1 million people were displaced from their homes.";
 
         JTextArea donationText = new JTextArea(fullText);
-        donationText.setBounds(5, 325, 195, 140);
+        donationText.setBounds(5, 250, 195, 140);
         donationText.setFont(new Font("Arial", Font.PLAIN, 12));
         donationText.setForeground(Color.BLACK);
         donationText.setBackground(new Color(245, 245, 245));
@@ -209,7 +183,6 @@ public class MonetaryDonationView {
         donationText.setWrapStyleWord(true);
         donationText.setEditable(false);
         donationPanel.add(donationText);
-
         frame.add(donationPanel);
 
         JPanel monetaryMainCard = new JPanel();
@@ -230,11 +203,11 @@ public class MonetaryDonationView {
         Amount.setBounds(150, 50, 300, 30);
         monetaryMainCard.add(Amount);
 
-        JTextField amount = new JTextField();
-        amount.setFont(new Font("Arial", Font.PLAIN, 14));
-        amount.setForeground(Color.BLACK);
-        amount.setBounds(150, 80, 300, 30);
-        monetaryMainCard.add(amount);
+        amountField = new JTextField();
+        amountField.setFont(new Font("Arial", Font.PLAIN, 14));
+        amountField.setForeground(Color.BLACK);
+        amountField.setBounds(150, 80, 300, 30);
+        monetaryMainCard.add(amountField);
 
         JLabel paymentMethod = new JLabel("Payment Method");
         paymentMethod.setFont(new Font("Arial", Font.BOLD, 14));
@@ -249,17 +222,17 @@ public class MonetaryDonationView {
         PaymentOptions.setBounds(150,140,300,30);
         monetaryMainCard.add(PaymentOptions);
 
-        JLabel transID = new JLabel("Transaction ID");
+        JLabel transID = new JLabel("Reference Number");
         transID.setFont(new Font("Arial", Font.BOLD, 14));
         transID.setForeground(Color.BLACK);
         transID.setBounds(150, 170, 300, 30);
         monetaryMainCard.add(transID);
 
-        JTextField TransID = new JTextField();
-        TransID.setFont(new Font("Arial", Font.PLAIN, 14));
-        TransID.setForeground(Color.BLACK);
-        TransID.setBounds(150, 200, 300, 30);
-        monetaryMainCard.add(TransID);
+        transactionIdField = new JTextField();
+        transactionIdField.setFont(new Font("Arial", Font.PLAIN, 14));
+        transactionIdField.setForeground(Color.BLACK);
+        transactionIdField.setBounds(150, 200, 300, 30);
+        monetaryMainCard.add(transactionIdField);
 
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
@@ -268,6 +241,17 @@ public class MonetaryDonationView {
         donateNow.setBounds(150, 250, 300, 30);
         monetaryMainCard.add(donateNow);
 
+        JLabel instructionText = new JLabel("<html>Note: Please send the monetary donation first and Enter" +
+                "the reference number from the bank transfer</html> ");
+        instructionText.setFont(new Font("Arial", Font.BOLD, 16));
+        instructionText.setForeground(Color.BLACK);
+        instructionText.setBounds(150,280,300,150);
+        monetaryMainCard.add(instructionText);
+
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new MonetaryDonationView();
     }
 }

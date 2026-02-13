@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<monetaryDonations>
+      
+  
+  
+  <donation>
+            
+    
+    <userEmail>2245587@slu.edu.ph</userEmail>
+            
+    
+    <drive>Super Typhoon Haiyan</drive>
+            
+    
+    <transactionId>395024650</transactionId>
+            
+    
+    <amount>90000.0</amount>
+            
+    
+    <timestamp>2026-02-11 23:56:58</timestamp>
+            
+    
+    <runningTotal>90000.0</runningTotal>
+          
+  
+  </donation>
+    
+  
+  <donation>
+        
+    <userEmail>2245587@slu.edu.ph</userEmail>
+        
+    <drive>Super Typhoon Haiyan</drive>
+        
+    <transactionId>521591239</transactionId>
+        
+    <amount>55000.0</amount>
+        
+    <timestamp>2026-02-12 00:12:33</timestamp>
+        
+    <runningTotal>145000.0</runningTotal>
+      
+  </donation>
+  
+  <donation>
+    <userEmail>2245587@slu.edu.ph</userEmail>
+    <drive>Super Typhoon Haiyan</drive>
+    <transactionId>318677477</transactionId>
+    <amount>25000.0</amount>
+    <timestamp>2026-02-12 00:18:16</timestamp>
+    <runningTotal>170000.0</runningTotal>
+  </donation>
+</monetaryDonations>

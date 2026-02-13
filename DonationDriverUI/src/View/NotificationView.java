@@ -7,8 +7,6 @@ import java.awt.*;
 
 public class NotificationView {
     public JFrame frame;
-    public JButton monetaryBtn;
-    public JButton goodsBtn;
     public JButton notifBtn;
     public JButton donationBtn;
     public JButton DonateBtn;

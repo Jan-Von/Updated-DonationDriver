@@ -2,10 +2,16 @@ package Controller;
 
 import View.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class DashboardController {
 
     private DashboardView view;
     private BoxDonationView viewBox;
+
 
     public DashboardController(DashboardView view) {
         this.view = view;
@@ -14,6 +20,37 @@ public class DashboardController {
         view.notifBtn.addActionListener(e -> openNotification());
         view.donationBtn.addActionListener(e ->openDonations());
         view.DonateBtn.addActionListener(e -> openDonate());
+
+        setupCardClick(view.card1);
+        setupCardClick(view.card2);
+        setupCardClick(view.card3);
+
+    }
+
+    private void setupCardClick(JPanel card) {
+        card.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                // Remove from old parent
+                if (view.monetaryBtn.getParent() != null) {
+                    view.monetaryBtn.getParent().remove(view.monetaryBtn);
+                    view.goodsBtn.getParent().remove(view.goodsBtn);
+                }
+
+                // Add to the clicked card
+                card.add(view.monetaryBtn);
+                card.add(view.goodsBtn);
+
+                // Show buttons
+                view.monetaryBtn.setVisible(true);
+                view.goodsBtn.setVisible(true);
+
+                // Refresh card
+                card.revalidate();
+                card.repaint();
+                view.frame.revalidate();
+                view.frame.repaint();
+            }
+        });
     }
 
     private void openMonetaryDonation() {
