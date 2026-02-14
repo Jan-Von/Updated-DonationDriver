@@ -15,6 +15,8 @@ public class BoxDonationView{
     public JTextField typeOfGoodsField;
     public JTextField numberOfBoxesField;
     public JTextField locationField;
+    public JComboBox<String> donationDriveCombo;
+    public JTextField deliveryDestinationField;
 
     public BoxDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -194,6 +196,29 @@ public class BoxDonationView{
         donationServices.setForeground(Color.BLACK);
         donationServices.setBounds(10, 10, 300, 30);
         monetaryMainCard.add(donationServices);
+
+        JLabel driveLabel = new JLabel("Donation Drive");
+        driveLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        driveLabel.setForeground(Color.BLACK);
+        driveLabel.setBounds(10, 50, 140, 30);
+        monetaryMainCard.add(driveLabel);
+
+        String[] drives = {"Select drive", "Typhoon Relief", "Fire Victims", "Earthquake Relief", "Flood Relief", "General Donation"};
+        donationDriveCombo = new JComboBox<>(drives);
+        donationDriveCombo.setFont(new Font("Arial", Font.PLAIN, 14));
+        donationDriveCombo.setBounds(150, 50, 300, 30);
+        monetaryMainCard.add(donationDriveCombo);
+
+        JLabel destLabel = new JLabel("Deliver to (e.g. school, barangay)");
+        destLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        destLabel.setForeground(Color.BLACK);
+        destLabel.setBounds(10, 85, 220, 30);
+        monetaryMainCard.add(destLabel);
+
+        deliveryDestinationField = new JTextField();
+        deliveryDestinationField.setFont(new Font("Arial", Font.PLAIN, 14));
+        deliveryDestinationField.setBounds(150, 85, 300, 30);
+        monetaryMainCard.add(deliveryDestinationField);
 
         JLabel typeofGoods = new JLabel("Type of Goods");
         typeofGoods.setFont(new Font("Arial", Font.BOLD, 14));

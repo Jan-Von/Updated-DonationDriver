@@ -71,6 +71,24 @@ public class BoxDonationController {
             return;
         }
 
+        String drive = (String) view.donationDriveCombo.getSelectedItem();
+        if (drive == null || drive.isEmpty() || "Select drive".equals(drive)) {
+            JOptionPane.showMessageDialog(view.frame,
+                    "Please select a donation drive.",
+                    "Create Donation Ticket",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String destination = view.deliveryDestinationField.getText().trim();
+        if (destination.isEmpty()) {
+            JOptionPane.showMessageDialog(view.frame,
+                    "Please enter where to deliver (e.g. public school, barangay).",
+                    "Create Donation Ticket",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         int quantity;
         try {
             quantity = Integer.parseInt(boxesText);
@@ -89,6 +107,7 @@ public class BoxDonationController {
                 ? LoginController.currentUserEmail
                 : "guest@donationdriver";
 
+        String notes = drive + " – Deliver to: " + destination;
         try {
             Client client = Client.getDefault();
 
@@ -101,7 +120,7 @@ public class BoxDonationController {
                     "",                     // pickupDateTime
                     location,               // pickupLocation
                     "",                     // photoPath
-                    "Box goods donation"
+                    notes
             );
 
             Client.Response response = Client.parseResponse(responseXml);
