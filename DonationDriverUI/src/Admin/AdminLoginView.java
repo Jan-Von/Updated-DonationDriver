@@ -42,7 +42,7 @@ public class AdminLoginView {
         mainPanel.add(logoLabel, gbc);
 
         emailField = new JTextField(EMAIL_PLACEHOLDER);
-        emailField.setPreferredSize(new Dimension(280, 40));
+        emailField.setPreferredSize(new Dimension(280, 30));
         emailField.setForeground(Color.GRAY);
         emailField.addFocusListener(new FocusAdapter() {
             @Override
@@ -65,7 +65,7 @@ public class AdminLoginView {
         mainPanel.add(emailField, gbc);
 
         passField = new JPasswordField(PASSWORD_PLACEHOLDER);
-        passField.setPreferredSize(new Dimension(280, 40));
+        passField.setPreferredSize(new Dimension(280, 30));
         passField.setForeground(Color.GRAY);
         passField.setEchoChar((char) 0);
         passField.addFocusListener(new FocusAdapter() {

@@ -390,4 +390,5 @@ public class AdminHomePanel extends JPanel {
         }
         return xml.substring(i + open.length(), j).trim();
     }
+
 }
