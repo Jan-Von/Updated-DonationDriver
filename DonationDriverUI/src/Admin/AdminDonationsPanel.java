@@ -13,6 +13,7 @@ public class AdminDonationsPanel extends JPanel {
 
     private static final Color TABLE_HEADER_BG = new Color(240, 240, 240);
     private DefaultTableModel donationsTableModel;
+    private JTable donationsTable;
 
     public AdminDonationsPanel() {
         setLayout(new BorderLayout(16, 16));
@@ -27,14 +28,115 @@ public class AdminDonationsPanel extends JPanel {
         donationsTableModel = new DefaultTableModel(
                 new Object[]{"ID", "Type", "Donor", "Amount/Quantity", "Status", "Date"}, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
+            public boolean isCellEditable(int row, int column) { return false; }
         };
-        JTable table = new JTable(donationsTableModel);
-        styleTable(table);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        donationsTable = new JTable(donationsTableModel);
+        styleTable(donationsTable);
+        add(new JScrollPane(donationsTable), BorderLayout.CENTER);
+        add(buildActionsPanel(), BorderLayout.SOUTH);
         refreshData();
+    }
+
+    private JPanel buildActionsPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+
+        JButton acceptBtn   = new JButton("Accept");
+        JButton pickedUpBtn = new JButton("Picked Up");
+        JButton deliveredBtn= new JButton("Delivered");
+        JButton rejectBtn   = new JButton("Reject");
+        JButton cancelBtn   = new JButton("Cancel Request");
+
+        acceptBtn.addActionListener(e -> updateSelectedTicketStatus("ACCEPTED"));
+        pickedUpBtn.addActionListener(e -> updateSelectedTicketStatus("PICKED_UP"));
+        deliveredBtn.addActionListener(e -> updateSelectedTicketStatus("DELIVERED"));
+        rejectBtn.addActionListener(e -> updateSelectedTicketStatus("REJECTED"));
+        cancelBtn.addActionListener(e -> cancelSelectedTicket());
+
+        panel.add(acceptBtn);
+        panel.add(pickedUpBtn);
+        panel.add(deliveredBtn);
+        panel.add(rejectBtn);
+        panel.add(cancelBtn);
+
+        return panel;
+    }
+
+    private void updateSelectedTicketStatus(String newStatus) {
+        int row = donationsTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a ticket first.");
+            return;
+        }
+        String ticketId = String.valueOf(donationsTableModel.getValueAt(row, 0));
+        String adminUserId = "admin";
+
+        try {
+            Client client = Client.getDefault();
+
+            StringBuilder req = new StringBuilder();
+            req.append("<request><action>UPDATE_TICKET</action>");
+            req.append("<userId>").append(Client.escapeXml(adminUserId)).append("</userId>");
+            req.append("<ticketId>").append(Client.escapeXml(ticketId)).append("</ticketId>");
+            req.append("<status>").append(Client.escapeXml(newStatus)).append("</status>");
+            req.append("</request>");
+
+            String responseXml = client.sendRequest(req.toString());
+            Client.Response resp = Client.parseResponse(responseXml);
+            if (resp != null && resp.isOk()) {
+                JOptionPane.showMessageDialog(this, "Status updated: " + newStatus);
+                refreshData();
+            } else {
+                String msg = (resp != null && resp.message != null && !resp.message.isEmpty())
+                        ? resp.message : "Failed to update ticket.";
+                JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Unable to contact server.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cancelSelectedTicket() {
+        int row = donationsTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a ticket first.");
+            return;
+        }
+        String ticketId = String.valueOf(donationsTableModel.getValueAt(row, 0));
+        String reason = JOptionPane.showInputDialog(this,
+                "Reason for cancellation:", "Cancel Request", JOptionPane.QUESTION_MESSAGE);
+        if (reason == null || reason.trim().isEmpty()) {
+            return;
+        }
+
+        String adminUserId = "admin";
+
+        try {
+            Client client = Client.getDefault();
+
+            StringBuilder req = new StringBuilder();
+            req.append("<request><action>DELETE_TICKET</action>");
+            req.append("<userId>").append(Client.escapeXml(adminUserId)).append("</userId>");
+            req.append("<ticketId>").append(Client.escapeXml(ticketId)).append("</ticketId>");
+            req.append("<deleteReason>").append(Client.escapeXml(reason)).append("</deleteReason>");
+            req.append("</request>");
+
+            String responseXml = client.sendRequest(req.toString());
+            Client.Response resp = Client.parseResponse(responseXml);
+            if (resp != null && resp.isOk()) {
+                JOptionPane.showMessageDialog(this, "Ticket cancelled.");
+                refreshData();
+            } else {
+                String msg = (resp != null && resp.message != null && !resp.message.isEmpty())
+                        ? resp.message : "Failed to cancel ticket.";
+                JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Unable to contact server.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void styleTable(JTable table) {
