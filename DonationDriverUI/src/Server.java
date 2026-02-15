@@ -466,6 +466,11 @@ public class Server {
                     String ticketUserId = extractTagValue(xml, "userId");
                     String ticketStatus = extractTagValue(xml, "status");
 
+                    String isDeleted = extractTagValue(xml, "isDeleted");
+                    if ("true".equalsIgnoreCase(isDeleted != null ? isDeleted.trim() : "")) {
+                        continue;
+                    }
+
                     boolean matchesUser =
                             (requesterUserId == null || requesterUserId.isEmpty())
                                     || (ticketUserId != null && requesterUserId.equals(ticketUserId));
