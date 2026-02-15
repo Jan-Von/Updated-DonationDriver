@@ -57,24 +57,16 @@ public class RegistrationController {
 
         try {
             Client client = Client.getDefault();
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("<request>");
-            sb.append("<action>REGISTER</action>");
-            sb.append("<userId></userId>");
-            sb.append("<user>");
-            sb.append("<firstName>").append(Client.escapeXml(firstName)).append("</firstName>");
-            sb.append("<lastName>").append(Client.escapeXml(lastName)).append("</lastName>");
-            sb.append("<middleName>").append(Client.escapeXml(middleName)).append("</middleName>");
-            sb.append("<dateOfBirth>").append(Client.escapeXml(dateOfBirth)).append("</dateOfBirth>");
-            sb.append("<address>").append(Client.escapeXml(address)).append("</address>");
-            sb.append("<phone>").append(Client.escapeXml(phone)).append("</phone>");
-            sb.append("<email>").append(Client.escapeXml(email)).append("</email>");
-            sb.append("<password>").append(Client.escapeXml(password)).append("</password>");
-            sb.append("</user>");
-            sb.append("</request>");
-
-            String responseXml = client.sendRequest(sb.toString());
+            String responseXml = client.register(
+                    firstName,
+                    lastName,
+                    middleName,
+                    dateOfBirth,
+                    address,
+                    phone,
+                    email,
+                    password
+            );
             Client.Response response = Client.parseResponse(responseXml);
 
             if (response != null && response.isOk()) {

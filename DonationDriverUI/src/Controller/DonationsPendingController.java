@@ -2,6 +2,7 @@ package Controller;
 
 import View.*;
 import Network.Client;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,13 +81,20 @@ public class DonationsPendingController {
         String category = getTag(ticketXml, "itemCategory");
         String quantity = getTag(ticketXml, "quantity");
         String location = getTag(ticketXml, "pickupLocation");
+        String drive = getTag(ticketXml, "donationDrive");
+        String destination = getTag(ticketXml, "deliveryDestination");
 
-        return String.format("ID %s | %s x%s | Status: %s | Location: %s",
+        String extra = "";
+        if ((drive != null && !drive.isEmpty()) || (destination != null && !destination.isEmpty())) {
+            extra = " | " + or(drive, "—") + " → " + or(destination, "—");
+        }
+        return String.format("ID %s | %s x%s | Status: %s | Location: %s%s",
                 or(id, "?"),
                 or(category, "Unknown"),
                 or(quantity, "1"),
                 or(status, "—"),
-                or(location, "N/A"));
+                or(location, "N/A"),
+                extra);
     }
 
     private String getTag(String xml, String tagName) {
@@ -120,42 +128,42 @@ public class DonationsPendingController {
         view.ticketsList.setModel(model);
     }
 
-    private void openDashBoard(){
+    private void openDashBoard() {
         DashboardView dashboardView = new DashboardView();
         new DashboardController(dashboardView);
         dashboardView.frame.setVisible(true);
         view.frame.dispose();
     }
 
-    private void openNotification(){
+    private void openNotification() {
         NotificationView notificationView = new NotificationView();
         new NotificationController(notificationView);
         notificationView.frame.setVisible(true);
         view.frame.dispose();
     }
 
-    private void openDonationsActive(){
+    private void openDonationsActive() {
         DonationsActiveView donationsactiveView = new DonationsActiveView();
         new DonationsActiveController(donationsactiveView);
         donationsactiveView.frame.setVisible(true);
         view.frame.dispose();
     }
 
-    private void openDonationsRejected(){
+    private void openDonationsRejected() {
         DonationsRejectedView donationsRejectedView = new DonationsRejectedView();
         new DonationsRejectedController(donationsRejectedView);
         donationsRejectedView.frame.setVisible(true);
         view.frame.dispose();
     }
 
-    private void openDonationsDelivered(){
+    private void openDonationsDelivered() {
         DonationsDeliveredView donationsdeliveredView = new DonationsDeliveredView();
         new DonationsDeliveredController(donationsdeliveredView);
         donationsdeliveredView.frame.setVisible(true);
         view.frame.dispose();
     }
 
-    private void openDonate (){
+    private void openDonate() {
         DonateView donateView = new DonateView();
         new DonateController(donateView);
         donateView.frame.setVisible(true);

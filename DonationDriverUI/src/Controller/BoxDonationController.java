@@ -107,7 +107,7 @@ public class BoxDonationController {
                 ? LoginController.currentUserEmail
                 : "guest@donationdriver";
 
-        String notes = drive + " – Deliver to: " + destination;
+        String notes = "Goods donation – " + (drive != null ? drive : "") + (destination != null && !destination.isEmpty() ? " | Deliver to: " + destination : "");
         try {
             Client client = Client.getDefault();
 
@@ -120,7 +120,9 @@ public class BoxDonationController {
                     "",                     // pickupDateTime
                     location,               // pickupLocation
                     "",                     // photoPath
-                    notes
+                    notes,
+                    drive,                  // donationDrive – sent to server for tracking
+                    destination             // deliveryDestination – e.g. public school, barangay
             );
 
             Client.Response response = Client.parseResponse(responseXml);

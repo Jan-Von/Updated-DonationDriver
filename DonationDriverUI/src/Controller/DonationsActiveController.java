@@ -88,14 +88,21 @@ public class DonationsActiveController {
             String itemCategory = extractTagValue(ticketXml, "itemCategory");
             String quantity     = extractTagValue(ticketXml, "quantity");
             String pickupLoc    = extractTagValue(ticketXml, "pickupLocation");
+            String drive        = extractTagValue(ticketXml, "donationDrive");
+            String destination  = extractTagValue(ticketXml, "deliveryDestination");
 
+            String extra = "";
+            if ((drive != null && !drive.isEmpty()) || (destination != null && !destination.isEmpty())) {
+                extra = " | " + (drive != null ? drive : "—") + " → " + (destination != null ? destination : "—");
+            }
             String summary = String.format(
-                    "ID %s | %s x%s | Status: %s | Location: %s",
+                    "ID %s | %s x%s | Status: %s | Location: %s%s",
                     ticketId != null ? ticketId : "?",
                     itemCategory != null ? itemCategory : "Unknown",
                     (quantity != null && !quantity.isEmpty()) ? quantity : "1",
                     status != null ? status : "UNKNOWN",
-                    pickupLoc != null ? pickupLoc : "N/A"
+                    pickupLoc != null ? pickupLoc : "N/A",
+                    extra
             );
             list.add(summary);
 

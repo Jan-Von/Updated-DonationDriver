@@ -52,6 +52,23 @@ public class Client {
         return sendRequest(request);
     }
 
+    public String register(String firstName, String lastName, String middleName,
+                           String dateOfBirth, String address, String phone,
+                           String email, String password) throws IOException {
+        StringBuilder request = new StringBuilder();
+        request.append("<request><action>REGISTER</action><userId></userId>");
+        request.append("<firstName>").append(escapeXml(firstName)).append("</firstName>");
+        request.append("<lastName>").append(escapeXml(lastName)).append("</lastName>");
+        request.append("<middleName>").append(escapeXml(middleName != null ? middleName : "")).append("</middleName>");
+        request.append("<dateOfBirth>").append(escapeXml(dateOfBirth != null ? dateOfBirth : "")).append("</dateOfBirth>");
+        request.append("<address>").append(escapeXml(address != null ? address : "")).append("</address>");
+        request.append("<phone>").append(escapeXml(phone != null ? phone : "")).append("</phone>");
+        request.append("<email>").append(escapeXml(email)).append("</email>");
+        request.append("<password>").append(escapeXml(password)).append("</password>");
+        request.append("</request>");
+        return sendRequest(request.toString());
+    }
+
     public String createTicket(String userId, String type, String details) throws IOException {
         String request = "<request><action>CREATE_TICKET</action>"
                 + "<userId>" + escapeXml(userId) + "</userId>"

@@ -26,7 +26,7 @@ public class AdminDonationsPanel extends JPanel {
         add(title, BorderLayout.NORTH);
 
         donationsTableModel = new DefaultTableModel(
-                new Object[]{"ID", "Type", "Donor", "Amount/Quantity", "Status", "Date"}, 0) {
+                new Object[]{"ID", "Type", "Donor", "Amount/Quantity", "Status", "Date", "Destination"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
@@ -138,7 +138,7 @@ public class AdminDonationsPanel extends JPanel {
 
         List<Object[]> rows = loadDonationsFromServer();
         if (rows.isEmpty()) {
-            donationsTableModel.addRow(new Object[]{"-", "-", "-", "-", "No data", "-"});
+            donationsTableModel.addRow(new Object[]{"-", "-", "-", "-", "No data", "-", "-"});
         } else {
             for (Object[] row : rows) {
                 donationsTableModel.addRow(row);
@@ -170,15 +170,26 @@ public class AdminDonationsPanel extends JPanel {
                 String ticketXml = ticketsXml.substring(start, end + "</ticket>".length());
 
                 String id = extractTagValue(ticketXml, "ticketId");
-                String type = extractTagValue(ticketXml, "itemCategory"); // or drive type
+                String type = extractTagValue(ticketXml, "itemCategory");
                 String donor = extractTagValue(ticketXml, "userId");
                 String quantity = extractTagValue(ticketXml, "quantity");
                 String status = extractTagValue(ticketXml, "status");
                 String createdAt = extractTagValue(ticketXml, "createdAt");
+                String drive = extractTagValue(ticketXml, "donationDrive");
+                String destination = extractTagValue(ticketXml, "deliveryDestination");
 
                 String amountOrQty = (quantity != null && !quantity.isEmpty())
                         ? quantity + " boxes"
                         : "-";
+
+                String dest = "-";
+                if (drive != null && !drive.isEmpty() && destination != null && !destination.isEmpty()) {
+                    dest = drive + " → " + destination;
+                } else if (destination != null && !destination.isEmpty()) {
+                    dest = destination;
+                } else if (drive != null && !drive.isEmpty()) {
+                    dest = drive;
+                }
 
                 rows.add(new Object[]{
                         id != null ? id : "-",
@@ -186,7 +197,8 @@ public class AdminDonationsPanel extends JPanel {
                         donor != null ? donor : "-",
                         amountOrQty,
                         status != null ? status : "-",
-                        createdAt != null ? createdAt : "-"
+                        createdAt != null ? createdAt : "-",
+                        dest
                 });
 
                 idx = end + "</ticket>".length();

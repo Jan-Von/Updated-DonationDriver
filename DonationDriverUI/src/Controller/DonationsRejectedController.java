@@ -79,13 +79,20 @@ public class DonationsRejectedController {
         String category = getTag(ticketXml, "itemCategory");
         String quantity = getTag(ticketXml, "quantity");
         String location = getTag(ticketXml, "pickupLocation");
+        String drive = getTag(ticketXml, "donationDrive");
+        String destination = getTag(ticketXml, "deliveryDestination");
 
-        return String.format("ID %s | %s x%s | Status: %s | Location: %s",
+        String extra = "";
+        if ((drive != null && !drive.isEmpty()) || (destination != null && !destination.isEmpty())) {
+            extra = " | " + or(drive, "—") + " → " + or(destination, "—");
+        }
+        return String.format("ID %s | %s x%s | Status: %s | Location: %s%s",
                 or(id, "?"),
                 or(category, "Unknown"),
                 or(quantity, "1"),
                 or(status, "—"),
-                or(location, "N/A"));
+                or(location, "N/A"),
+                extra);
     }
 
     private String getTag(String xml, String tagName) {
