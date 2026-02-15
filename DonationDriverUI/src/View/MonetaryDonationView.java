@@ -2,7 +2,9 @@ package View;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 
 public class MonetaryDonationView {
     public JFrame frame;
@@ -13,10 +15,14 @@ public class MonetaryDonationView {
     public JButton helpBtn;
     public JButton settingsBtn;
     public JButton donateNow;
+    public JButton uploadPhotoBtn;
+    public JLabel photoStatusLabel;
 
     // Exposed to the controller for logging
     public JTextField amountField;
     public JTextField transactionIdField;
+
+    private File selectedPhotoFile;
 
 
     public MonetaryDonationView() {
@@ -234,21 +240,52 @@ public class MonetaryDonationView {
         transactionIdField.setBounds(150, 200, 300, 30);
         monetaryMainCard.add(transactionIdField);
 
+        uploadPhotoBtn = new JButton("Upload photo (JPG)");
+        uploadPhotoBtn.setFont(new Font("Arial", Font.PLAIN, 12));
+        uploadPhotoBtn.setBounds(150, 235, 180, 28);
+        monetaryMainCard.add(uploadPhotoBtn);
+
+        photoStatusLabel = new JLabel("No photo selected");
+        photoStatusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        photoStatusLabel.setForeground(Color.GRAY);
+        photoStatusLabel.setBounds(340, 238, 200, 22);
+        monetaryMainCard.add(photoStatusLabel);
+
+        uploadPhotoBtn.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("JPEG images", "jpg", "jpeg"));
+            if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                selectedPhotoFile = chooser.getSelectedFile();
+                photoStatusLabel.setText("Photo selected: " + selectedPhotoFile.getName());
+            }
+        });
+
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
-        donateNow.setBounds(150, 250, 300, 30);
+        donateNow.setBounds(150, 275, 300, 30);
         monetaryMainCard.add(donateNow);
 
         JLabel instructionText = new JLabel("<html>Note: Please send the monetary donation first and Enter" +
                 "the reference number from the bank transfer</html> ");
         instructionText.setFont(new Font("Arial", Font.BOLD, 16));
         instructionText.setForeground(Color.BLACK);
-        instructionText.setBounds(150,280,300,150);
+        instructionText.setBounds(150, 310, 300, 150);
         monetaryMainCard.add(instructionText);
 
         frame.setVisible(true);
+    }
+
+    public File getSelectedPhotoFile() {
+        return selectedPhotoFile;
+    }
+
+    public void clearSelectedPhoto() {
+        selectedPhotoFile = null;
+        if (photoStatusLabel != null) {
+            photoStatusLabel.setText("No photo selected");
+        }
     }
 
     public static void main(String[] args) {

@@ -7,23 +7,37 @@ import java.awt.*;
 import Network.Client;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class AdminDonationsPanel extends JPanel {
 
     private static final Color TABLE_HEADER_BG = new Color(240, 240, 240);
+    private static final int MAX_PHOTO_DISPLAY_WIDTH = 800;
+    private static final int MAX_PHOTO_DISPLAY_HEIGHT = 600;
+
     private DefaultTableModel donationsTableModel;
     private JTable donationsTable;
+    private List<String> photoBase64ByRow = new ArrayList<>();
 
     public AdminDonationsPanel() {
         setLayout(new BorderLayout(16, 16));
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
+        JPanel titlePanel = new JPanel();
+        titlePanel.setOpaque(false);
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         JLabel title = new JLabel("Donations");
-        title.setFont(new Font("Arial", Font.BOLD, 14));
+        title.setFont(new Font("Arial", Font.BOLD, 18));
         title.setForeground(new Color(20, 35, 100));
-        add(title, BorderLayout.NORTH);
+        titlePanel.add(title);
+        titlePanel.add(Box.createVerticalStrut(4));
+        JLabel subtitle = new JLabel("Review and update status of all donation tickets (monetary and goods)");
+        subtitle.setFont(new Font("Arial", Font.PLAIN, 12));
+        subtitle.setForeground(new Color(100, 100, 100));
+        titlePanel.add(subtitle);
+        add(titlePanel, BorderLayout.NORTH);
 
         donationsTableModel = new DefaultTableModel(
                 new Object[]{"ID", "Type", "Donor", "Amount/Quantity", "Status", "Date", "Destination"}, 0) {
@@ -40,18 +54,21 @@ public class AdminDonationsPanel extends JPanel {
     private JPanel buildActionsPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
 
+        JButton viewPhotoBtn = new JButton("View photo");
         JButton acceptBtn   = new JButton("Accept");
         JButton pickedUpBtn = new JButton("Picked Up");
         JButton deliveredBtn= new JButton("Delivered");
         JButton rejectBtn   = new JButton("Reject");
         JButton cancelBtn   = new JButton("Cancel Request");
 
+        viewPhotoBtn.addActionListener(e -> viewSelectedPhoto());
         acceptBtn.addActionListener(e -> updateSelectedTicketStatus("ACCEPTED"));
         pickedUpBtn.addActionListener(e -> updateSelectedTicketStatus("PICKED_UP"));
         deliveredBtn.addActionListener(e -> updateSelectedTicketStatus("DELIVERED"));
         rejectBtn.addActionListener(e -> updateSelectedTicketStatus("REJECTED"));
         cancelBtn.addActionListener(e -> cancelSelectedTicket());
 
+        panel.add(viewPhotoBtn);
         panel.add(acceptBtn);
         panel.add(pickedUpBtn);
         panel.add(deliveredBtn);
@@ -135,10 +152,12 @@ public class AdminDonationsPanel extends JPanel {
     public void refreshData() {
         if (donationsTableModel == null) return;
         donationsTableModel.setRowCount(0);
+        photoBase64ByRow.clear();
 
         List<Object[]> rows = loadDonationsFromServer();
         if (rows.isEmpty()) {
             donationsTableModel.addRow(new Object[]{"-", "-", "-", "-", "No data", "-", "-"});
+            photoBase64ByRow.add(null);
         } else {
             for (Object[] row : rows) {
                 donationsTableModel.addRow(row);
@@ -159,6 +178,7 @@ public class AdminDonationsPanel extends JPanel {
             if (ticketsXml == null || ticketsXml.isEmpty()) {
                 return rows;
             }
+            ticketsXml = Client.unescapeXml(ticketsXml);
 
             int idx = 0;
             while (true) {
@@ -177,6 +197,7 @@ public class AdminDonationsPanel extends JPanel {
                 String createdAt = extractTagValue(ticketXml, "createdAt");
                 String drive = extractTagValue(ticketXml, "donationDrive");
                 String destination = extractTagValue(ticketXml, "deliveryDestination");
+                String photoBase64 = extractPhotoBase64(ticketXml);
 
                 String amountOrQty = (quantity != null && !quantity.isEmpty())
                         ? quantity + " boxes"
@@ -200,6 +221,7 @@ public class AdminDonationsPanel extends JPanel {
                         createdAt != null ? createdAt : "-",
                         dest
                 });
+                photoBase64ByRow.add(photoBase64);
 
                 idx = end + "</ticket>".length();
             }
@@ -207,6 +229,63 @@ public class AdminDonationsPanel extends JPanel {
             e.printStackTrace();
         }
         return rows;
+    }
+
+    /** Extract photoBase64 from ticket XML, stripping CDATA if present. */
+    private String extractPhotoBase64(String ticketXml) {
+        String raw = extractTagValue(ticketXml, "photoBase64");
+        if (raw == null || raw.isEmpty()) return null;
+        if (raw.startsWith("<![CDATA[") && raw.endsWith("]]>")) {
+            return raw.substring(9, raw.length() - 3);
+        }
+        return raw;
+    }
+
+    private void viewSelectedPhoto() {
+        int row = donationsTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a ticket first.");
+            return;
+        }
+        if (row >= photoBase64ByRow.size()) {
+            JOptionPane.showMessageDialog(this, "No photo data for this row.");
+            return;
+        }
+        String base64 = photoBase64ByRow.get(row);
+        if (base64 == null || base64.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No photo attached to this donation.");
+            return;
+        }
+        try {
+            byte[] bytes = Base64.getDecoder().decode(base64);
+            ImageIcon icon = new ImageIcon(bytes);
+            Image img = icon.getImage();
+            if (img.getWidth(null) > MAX_PHOTO_DISPLAY_WIDTH || img.getHeight(null) > MAX_PHOTO_DISPLAY_HEIGHT) {
+                double scale = Math.min(
+                        (double) MAX_PHOTO_DISPLAY_WIDTH / img.getWidth(null),
+                        (double) MAX_PHOTO_DISPLAY_HEIGHT / img.getHeight(null));
+                int w = (int) (img.getWidth(null) * scale);
+                int h = (int) (img.getHeight(null) * scale);
+                img = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(img);
+            }
+            JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Donation photo", true);
+            dialog.getContentPane().setLayout(new BorderLayout());
+            JLabel label = new JLabel(icon);
+            label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            dialog.getContentPane().add(new JScrollPane(label), BorderLayout.CENTER);
+            JButton closeBtn = new JButton("Close");
+            closeBtn.addActionListener(e -> dialog.dispose());
+            JPanel south = new JPanel();
+            south.add(closeBtn);
+            dialog.getContentPane().add(south, BorderLayout.SOUTH);
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            dialog.pack();
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Could not display photo (invalid image data).", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private String extractTagValue(String xml, String tag) {

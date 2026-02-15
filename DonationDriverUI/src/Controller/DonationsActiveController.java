@@ -41,7 +41,7 @@ public class DonationsActiveController {
             DefaultListModel<String> model = new DefaultListModel<>();
 
             if (response != null && response.isOk()) {
-                String ticketsXml = response.message;
+                String ticketsXml = Client.unescapeXml(response.message != null ? response.message : "");
                 List<String> summaries = parseTicketSummaries(ticketsXml);
 
                 if (summaries.isEmpty()) {

@@ -249,6 +249,16 @@ public class Server {
             return xml.substring(i + open.length(), j).trim();
         }
 
+        /** Extracts tag content and unwraps CDATA if present (e.g. &lt;![CDATA[base64]]&gt;). */
+        private String extractTagValueOrCData(String xml, String tag) {
+            String raw = extractTagValue(xml, tag);
+            if (raw == null) return null;
+            if (raw.startsWith("<![CDATA[") && raw.endsWith("]]>")) {
+                return raw.substring(9, raw.length() - 3);
+            }
+            return raw;
+        }
+
         private String escapeXml(String s) {
             if (s == null) {
                 return "";
@@ -411,6 +421,7 @@ public class Server {
             String notes = extractTagValue(requestXml, "details");
             String donationDrive = extractTagValue(requestXml, "donationDrive");
             String deliveryDestination = extractTagValue(requestXml, "deliveryDestination");
+            String photoBase64 = extractTagValueOrCData(requestXml, "photoBase64");
 
             if (itemCategory == null || itemCategory.trim().isEmpty()) {
                 return new OperationResult(false, "Item category (food, clothes, books, etc.) is required.");
@@ -473,6 +484,9 @@ public class Server {
                 sb.append("<notes>").append(escapeXml(notes != null ? notes : "")).append("</notes>");
                 sb.append("<donationDrive>").append(escapeXml(donationDrive != null ? donationDrive : "")).append("</donationDrive>");
                 sb.append("<deliveryDestination>").append(escapeXml(deliveryDestination != null ? deliveryDestination : "")).append("</deliveryDestination>");
+                if (photoBase64 != null && !photoBase64.isEmpty()) {
+                    sb.append("<photoBase64><![CDATA[").append(photoBase64).append("]]></photoBase64>");
+                }
                 sb.append("</ticket>");
 
                 try (FileWriter fw = new FileWriter(file, false)) {

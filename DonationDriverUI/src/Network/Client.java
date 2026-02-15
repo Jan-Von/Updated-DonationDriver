@@ -1,12 +1,15 @@
 package Network;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client {
 
     private static final String DEFAULT_HOST = "localhost";
     private static final int DEFAULT_PORT = 5267;
+    private static final int CONNECT_TIMEOUT_MS = 5000;
+    private static final int READ_TIMEOUT_MS = 10000;
 
     private final String host;
     private final int port;
@@ -21,10 +24,13 @@ public class Client {
     }
 
     public String sendRequest(String requestXml) throws IOException {
-        try (Socket socket = new Socket(host, port);
-             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))
-        ) {
+        Socket socket = new Socket();
+        try {
+            socket.connect(new InetSocketAddress(host, port), CONNECT_TIMEOUT_MS);
+            socket.setSoTimeout(READ_TIMEOUT_MS);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+
             out.write(requestXml);
             out.newLine();
             out.flush();
@@ -34,6 +40,11 @@ public class Client {
                 return null;
             }
             return responseXml.trim();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException ignored) {
+            }
         }
     }
 
@@ -86,7 +97,8 @@ public class Client {
             String pickupDateTime,
             String pickupLocation,
             String photoPath,
-            String notes
+            String notes,
+            String photoBase64
     ) throws IOException {
         StringBuilder request = new StringBuilder();
         request.append("<request><action>CREATE_TICKET</action>");
@@ -99,6 +111,9 @@ public class Client {
         request.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : "")).append("</pickupLocation>");
         request.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
         request.append("<details>").append(escapeXml(notes != null ? notes : "")).append("</details>");
+        if (photoBase64 != null && !photoBase64.isEmpty()) {
+            request.append("<photoBase64><![CDATA[").append(photoBase64).append("]]></photoBase64>");
+        }
         request.append("</request>");
         return sendRequest(request.toString());
     }
@@ -114,7 +129,8 @@ public class Client {
             String photoPath,
             String notes,
             String donationDrive,
-            String deliveryDestination
+            String deliveryDestination,
+            String photoBase64
     ) throws IOException {
         StringBuilder request = new StringBuilder();
         request.append("<request><action>CREATE_TICKET</action>");
@@ -132,6 +148,9 @@ public class Client {
         }
         if (deliveryDestination != null && !deliveryDestination.isEmpty()) {
             request.append("<deliveryDestination>").append(escapeXml(deliveryDestination)).append("</deliveryDestination>");
+        }
+        if (photoBase64 != null && !photoBase64.isEmpty()) {
+            request.append("<photoBase64><![CDATA[").append(photoBase64).append("]]></photoBase64>");
         }
         request.append("</request>");
         return sendRequest(request.toString());
@@ -206,6 +225,16 @@ public class Client {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&apos;");
+    }
+
+    /** Reverse of escapeXml so XML embedded in a response message can be parsed. */
+    public static String unescapeXml(String s) {
+        if (s == null) return "";
+        return s.replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&quot;", "\"")
+                .replace("&apos;", "'")
+                .replace("&amp;", "&");
     }
 
     public String ping() throws IOException {

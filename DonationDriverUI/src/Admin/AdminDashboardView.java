@@ -82,6 +82,7 @@ public class AdminDashboardView {
 
         homePanel = new AdminHomePanel();
         homePanel.setOnShowNotifications(() -> showCard(CARD_NOTIFICATIONS));
+        homePanel.setOnShowDonations(() -> showCard(CARD_DONATIONS));
         notificationsPanel = new AdminNotificationsPanel();
         donationsPanel = new AdminDonationsPanel();
 
@@ -106,6 +107,8 @@ public class AdminDashboardView {
         homeBtn = createSidebarButton("Home");
         notificationsBtn = createSidebarButton("Notifications");
         donationsBtn = createSidebarButton("Donations");
+        donationsBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        donationsBtn.setForeground(new Color(20, 35, 100));
         helpBtn = createSidebarButton("Help");
         settingsBtn = createSidebarButton("Settings");
 

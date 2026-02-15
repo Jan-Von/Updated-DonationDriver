@@ -18,6 +18,7 @@ public class AdminHomePanel extends JPanel {
 
 
     private Runnable onShowNotifications;
+    private Runnable onShowDonations;
 
     private static final int PAD = 20;
     private static final int GAP = 16;
@@ -31,6 +32,8 @@ public class AdminHomePanel extends JPanel {
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
         main.setOpaque(false);
         main.add(buildMetricsBar());
+        main.add(Box.createVerticalStrut(GAP));
+        main.add(buildViewAllDonationsBar());
         main.add(Box.createVerticalStrut(GAP));
         main.add(buildUrgentDonations());
         main.add(Box.createVerticalStrut(GAP));
@@ -230,6 +233,39 @@ public class AdminHomePanel extends JPanel {
         this.onShowNotifications = onShowNotifications;
     }
 
+    public void setOnShowDonations(Runnable onShowDonations) {
+        this.onShowDonations = onShowDonations;
+    }
+
+    private JPanel buildViewAllDonationsBar() {
+        JPanel bar = new JPanel(new BorderLayout(8, 0));
+        bar.setOpaque(false);
+
+        JLabel label = new JLabel("Donation tickets from the app (monetary and goods)");
+        label.setFont(new Font("Arial", Font.PLAIN, 13));
+        label.setForeground(new Color(60, 60, 60));
+        bar.add(label, BorderLayout.WEST);
+
+        JButton viewAllBtn = new JButton("View all donations");
+        viewAllBtn.setFont(new Font("Arial", Font.BOLD, 12));
+        viewAllBtn.setForeground(new Color(20, 35, 100));
+        viewAllBtn.setBackground(new Color(234, 248, 255));
+        viewAllBtn.setFocusPainted(false);
+        viewAllBtn.setBorderPainted(true);
+        viewAllBtn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(20, 35, 100), 1),
+                BorderFactory.createEmptyBorder(8, 16, 8, 16)));
+        viewAllBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        viewAllBtn.addActionListener(e -> {
+            if (onShowDonations != null) {
+                onShowDonations.run();
+            }
+        });
+        bar.add(viewAllBtn, BorderLayout.EAST);
+
+        return bar;
+    }
+
     private JPanel buildActiveDeliveryPanel() {
         JPanel panel = new JPanel(new BorderLayout(8, 8));
         panel.setBackground(new Color(250, 250, 252));
@@ -348,6 +384,7 @@ public class AdminHomePanel extends JPanel {
             if (ticketsXml == null || ticketsXml.isEmpty()) {
                 return m;
             }
+            ticketsXml = Client.unescapeXml(ticketsXml);
 
             int idx = 0;
             while (true) {

@@ -50,8 +50,8 @@ public class LoginController {
             } catch (IOException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(view.frame,
-                        "Unable to contact server. Please try again.",
-                        "Error",
+                        "Cannot contact server. Make sure the DonationDriver server is running (port 5267).",
+                        "Connection Error",
                         JOptionPane.ERROR_MESSAGE);
             }
         }

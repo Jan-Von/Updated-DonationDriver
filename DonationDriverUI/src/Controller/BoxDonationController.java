@@ -2,6 +2,7 @@ package Controller;
 
 import View.*;
 import Network.Client;
+import Util.PhotoUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -107,6 +108,20 @@ public class BoxDonationController {
                 ? LoginController.currentUserEmail
                 : "guest@donationdriver";
 
+        File photoFile = view.getSelectedPhotoFile();
+        String photoBase64 = null;
+        if (photoFile != null) {
+            photoBase64 = PhotoUtil.jpgFileToBase64(photoFile);
+            if (photoBase64 == null) {
+                JOptionPane.showMessageDialog(view.frame,
+                        "Could not read the selected photo. Please choose a valid JPG file.",
+                        "Create Donation Ticket",
+                        JOptionPane.WARNING_MESSAGE);
+                view.clearSelectedPhoto();
+                return;
+            }
+        }
+
         String notes = "Goods donation – " + (drive != null ? drive : "") + (destination != null && !destination.isEmpty() ? " | Deliver to: " + destination : "");
         try {
             Client client = Client.getDefault();
@@ -122,7 +137,8 @@ public class BoxDonationController {
                     "",                     // photoPath
                     notes,
                     drive,                  // donationDrive – sent to server for tracking
-                    destination             // deliveryDestination – e.g. public school, barangay
+                    destination,            // deliveryDestination – e.g. public school, barangay
+                    photoBase64 != null ? photoBase64 : ""
             );
 
             Client.Response response = Client.parseResponse(responseXml);
@@ -135,7 +151,7 @@ public class BoxDonationController {
             }
             if (response != null && response.isOk()) {
                 // Log into Goods Donations.xml (including running total of boxes)
-                logGoodsDonation(userId, goods, quantity, location);
+                logGoodsDonation(userId, goods, quantity, location, photoBase64);
 
                 JOptionPane.showMessageDialog(view.frame,
                         "Donation ticket created!\n" + response.message,
@@ -198,8 +214,9 @@ public class BoxDonationController {
     /**
      * Append a goods donation entry into Goods Donations.xml.
      * Logs goods, quantity, location, and running total boxes.
+     * Optionally includes photoBase64 when a photo was attached.
      */
-    private void logGoodsDonation(String userId, String goods, int quantity, String location) {
+    private void logGoodsDonation(String userId, String goods, int quantity, String location, String photoBase64) {
         try {
             File file = getGoodsXmlFile();
 
@@ -249,6 +266,9 @@ public class BoxDonationController {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             appendChildText(doc, donationEl, "timestamp", timestamp);
             appendChildText(doc, donationEl, "runningTotalBoxes", String.valueOf(newTotal));
+            if (photoBase64 != null && !photoBase64.isEmpty()) {
+                appendChildText(doc, donationEl, "photoBase64", photoBase64);
+            }
 
             root.appendChild(donationEl);
             writeDocument(doc, file);

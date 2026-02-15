@@ -2,6 +2,7 @@ package Controller;
 
 import View.*;
 import Network.Client;
+import Util.PhotoUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -83,6 +84,22 @@ public class MonetaryDonationController {
                 + "Amount=" + amount + "; "
                 + "TransactionId=" + transactionId;
 
+        File photoFile = view.getSelectedPhotoFile();
+        String photoBase64 = null;
+        if (photoFile != null) {
+            photoBase64 = PhotoUtil.jpgFileToBase64(photoFile);
+            if (photoBase64 == null) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        view.frame,
+                        "Could not read the selected photo. Please choose a valid JPG file.",
+                        "Monetary Donation",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                view.clearSelectedPhoto();
+                return;
+            }
+        }
+
         try {
             Client client = Client.getDefault();
 
@@ -96,13 +113,14 @@ public class MonetaryDonationController {
                     "",                  // pickupDateTime
                     "",                  // pickupLocation
                     "",                  // photoPath
-                    notes                // details / notes
+                    notes,               // details / notes
+                    photoBase64 != null ? photoBase64 : ""
             );
 
             Client.Response response = Client.parseResponse(responseXml);
             if (response != null && response.isOk()) {
                 // Log locally to Monetary Donations.xml
-                logMonetaryDonation("Super Typhoon Haiyan", amount, transactionId);
+                logMonetaryDonation("Super Typhoon Haiyan", amount, transactionId, photoBase64);
 
                 javax.swing.JOptionPane.showMessageDialog(
                         view.frame,
@@ -192,8 +210,9 @@ public class MonetaryDonationController {
     /**
      * Append a monetary donation entry into Monetary Donations.xml.
      * Logs drive, amount, unique transaction id, and running total donated.
+     * Optionally includes photoBase64 when a photo was attached.
      */
-    private void logMonetaryDonation(String driveName, double amount, String transactionId) {
+    private void logMonetaryDonation(String driveName, double amount, String transactionId, String photoBase64) {
         try {
             File file = getMonetaryXmlFile();
 
@@ -248,6 +267,9 @@ public class MonetaryDonationController {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             appendChildText(doc, donationEl, "timestamp", timestamp);
             appendChildText(doc, donationEl, "runningTotal", String.valueOf(newTotal));
+            if (photoBase64 != null && !photoBase64.isEmpty()) {
+                appendChildText(doc, donationEl, "photoBase64", photoBase64);
+            }
 
             root.appendChild(donationEl);
             writeDocument(doc, file);

@@ -38,7 +38,7 @@ public class DonationsPendingController {
             Client.Response response = Client.parseResponse(responseXml);
 
             if (response != null && response.isOk()) {
-                List<String> lines = buildTicketLines(response.message);
+                List<String> lines = buildTicketLines(Client.unescapeXml(response.message != null ? response.message : ""));
                 if (lines.isEmpty()) {
                     showMessageInList("No pending donations.");
                 } else {

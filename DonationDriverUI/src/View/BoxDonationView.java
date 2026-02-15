@@ -1,7 +1,9 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 
 public class BoxDonationView{
     public JFrame frame;
@@ -12,11 +14,15 @@ public class BoxDonationView{
     public JButton helpBtn;
     public JButton settingsBtn;
     public JButton donateNow;
+    public JButton uploadPhotoBtn;
+    public JLabel photoStatusLabel;
     public JTextField typeOfGoodsField;
     public JTextField numberOfBoxesField;
     public JTextField locationField;
     public JComboBox<String> donationDriveCombo;
     public JTextField deliveryDestinationField;
+
+    private File selectedPhotoFile;
 
     public BoxDonationView() {
         frame = new JFrame("DonationDriver - Dashboard");
@@ -256,20 +262,51 @@ public class BoxDonationView{
         locationField.setBounds(150, 190, 300, 30);
         monetaryMainCard.add(locationField);
 
+        uploadPhotoBtn = new JButton("Upload photo (JPG)");
+        uploadPhotoBtn.setFont(new Font("Arial", Font.PLAIN, 12));
+        uploadPhotoBtn.setBounds(150, 228, 180, 28);
+        monetaryMainCard.add(uploadPhotoBtn);
+
+        photoStatusLabel = new JLabel("No photo selected");
+        photoStatusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        photoStatusLabel.setForeground(Color.GRAY);
+        photoStatusLabel.setBounds(340, 231, 200, 22);
+        monetaryMainCard.add(photoStatusLabel);
+
+        uploadPhotoBtn.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("JPEG images", "jpg", "jpeg"));
+            if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                selectedPhotoFile = chooser.getSelectedFile();
+                photoStatusLabel.setText("Photo selected: " + selectedPhotoFile.getName());
+            }
+        });
+
         ImageIcon Maps = new ImageIcon("Resources/Images/Maps.png");
         Image MapsIcon = Maps.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
         JLabel MapsIconLabel = new JLabel(new ImageIcon(MapsIcon));
-        MapsIconLabel.setBounds(175,250,250,250);
+        MapsIconLabel.setBounds(175, 268, 250, 250);
         monetaryMainCard.add(MapsIconLabel);
 
         donateNow = new JButton("Donate Now");
         donateNow.setFont(new Font("Arial", Font.BOLD, 14));
         donateNow.setForeground(Color.WHITE);
         donateNow.setBackground(new Color(20, 35, 100));
-        donateNow.setBounds(150, 450, 300, 30);
+        donateNow.setBounds(150, 468, 300, 30);
         monetaryMainCard.add(donateNow);
 
         frame.setVisible(true);
+    }
+
+    public File getSelectedPhotoFile() {
+        return selectedPhotoFile;
+    }
+
+    public void clearSelectedPhoto() {
+        selectedPhotoFile = null;
+        if (photoStatusLabel != null) {
+            photoStatusLabel.setText("No photo selected");
+        }
     }
 
     public static void main(String[] args) {
