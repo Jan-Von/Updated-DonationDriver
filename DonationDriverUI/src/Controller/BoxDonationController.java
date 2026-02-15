@@ -126,6 +126,13 @@ public class BoxDonationController {
             );
 
             Client.Response response = Client.parseResponse(responseXml);
+            if (response != null && "NO_RIDERS".equals(response.status)) {
+                JOptionPane.showMessageDialog(view.frame,
+                        "No available riders at the moment. Please wait or try again later.",
+                        "No Riders Available",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if (response != null && response.isOk()) {
                 // Log into Goods Donations.xml (including running total of boxes)
                 logGoodsDonation(userId, goods, quantity, location);

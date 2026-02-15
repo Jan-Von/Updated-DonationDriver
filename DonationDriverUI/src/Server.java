@@ -142,13 +142,18 @@ public class Server {
                     }
                     case "CREATE_TICKET": {
                         OperationResult result = createTicket(userId, requestXml);
-                        if (result.success) {
+                        if (!result.success && "NO_RIDERS_AVAILABLE".equals(result.message)) {
+                            status = "NO_RIDERS";
+                            message = "No available riders at the moment. Please wait or try again later.";
+                            dataAffected = "ticket not created - no riders available";
+                        } else if (result.success) {
                             status = "OK";
                             dataAffected = result.message;
+                            message = result.message;
                         } else {
                             dataAffected = "create failed: " + result.message;
+                            message = result.message;
                         }
-                        message = result.message;
                         break;
                     }
                     case "READ_TICKETS": {
@@ -369,6 +374,11 @@ public class Server {
         private static final Object TICKET_LOCK = new Object();
         private static long nextTicketId = System.currentTimeMillis();
 
+        // Placeholder until rider UI/system exists
+        private static boolean areRidersAvailable() {
+            return true;
+        }
+
         private static class OperationResult {
             final boolean success;
             final String message;
@@ -382,6 +392,9 @@ public class Server {
         private OperationResult createTicket(String userId, String requestXml) {
             if (userId == null || userId.trim().isEmpty()) {
                 return new OperationResult(false, "UserId is required to create a donation ticket.");
+            }
+            if (!areRidersAvailable()) {
+                return new OperationResult(false, "NO_RIDERS_AVAILABLE");
             }
 
             String itemCategory = extractTagValue(requestXml, "itemCategory");
