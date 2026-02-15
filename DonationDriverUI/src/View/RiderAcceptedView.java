@@ -160,7 +160,7 @@ public class RiderAcceptedView {
         topBar.setBackground(new Color(235, 237, 240));
         topBar.setBorder(new EmptyBorder(10, 300, 10, 300));
 
-        JLabel newsFlash = new JLabel(" Urgent Pick-Ups                    Super Typhoon Haiyan as the storm plowed across the...                           ❗");
+        JLabel newsFlash = new JLabel(" News Flash                    Super Typhoon Haiyan as the storm plowed across the...                                     ❗");
         newsFlash.setOpaque(true);
         newsFlash.setBackground(new Color(40, 60, 120));
         newsFlash.setForeground(Color.WHITE);
