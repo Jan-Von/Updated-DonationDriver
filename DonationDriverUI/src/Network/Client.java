@@ -126,6 +126,18 @@ public class Client {
                 + "<ticketId>" + escapeXml(ticketId) + "</ticketId></request>";
         return sendRequest(request);
     }
+    //Overload method for optional reason from client when cancelling a ticket
+    public String deleteTicket(String userId, String ticketId, String reason) throws IOException {
+        StringBuilder request = new StringBuilder();
+        request.append("<request><action>DELETE_TICKET</action>");
+        request.append("<userId>").append(escapeXml(userId)).append("</userId>");
+        request.append("<ticketId>").append(escapeXml(ticketId)).append("</ticketId>");
+        if (reason != null && !reason.trim().isEmpty()) {
+            request.append("<deleteReason>").append(escapeXml(reason.trim())).append("</deleteReason>");
+        }
+        request.append("</request>");
+        return sendRequest(request.toString());
+    }
 
     public static Response parseResponse(String responseXml) {
         if (responseXml == null || responseXml.isEmpty()) {
