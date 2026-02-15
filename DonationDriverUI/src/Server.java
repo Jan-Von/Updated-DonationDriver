@@ -91,11 +91,11 @@ public class Server {
 
             String status = "ERROR";
             String message;
+            String dataAffected = "";
 
             if (action == null) {
                 message = "Missing <action> in request.";
             } else {
-                //To do: return real data or errors. Initial code for switch-case
                 switch (action) {
                     case "LOGIN": {
                         String email = extractTagValue(requestXml, "email");
@@ -106,8 +106,10 @@ public class Server {
                             status = "OK";
                             message = "Login successful.";
                             userId = email.trim();
+                            dataAffected = "user session: " + email.trim();
                         } else {
                             message = "Invalid email or password.";
+                            dataAffected = "login attempt failed for: " + (email != null ? email : "(unknown)");
                         }
                         break;
                     }
@@ -123,14 +125,18 @@ public class Server {
 
                         if (email == null || password == null) {
                             message = "Missing email or password.";
+                            dataAffected = "registration attempt (missing fields)";
                         } else if (userEmailExists(email.trim())) {
                             message = "Registration failed: email already exists.";
+                            dataAffected = "email already exists: " + email.trim();
                         } else if (saveUserToXmlSingleFile(email.trim(), password.trim(),
                                 firstName, lastName, middleName, dateOfBirth, address, phone)) {
                             status = "OK";
                             message = "Registration successful.";
+                            dataAffected = "new user registered: " + email.trim();
                         } else {
                             message = "Registration failed due to server error.";
+                            dataAffected = "registration failed for: " + email.trim();
                         }
                         break;
                     }
@@ -138,6 +144,9 @@ public class Server {
                         OperationResult result = createTicket(userId, requestXml);
                         if (result.success) {
                             status = "OK";
+                            dataAffected = result.message;
+                        } else {
+                            dataAffected = "create failed: " + result.message;
                         }
                         message = result.message;
                         break;
@@ -146,20 +155,32 @@ public class Server {
                         String ticketsXml = readTickets(userId, requestXml);
                         status = "OK";
                         message = ticketsXml;
+                        String filterStatus = extractTagValue(requestXml, "status");
+                        dataAffected = "tickets queried" + (filterStatus != null && !filterStatus.isEmpty() ? " (status=" + filterStatus + ")" : "") + " by " + (userId != null && !userId.isEmpty() ? userId : "all");
                         break;
                     }
                     case "UPDATE_TICKET": {
+                        String ticketId = extractTagValue(requestXml, "ticketId");
+                        String newStatus = extractTagValue(requestXml, "status");
                         OperationResult result = updateTicket(userId, requestXml);
                         if (result.success) {
                             status = "OK";
+                            dataAffected = "ticket " + ticketId + " updated" + (newStatus != null && !newStatus.isEmpty() ? " to " + newStatus : "");
+                        } else {
+                            dataAffected = "update failed: " + result.message;
                         }
                         message = result.message;
                         break;
                     }
                     case "DELETE_TICKET": {
+                        String ticketId = extractTagValue(requestXml, "ticketId");
+                        String reason = extractTagValue(requestXml, "deleteReason");
                         OperationResult result = deleteTicket(userId, requestXml);
                         if (result.success) {
                             status = "OK";
+                            dataAffected = "ticket " + ticketId + " cancelled" + (reason != null && !reason.isEmpty() ? " (reason: " + reason + ")" : "");
+                        } else {
+                            dataAffected = "cancel failed: " + result.message;
                         }
                         message = result.message;
                         break;
@@ -167,11 +188,14 @@ public class Server {
                     case "PING":
                         status = "OK";
                         message = "PONG from DonationServer.";
+                        dataAffected = "health check";
                         break;
                     default:
                         message = "Unknown action: " + action;
+                        dataAffected = "unknown action: " + action;
                 }
             }
+            logTransaction(action != null ? action : "UNKNOWN", userId, dataAffected);
             String responseXml =
                     "<response>" +
                             "<status>" + escapeXml(status) + "</status>" +
@@ -784,6 +808,29 @@ public class Server {
             sb.append("Transaction: ").append(transaction).append(System.lineSeparator());
             sb.append("Data:").append(System.lineSeparator());
             sb.append(data).append(System.lineSeparator());
+            sb.append("----").append(System.lineSeparator());
+
+            try (FileWriter fw = new FileWriter(LOG_FILE, true)) {
+                fw.write(sb.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void logTransaction(String action, String userId, String dataAffected) {
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String user = (userId == null || userId.isEmpty()) ? "ANONYMOUS" : userId;
+            String affected = (dataAffected == null || dataAffected.isEmpty()) ? "(none)" : dataAffected;
+
+            String line = String.format("[%s] User: %s | Transaction: %s | Data affected: %s",
+                    timestamp, user, action, affected);
+            System.out.println(line);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("[").append(timestamp).append("]").append(System.lineSeparator());
+            sb.append("User involved: ").append(user).append(System.lineSeparator());
+            sb.append("Transaction performed: ").append(action).append(System.lineSeparator());
+            sb.append("Data affected: ").append(affected).append(System.lineSeparator());
             sb.append("----").append(System.lineSeparator());
 
             try (FileWriter fw = new FileWriter(LOG_FILE, true)) {
