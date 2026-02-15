@@ -372,7 +372,8 @@ public class Server {
             String pickupLocation = extractTagValue(requestXml, "pickupLocation");
             String photoPath = extractTagValue(requestXml, "photoPath");
             String notes = extractTagValue(requestXml, "details");
-
+            String donationDrive = extractTagValue(requestXml, "donationDrive");
+            String deliveryDestination = extractTagValue(requestXml, "deliveryDestination");
 
             if (itemCategory == null || itemCategory.trim().isEmpty()) {
                 return new OperationResult(false, "Item category (food, clothes, books, etc.) is required.");
@@ -433,6 +434,8 @@ public class Server {
                         .append("</pickupLocation>");
                 sb.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
                 sb.append("<notes>").append(escapeXml(notes != null ? notes : "")).append("</notes>");
+                sb.append("<donationDrive>").append(escapeXml(donationDrive != null ? donationDrive : "")).append("</donationDrive>");
+                sb.append("<deliveryDestination>").append(escapeXml(deliveryDestination != null ? deliveryDestination : "")).append("</deliveryDestination>");
                 sb.append("</ticket>");
 
                 try (FileWriter fw = new FileWriter(file, false)) {
@@ -544,6 +547,8 @@ public class Server {
             String pickupLocation = extractTagValue(xml, "pickupLocation");
             String photoPath = extractTagValue(xml, "photoPath");
             String notes = extractTagValue(xml, "notes");
+            String donationDrive = extractTagValue(xml, "donationDrive");
+            String deliveryDestination = extractTagValue(xml, "deliveryDestination");
             String existingQuality = extractTagValue(xml, "qualityStatus");
             String existingReason = extractTagValue(xml, "qualityReason");
             String statusHistory = extractTagValue(xml, "statusHistory");
@@ -642,6 +647,8 @@ public class Server {
                         .append("</pickupLocation>");
                 sb.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
                 sb.append("<notes>").append(escapeXml(notes != null ? notes : "")).append("</notes>");
+                sb.append("<donationDrive>").append(escapeXml(donationDrive != null ? donationDrive : "")).append("</donationDrive>");
+                sb.append("<deliveryDestination>").append(escapeXml(deliveryDestination != null ? deliveryDestination : "")).append("</deliveryDestination>");
                 sb.append("<qualityStatus>").append(escapeXml(finalQualityStatus != null ? finalQualityStatus : ""))
                         .append("</qualityStatus>");
                 sb.append("<qualityReason>").append(escapeXml(finalQualityReason != null ? finalQualityReason : ""))

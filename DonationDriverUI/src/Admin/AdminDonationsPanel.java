@@ -72,15 +72,7 @@ public class AdminDonationsPanel extends JPanel {
 
         try {
             Client client = Client.getDefault();
-
-            StringBuilder req = new StringBuilder();
-            req.append("<request><action>UPDATE_TICKET</action>");
-            req.append("<userId>").append(Client.escapeXml(adminUserId)).append("</userId>");
-            req.append("<ticketId>").append(Client.escapeXml(ticketId)).append("</ticketId>");
-            req.append("<status>").append(Client.escapeXml(newStatus)).append("</status>");
-            req.append("</request>");
-
-            String responseXml = client.sendRequest(req.toString());
+            String responseXml = client.updateTicket(adminUserId, ticketId, newStatus);
             Client.Response resp = Client.parseResponse(responseXml);
             if (resp != null && resp.isOk()) {
                 JOptionPane.showMessageDialog(this, "Status updated: " + newStatus);
@@ -114,15 +106,7 @@ public class AdminDonationsPanel extends JPanel {
 
         try {
             Client client = Client.getDefault();
-
-            StringBuilder req = new StringBuilder();
-            req.append("<request><action>DELETE_TICKET</action>");
-            req.append("<userId>").append(Client.escapeXml(adminUserId)).append("</userId>");
-            req.append("<ticketId>").append(Client.escapeXml(ticketId)).append("</ticketId>");
-            req.append("<deleteReason>").append(Client.escapeXml(reason)).append("</deleteReason>");
-            req.append("</request>");
-
-            String responseXml = client.sendRequest(req.toString());
+            String responseXml = client.deleteTicket(adminUserId, ticketId, reason.trim());
             Client.Response resp = Client.parseResponse(responseXml);
             if (resp != null && resp.isOk()) {
                 JOptionPane.showMessageDialog(this, "Ticket cancelled.");

@@ -71,30 +71,52 @@ public class Client {
             String photoPath,
             String notes
     ) throws IOException {
-
         StringBuilder request = new StringBuilder();
         request.append("<request><action>CREATE_TICKET</action>");
         request.append("<userId>").append(escapeXml(userId)).append("</userId>");
-
         request.append("<itemCategory>").append(escapeXml(itemCategory)).append("</itemCategory>");
         request.append("<quantity>").append(quantity).append("</quantity>");
-        request.append("<condition>").append(escapeXml(condition != null ? condition : ""))
-                .append("</condition>");
-        request.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : ""))
-                .append("</expirationDate>");
-
-        request.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : ""))
-                .append("</pickupDateTime>");
-        request.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : ""))
-                .append("</pickupLocation>");
-
-        request.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : ""))
-                .append("</photoPath>");
-
+        request.append("<condition>").append(escapeXml(condition != null ? condition : "")).append("</condition>");
+        request.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : "")).append("</expirationDate>");
+        request.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : "")).append("</pickupDateTime>");
+        request.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : "")).append("</pickupLocation>");
+        request.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
         request.append("<details>").append(escapeXml(notes != null ? notes : "")).append("</details>");
-
         request.append("</request>");
+        return sendRequest(request.toString());
+    }
 
+    public String createTicket(
+            String userId,
+            String itemCategory,
+            int quantity,
+            String condition,
+            String expirationDate,
+            String pickupDateTime,
+            String pickupLocation,
+            String photoPath,
+            String notes,
+            String donationDrive,
+            String deliveryDestination
+    ) throws IOException {
+        StringBuilder request = new StringBuilder();
+        request.append("<request><action>CREATE_TICKET</action>");
+        request.append("<userId>").append(escapeXml(userId)).append("</userId>");
+        request.append("<itemCategory>").append(escapeXml(itemCategory)).append("</itemCategory>");
+        request.append("<quantity>").append(quantity).append("</quantity>");
+        request.append("<condition>").append(escapeXml(condition != null ? condition : "")).append("</condition>");
+        request.append("<expirationDate>").append(escapeXml(expirationDate != null ? expirationDate : "")).append("</expirationDate>");
+        request.append("<pickupDateTime>").append(escapeXml(pickupDateTime != null ? pickupDateTime : "")).append("</pickupDateTime>");
+        request.append("<pickupLocation>").append(escapeXml(pickupLocation != null ? pickupLocation : "")).append("</pickupLocation>");
+        request.append("<photoPath>").append(escapeXml(photoPath != null ? photoPath : "")).append("</photoPath>");
+        request.append("<details>").append(escapeXml(notes != null ? notes : "")).append("</details>");
+        if (donationDrive != null && !donationDrive.isEmpty()) {
+            request.append("<donationDrive>").append(escapeXml(donationDrive)).append("</donationDrive>");
+        }
+        if (deliveryDestination != null && !deliveryDestination.isEmpty()) {
+            request.append("<deliveryDestination>").append(escapeXml(deliveryDestination)).append("</deliveryDestination>");
+        }
+        request.append("</request>");
         return sendRequest(request.toString());
     }
 
@@ -126,6 +148,7 @@ public class Client {
                 + "<ticketId>" + escapeXml(ticketId) + "</ticketId></request>";
         return sendRequest(request);
     }
+
     //Overload method for optional reason from client when cancelling a ticket
     public String deleteTicket(String userId, String ticketId, String reason) throws IOException {
         StringBuilder request = new StringBuilder();
