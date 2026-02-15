@@ -306,7 +306,7 @@ public class RiderDashboard {
         locLabel.setBounds(10, 25, 250, 100);
         Loc.add(locLabel);
 
-        ImageIcon locphoto = new ImageIcon("res/loc.png");
+        ImageIcon locphoto = new ImageIcon("Resources/Images/loc.png");
         scaledImg = locphoto.getImage().getScaledInstance(299, 180, Image.SCALE_SMOOTH);
         JLabel locphoto = new JLabel(new ImageIcon(scaledImg));
         locphoto.setBounds(40, 40, 299, 180);
