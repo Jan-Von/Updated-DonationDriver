@@ -43,6 +43,19 @@ public class RejectedSelectedUrgentPickUps {
         subtitle.setBounds(80, 38, 200, 20);
         header.add(subtitle);
 
+        // Search and Profile icons on top right
+        ImageIcon searchImg = new ImageIcon("Resources/Images/search.png");
+        Image scaledSearch = searchImg.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        JLabel searchIcon = new JLabel(new ImageIcon(scaledSearch));
+        searchIcon.setBounds(1220, 25, 25, 25);
+        header.add(searchIcon);
+
+        ImageIcon profileImg = new ImageIcon("Resources/Images/profilepic.png");
+        Image scaledProfile = profileImg.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        JLabel profileIcon = new JLabel(new ImageIcon(scaledProfile));
+        profileIcon.setBounds(1340, 25, 25, 25);
+        header.add(profileIcon);
+
         frame.add(header);
 
         //left sidebar
